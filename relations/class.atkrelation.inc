@@ -121,10 +121,13 @@ class atkRelation extends atkAttribute
         return $result;
     }
 
-    /**
-     * Adds a filter value to the destination filter.
-     * @param String $filter Filter to be added to the destination filter.
-     */
+	/**
+	 * Adds a filter value to the destination filter.
+	 *
+	 * @param String $filter Filter to be added to the destination filter.
+	 *
+	 * @return $this
+	 */
     function addDestinationFilter($filter)
     {
         $filter = $this->_cleanupDestinationFilter($filter);

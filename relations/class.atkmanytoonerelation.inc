@@ -689,7 +689,17 @@ class atkManyToOneRelation extends atkRelation
                 if ($this->hasFlag(AF_RELATION_AUTOLINK) && (!in_array($mode, array("csv", "plain")))) { // create link to edit/view screen
                     if (($this->m_destInstance->allowed("view")) && !$this->m_destInstance->hasFlag(NF_NO_VIEW) && $result != "") {
                         $saveForm = $mode == 'add' || $mode == 'edit';
-                        $result = href(dispatch_url($this->m_destination, "view", array('atkfilter' => '', "atkselector" => $this->m_destInstance->primaryKey($record[$this->fieldName()]))), $result, SESSION_NESTED, $saveForm);
+                        /** OLD STABLE */
+                        $result = href(
+                        	dispatch_url($this->m_destination, "view", array('atkfilter' => '', "atkselector" => $this->m_destInstance->primaryKey($record[$this->fieldName()]))),
+	                        $result, SESSION_NESTED, $saveForm);
+
+                        /*
+                         * NEW: ok this work but i need to pass additional parameters not just the node :-/
+	                    $result = href(
+		                    dispatch_url($this->getAutoLinkDestination(), "view", array('atkfilter' => '', "atkselector" => $this->getAutoLinkDestinationInstance()->primaryKey($record[$this->fieldName()]))),
+		                    $result, SESSION_NESTED, $saveForm);
+	                    */
                     }
                 }
             } else {
@@ -793,6 +803,22 @@ class atkManyToOneRelation extends atkRelation
         }
         return $this->m_destination;
     }
+
+
+    var $m_autolink_destination_instance = NULL;
+
+	function getAutoLinkDestinationInstance() {
+		if (empty($this->m_autolink_destination)) {
+			return $this->m_destInstance;
+		}
+		if ($this->m_autolink_destination_instance) {
+			return $this->m_autolink_destination_instance;
+		}
+		$cache_id = $this->m_owner . "." . $this->m_name;
+		$this->m_autolink_destination_instance = &getNode($this->m_autolink_destination, false, $cache_id);
+		return $this->m_autolink_destination_instance;
+	}
+
 
     /**
      * Prepare for editing, make sure we already have the selectable records
@@ -1862,7 +1888,14 @@ class atkManyToOneRelation extends atkRelation
                     list(, $field) = explode('.', $field);
                 }
 
-                $newPart = $this->getDestination()->getAttribute($field)->getOrderByStatement('', $table, $fieldDirection);
+                $targetAttribute = $this->getDestination()->getAttribute($field);
+                if ($targetAttribute) {
+	                $newPart = $targetAttribute->getOrderByStatement('', $table, $fieldDirection);
+                } else {
+                	atkdebug('FATAL: target attribute not found for: '. $field);
+                	$newPart = false;
+                }
+
 
                 // realias if destination order contains the wrong tablename.
                 if (strpos($newPart, $this->m_destInstance->m_table . '.') !== false) {
