@@ -35,6 +35,11 @@ if(atkConfig::getGlobal('session_autorefresh') && array_key_exists(atkConfig::ge
 }
 
 atksecure();
-$indexpage = atknew('atk.ui.atkindexpage');
+if (atkconfig("defaulttheme") == "bootstrap")
+{
+	$indexpage = &atknew('atk.ui.atkbootstrapindexpage');
+} else {
+	$indexpage = atknew('atk.ui.atkindexpage');
+}
 $indexpage->generate();
 exit;

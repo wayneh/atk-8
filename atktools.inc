@@ -105,7 +105,10 @@ function atkErrorHandler($errtype, $errstr, $errfile, $errline)
         return;
     } else if (($errtype & (E_WARNING | E_USER_WARNING)) > 0) {
         // This is something we should pay attention to, but we don't need to die.
-        atkerror("[$errortypestring] $errstr in $errfile (line $errline)");
+		// older
+		//atkerror("[$errortypestring] $errstr in $errfile (line $errline)");
+		// new
+		if (!strpos($errstr, 'should be compatible')) atkerror("[$errortypestring] $errstr in $errfile (line $errline)");
         return;
     } else {
         atkerror("[$errortypestring] $errstr in $errfile (line $errline)", ($errtype == 'EXCEPTION'));
@@ -2035,4 +2038,21 @@ function atkFormatDate($date, $format, $weekday = false)
 
     /* return string */
     return $str_date;
+}
+
+/**
+ * Only count items that are countable !
+ *
+ * @return interger		count
+ */
+function atkcount($item)
+{
+	if (is_countable($item)){
+		return count($item);
+	}
+	if (is_null($item)){
+		return (int)0;
+	}
+	return (int)1;
+	return 0;
 }
