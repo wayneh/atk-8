@@ -174,7 +174,7 @@
       // loop through and generate the code letter by letter
       for ($i = 0; $i < $this->iNumChars; $i++) 
       {
-        if (count($this->aCharSet) > 0) 
+        if (atkcount($this->aCharSet) > 0) 
         {
           // select random character and add to code string
           $this->sCode .= $this->aCharSet[array_rand($this->aCharSet)];

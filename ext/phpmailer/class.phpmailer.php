@@ -1227,7 +1227,7 @@ class PHPMailer
                 $params[1] = $this->punyencodeAddress($params[1]);
                 call_user_func_array(array($this, 'addAnAddress'), $params);
             }
-            if ((count($this->to) + count($this->cc) + count($this->bcc)) < 1) {
+            if ((atkcount($this->to) + count($this->cc) + count($this->bcc)) < 1) {
                 throw new phpmailerException($this->lang('provide_address'), self::STOP_CRITICAL);
             }
 
@@ -1271,7 +1271,7 @@ class PHPMailer
             // To capture the complete message when using mail(), create
             // an extra header list which createHeader() doesn't fold in
             if ($this->Mailer == 'mail') {
-                if (count($this->to) > 0) {
+                if (atkcount($this->to) > 0) {
                     $this->mailHeader .= $this->addrAppend('To', $this->to);
                 } else {
                     $this->mailHeader .= $this->headerLine('To', 'undisclosed-recipients:;');
@@ -1511,7 +1511,7 @@ class PHPMailer
         }
 
         // Only send the DATA command if we have viable recipients
-        if ((count($this->all_recipients) > count($bad_rcpt)) and !$this->smtp->data($header . $body)) {
+        if ((atkcount($this->all_recipients) > atkcount($bad_rcpt)) and !$this->smtp->data($header . $body)) {
             throw new phpmailerException($this->lang('data_not_accepted'), self::STOP_CRITICAL);
         }
         if ($this->SMTPKeepAlive) {
@@ -1521,7 +1521,7 @@ class PHPMailer
             $this->smtp->close();
         }
         //Create error message for any bad addresses
-        if (count($bad_rcpt) > 0) {
+        if (atkcount($bad_rcpt) > 0) {
             $errstr = '';
             foreach ($bad_rcpt as $bad) {
                 $errstr .= $bad['to'] . ': ' . $bad['error'];
@@ -1966,11 +1966,11 @@ class PHPMailer
                 }
             }
         } else {
-            if (count($this->to) > 0) {
+            if (atkcount($this->to) > 0) {
                 if ($this->Mailer != 'mail') {
                     $result .= $this->addrAppend('To', $this->to);
                 }
-            } elseif (count($this->cc) == 0) {
+            } elseif (atkcount($this->cc) == 0) {
                 $result .= $this->headerLine('To', 'undisclosed-recipients:;');
             }
         }
@@ -1978,7 +1978,7 @@ class PHPMailer
         $result .= $this->addrAppend('From', array(array(trim($this->From), $this->FromName)));
 
         // sendmail and mail() extract Cc from the header before sending
-        if (count($this->cc) > 0) {
+        if (atkcount($this->cc) > 0) {
             $result .= $this->addrAppend('Cc', $this->cc);
         }
 
@@ -1991,7 +1991,7 @@ class PHPMailer
             $result .= $this->addrAppend('Bcc', $this->bcc);
         }
 
-        if (count($this->ReplyTo) > 0) {
+        if (atkcount($this->ReplyTo) > 0) {
             $result .= $this->addrAppend('Reply-To', $this->ReplyTo);
         }
 
@@ -3221,7 +3221,7 @@ class PHPMailer
      */
     protected function lang($key)
     {
-        if (count($this->language) < 1) {
+        if (atkcount($this->language) < 1) {
             $this->setLanguage('en'); // set the default language
         }
 

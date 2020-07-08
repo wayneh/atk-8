@@ -813,11 +813,11 @@ class Smarty
      */
     function register_resource($type, $functions)
     {
-        if (count($functions)==4) {
+        if (atkcount($functions)==4) {
             $this->_plugins['resource'][$type] =
                 array($functions, false);
 
-        } elseif (count($functions)==5) {
+        } elseif (atkcount($functions)==5) {
             $this->_plugins['resource'][$type] =
                 array(array(array(&$functions[0], $functions[1])
                             ,array(&$functions[0], $functions[2])
@@ -1154,7 +1154,7 @@ class Smarty
             $this->_smarty_debug_info[] = array('type'      => 'template',
                                                 'filename'  => $resource_name,
                                                 'depth'     => 0);
-            $_included_tpls_idx = count($this->_smarty_debug_info) - 1;
+            $_included_tpls_idx = atkcount($this->_smarty_debug_info) - 1;
         }
 
         if (!isset($compile_id)) {
@@ -1239,7 +1239,7 @@ class Smarty
         }
 
         // load filters that are marked as autoload
-        if (count($this->autoload_filters)) {
+        if (atkcount($this->autoload_filters)) {
             foreach ($this->autoload_filters as $_filter_type => $_filters) {
                 foreach ($_filters as $_filter) {
                     $this->load_filter($_filter_type, $_filter);
@@ -1253,7 +1253,7 @@ class Smarty
         // buffering - for speed
         $_cache_including = $this->_cache_including;
         $this->_cache_including = false;
-        if ($display && !$this->caching && count($this->_plugins['outputfilter']) == 0) {
+        if ($display && !$this->caching && atkcount($this->_plugins['outputfilter']) == 0) {
             if ($this->_is_compiled($resource_name, $_smarty_compile_path)
                     || $this->_compile_resource($resource_name, $_smarty_compile_path))
             {
@@ -1620,7 +1620,7 @@ class Smarty
         // split tpl_path by the first colon
         $_resource_name_parts = explode(':', $params['resource_name'], 2);
 
-        if (count($_resource_name_parts) == 1) {
+        if (atkcount($_resource_name_parts) == 1) {
             // no resource type given
             $params['resource_type'] = $this->default_resource_type;
             $params['resource_name'] = $_resource_name_parts[0];
@@ -1853,7 +1853,7 @@ class Smarty
             $this->_smarty_debug_info[] = array('type'      => 'template',
                                                   'filename'  => $params['smarty_include_tpl_file'],
                                                   'depth'     => ++$this->_inclusion_depth);
-            $included_tpls_idx = count($this->_smarty_debug_info) - 1;
+            $included_tpls_idx = atkcount($this->_smarty_debug_info) - 1;
         }
 
         $this->_tpl_vars = array_merge($this->_tpl_vars, $params['smarty_include_vars']);

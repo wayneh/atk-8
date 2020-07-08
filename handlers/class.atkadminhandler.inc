@@ -282,7 +282,7 @@ class atkAdminHandler extends atkActionHandler
         $link = "";
         if ($this->m_node->allowed("view") && $this->m_node->allowed("export") && $this->m_node->hasFlag(NF_EXPORT)) {
             $filter = '';
-            if (count($this->m_node->m_fuzzyFilters) > 0) {
+            if (atkcount($this->m_node->m_fuzzyFilters) > 0) {
                 $filter = implode(' AND ', str_replace('[table]', $this->m_node->getTable(), $this->m_node->m_fuzzyFilters));
             }
 

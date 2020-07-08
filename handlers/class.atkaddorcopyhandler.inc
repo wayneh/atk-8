@@ -88,7 +88,7 @@ class atkAddOrCopyHandler extends atkActionHandler
             } else {
                 $attr->createDestination();
 
-                for ($i = 0, $_i = count($record[$name]); $i < $_i; $i++) {
+                for ($i = 0, $_i = atkcount($record[$name]); $i < $_i; $i++) {
                     $this->preCopy($record[$name][$i], $attr->m_destInstance, $includes, $path . ".");
                 }
             }
@@ -324,7 +324,7 @@ class atkAddOrCopyHandler extends atkActionHandler
     {
         $records = $this->m_node->selectDb("", "", "", "", array_merge(array($this->m_node->primaryKeyField()), $this->m_node->descriptorFields()));
 
-        if (count($records) == 0) {
+        if (atkcount($records) == 0) {
             $label = $this->getOptionLabel('copy') . ' (' . $this->m_node->text('no_copyable_records') . ')';
 
             return '

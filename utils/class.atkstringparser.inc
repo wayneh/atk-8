@@ -96,10 +96,10 @@ class atkStringParser
     function isComplete($data)
     {
         $fields = $this->getFields();
-        for ($i = 0; $i < count($fields); $i++) {
+        for ($i = 0; $i < atkcount($fields); $i++) {
             $elements = explode(".", $fields[$i]);
             $databin = $data;
-            for ($j = 0; $j < count($elements); $j++) {
+            for ($j = 0; $j < atkcount($elements); $j++) {
                 $value = $databin[$elements[$j]];
                 if (!isset($value))
                     return false; // Missing value.

@@ -65,7 +65,7 @@ class atkPrintableRecordList extends atkRecordList
         // are totalisable collumns.
         foreach (array_keys($this->m_node->m_attribList) as $attribname) {
             $p_attrib = &$this->m_node->m_attribList[$attribname];
-            $musthide = (is_array($suppressList) && count($suppressList) > 0 && in_array($attribname, $suppressList));
+            $musthide = (is_array($suppressList) && atkcount($suppressList) > 0 && in_array($attribname, $suppressList));
             if (
                 ($p_attrib->hasFlag(AF_HIDE_LIST) == false) &&
                 (
@@ -83,11 +83,11 @@ class atkPrintableRecordList extends atkRecordList
 
         $output.="</tr>";
 
-        for ($i = 0, $_i = count($recordset); $i < $_i; $i++) {
+        for ($i = 0, $_i = atkcount($recordset); $i < $_i; $i++) {
             $output.='<tr>';
             foreach (array_keys($this->m_node->m_attribList) as $attribname) {
                 $p_attrib = &$this->m_node->m_attribList[$attribname];
-                $musthide = (is_array($suppressList) && count($suppressList) > 0 && in_array($attribname, $suppressList));
+                $musthide = (is_array($suppressList) && atkcount($suppressList) > 0 && in_array($attribname, $suppressList));
                 if (
                     ($p_attrib->hasFlag(AF_HIDE_LIST) == false) &&
                     (
@@ -124,7 +124,7 @@ class atkPrintableRecordList extends atkRecordList
             // Third loop.. this time for the totals row.
             foreach (array_keys($this->m_node->m_attribList) as $attribname) {
                 $p_attrib = &$this->m_node->m_attribList[$attribname];
-                $musthide = (is_array($suppressList) && count($suppressList) > 0 && in_array($attribname, $suppressList));
+                $musthide = (is_array($suppressList) && atkcount($suppressList) > 0 && in_array($attribname, $suppressList));
                 if (
                     ($p_attrib->hasFlag(AF_HIDE_LIST) == false) &&
                     (

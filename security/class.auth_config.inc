@@ -113,7 +113,7 @@ class auth_config extends auth_interface
 
         $result = Array();
 
-        for ($i = 0; $i < count($rights); $i++) {
+        for ($i = 0; $i < atkcount($rights); $i++) {
             if ($rights[$i][$action] != "") {
                 $result[] = $rights[$i][$action];
             }

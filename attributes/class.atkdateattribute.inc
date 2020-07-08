@@ -604,7 +604,7 @@ class atkDateAttribute extends atkAttribute
         /* small date selections, never possible is field isn't obligatory (no min/max date) */
         if (!empty($maximum) && !empty($minimum) && $str_max - $str_min < 25) {
 
-            if (count($this->m_onchangecode))
+            if (atkcount($this->m_onchangecode))
             {
                 $this->_renderChangeHandler($fieldprefix);
                 $str_script = $this->getHtmlId($fieldprefix).'_onChange(this);';
@@ -648,7 +648,7 @@ class atkDateAttribute extends atkAttribute
             if (!$this->m_simplemode)
                 $str_script = "AdjustDate(this, '" . $fieldname . "');";
 
-            if (count($this->m_onchangecode)) {
+            if (atkcount($this->m_onchangecode)) {
                 $this->_renderChangeHandler($fieldprefix);
                 $str_script .= $this->getHtmlId($fieldprefix) . '_onChange(this);';
             }

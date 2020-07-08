@@ -435,7 +435,7 @@ class atkMsSqlDb extends atkMysqlDb
         // parameters.
         if ($offset == -1 && $limit == -1) {
             $lines = explode("\n", $query);
-            if (count($lines) > 0 && strpos($lines[count($lines) - 1], 'LIMIT') === 0) {
+            if (atkcount($lines) > 0 && strpos($lines[count($lines) - 1], 'LIMIT') === 0) {
                 $last = array_pop($lines);
                 $query = implode("\n", $lines);
                 if (preg_match('/LIMIT ([0-9]+) OFFSET ([0-9]+)/', $last, $matches)) {

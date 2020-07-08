@@ -293,7 +293,7 @@ class atkManyToOneRelation extends atkRelation
 	        parent::__construct($name, $destination, $flags);
         }
 
-        if ($this->hasFlag(AF_MANYTOONE_LAZY) && (count($this->m_refKey) > 1 || $this->m_refKey[0] != $this->fieldName())) {
+        if ($this->hasFlag(AF_MANYTOONE_LAZY) && (atkcount($this->m_refKey) > 1 || $this->m_refKey[0] != $this->fieldName())) {
             atkerror("AF_MANYTOONE_LAZY flag is not supported for multi-column reference key or a reference key that uses another column.");
         }
     }
@@ -490,7 +490,7 @@ class atkManyToOneRelation extends atkRelation
         $this->m_listColumns = array();
 
         $attrs = func_get_args();
-        if (count($attrs) === 1 && is_array($attrs[0])) {
+        if (atkcount($attrs) === 1 && is_array($attrs[0])) {
             $columns = $attrs[0];
         } else {
             $columns = $attrs;
@@ -571,7 +571,7 @@ class atkManyToOneRelation extends atkRelation
                 }
             }
 
-            if (count($result) == 0) {
+            if (atkcount($result) == 0) {
                 return null;
             }
 
@@ -681,7 +681,7 @@ class atkManyToOneRelation extends atkRelation
     function display($record, $mode = 'list')
     {
         if ($this->createDestination()) {
-            if (count($record[$this->fieldName()]) == count($this->m_refKey))
+            if (atkcount($record[$this->fieldName()]) == atkcount($this->m_refKey))
                 $this->populate($record);
 
             if (!$this->isEmpty($record)) {
@@ -839,7 +839,7 @@ class atkManyToOneRelation extends atkRelation
         if ((!$this->hasFlag(AF_RELATION_AUTOCOMPLETE) && !$this->hasFlag(AF_LARGE)) || $this->m_autocomplete_minrecords > -1) {
             $this->m_selectableRecords = $this->_getSelectableRecords($record, $mode);
 
-            if (count($this->m_selectableRecords) > 0 &&
+            if (atkcount($this->m_selectableRecords) > 0 &&
                 !atkconfig("list_obligatory_null_item") &&
                 (($this->hasFlag(AF_OBLIGATORY) && !$this->hasFlag(AF_MANYTOONE_OBLIGATORY_NULL_ITEM)) ||
                 (!$this->hasFlag(AF_OBLIGATORY) && $this->hasFlag(AF_RELATION_NO_NULL_ITEM)))) {
@@ -891,7 +891,7 @@ class atkManyToOneRelation extends atkRelation
             $recordset = $this->_getSelectableRecords($record, $mode);
         }
 
-        if ($this->hasFlag(AF_RELATION_AUTOCOMPLETE) && (is_object($this->m_ownerInstance)) && ((is_array($recordset) && count($recordset) > $this->m_autocomplete_minrecords) || $this->m_autocomplete_minrecords == -1)) {
+        if ($this->hasFlag(AF_RELATION_AUTOCOMPLETE) && (is_object($this->m_ownerInstance)) && ((is_array($recordset) && atkcount($recordset) > $this->m_autocomplete_minrecords) || $this->m_autocomplete_minrecords == -1)) {
             return $this->drawAutoCompleteBox($record, $fieldprefix, $mode);
         }
 
@@ -910,7 +910,7 @@ class atkManyToOneRelation extends atkRelation
             }
 
             $onchange = '';
-            if (count($this->m_onchangecode)) {
+            if (atkcount($this->m_onchangecode)) {
                 $onchange = 'onChange="' . $id . '_onChange(this);"';
                 $this->_renderChangeHandler($fieldprefix);
             }
@@ -920,7 +920,7 @@ class atkManyToOneRelation extends atkRelation
             // of the 1 record.
             $result = '';
 
-            if (count($recordset) == 0) {
+            if (atkcount($recordset) == 0) {
                 $result = $this->getNoneLabel();
             } else {
                 $linkview = true;
@@ -1157,7 +1157,7 @@ class atkManyToOneRelation extends atkRelation
                                     ? $arr[$this->getOwnerInstance()->m_table] : array();
                             foreach ($arr as $attrName => $value) {
                                 $attr = $this->getOwnerInstance()->getAttribute($attrName);
-                                if (!is_array($value) && is_a($attr, 'atkManyToOneRelation') && count($attr->m_refKey) == 1) {
+                                if (!is_array($value) && is_a($attr, 'atkManyToOneRelation') && atkcount($attr->m_refKey) == 1) {
                                     $attr->createDestination();
                                     $arr[$attrName] = array($attr->getDestination()->primaryKeyField() => $value);
                                 }
@@ -1172,7 +1172,7 @@ class atkManyToOneRelation extends atkRelation
 
                 $result = '<select class="form-control ' . get_class($this) . '"';
                 if ($extended || $this->getMultipleInSimpleSearch()) {
-                    $result .= ' multiple size="' . min(5, count($recordset) + 1) . '"';
+                    $result .= ' multiple size="' . min(5, atkcount($recordset) + 1) . '"';
                     if (isset($record[$this->fieldName()][$this->fieldName()]))
                         $record[$this->fieldName()] = $record[$this->fieldName()][$this->fieldName()];
                 }
@@ -1197,7 +1197,7 @@ class atkManyToOneRelation extends atkRelation
                     $selValues = [$selValues];
                 }
 
-                if ($this->getMultipleInSimpleSearch() && count($selValues) == 1 && strpos($selValues[0], ',') !== false) {
+                if ($this->getMultipleInSimpleSearch() && atkcount($selValues) == 1 && strpos($selValues[0], ',') !== false) {
                     // in case of multiple select in simple search, we have the selected values into a single string (csv)
                     $selValues = explode(',', $selValues[0]);
                 }
@@ -1215,7 +1215,7 @@ class atkManyToOneRelation extends atkRelation
                 }
 
                 // normal options
-                for ($i = 0; $i < count($recordset); $i ++) {
+                for ($i = 0; $i < atkcount($recordset); $i ++) {
                     $pk = $recordset[$i][$pkfield];
                     $result .= sprintf('<option value="%s"%s>%s</option>',
                         $pk,
@@ -1285,7 +1285,7 @@ class atkManyToOneRelation extends atkRelation
      */
     function smartSearchCondition($id, $nr, $path, &$query, $ownerAlias, $value, $mode)
     {
-        if (count($path) > 0) {
+        if (atkcount($path) > 0) {
             $this->createDestination();
 
             $destAlias = "ss_{$id}_{$nr}_" . $this->fieldName();
@@ -1352,7 +1352,7 @@ class atkManyToOneRelation extends atkRelation
                 $value = array($value);
             }
 
-            if ($this->getMultipleInSimpleSearch() && count($value) == 1 && strpos($value[0], ',') !== false) {
+            if ($this->getMultipleInSimpleSearch() && atkcount($value) == 1 && strpos($value[0], ',') !== false) {
                 // in case of multiple select in simple search, we have the selected values into a single string (csv)
                 $value = explode(',', $value[0]);
                 // "search all" option has precedence (when another options are selected together)
@@ -1361,13 +1361,13 @@ class atkManyToOneRelation extends atkRelation
                 }
             }
 
-            if (count($value) == 1 && $value[0] != '') { // exactly one value
+            if (atkcount($value) == 1 && $value[0] != '') { // exactly one value
                 if ($value[0] == "__NONE__") {
                     return $query->nullCondition($table . "." . $this->fieldName(), true);
                 } else {
                     return $query->exactCondition($table . "." . $this->fieldName(), $this->escapeSQL($value[0]));
                 }
-            } else if (count($value) > 1) { // search for more values
+            } else if (atkcount($value) > 1) { // search for more values
                 if (in_array('__NONE__', $value)) {
                     unset($value[array_search('__NONE__', $value)]);
                     return sprintf('(%s OR %s)',
@@ -1381,7 +1381,7 @@ class atkManyToOneRelation extends atkRelation
             // If we have a descriptor with multiple fields, use CONCAT
             $attribs = $this->m_destInstance->descriptorFields();
             $alias = $fieldaliasprefix . $this->fieldName();
-            if (count($attribs) > 1) {
+            if (atkcount($attribs) > 1) {
                 $searchcondition = $this->getConcatFilter($value, $alias);
             } else {
                 // ask the destination node for it's search condition
@@ -1426,7 +1426,7 @@ class atkManyToOneRelation extends atkRelation
                 $query->addJoin($this->m_destInstance->m_table, $alias, $this->getJoinCondition($query, $tablename, $alias), $this->m_leftjoin);
                 $this->m_destInstance->addToQuery($query, $alias, $level + 1, false, $mode, $this->m_listColumns);
             } else {
-                for ($i = 0, $_i = count($this->m_refKey); $i < $_i; $i ++) {
+                for ($i = 0, $_i = atkcount($this->m_refKey); $i < $_i; $i ++) {
                     if ($rec[$this->fieldName()] === NULL) {
                         $query->addField($this->m_refKey[$i], "NULL", "", "", false);
                     } else {
@@ -1550,9 +1550,9 @@ class atkManyToOneRelation extends atkRelation
         // the type of field of the primary key of the node we have a
         // relationship with.
         if ($this->createDestination()) {
-            if (count($this->m_refKey) > 1) {
+            if (atkcount($this->m_refKey) > 1) {
                 $keys = array();
-                for ($i = 0, $_i = count($this->m_refKey); $i < $_i; $i ++) {
+                for ($i = 0, $_i = atkcount($this->m_refKey); $i < $_i; $i ++) {
                     $keys [] = $this->m_destInstance->m_attribList[$this->m_destInstance->m_primaryKey[$i]]->dbFieldType();
                 }
                 return $keys;
@@ -1581,9 +1581,9 @@ class atkManyToOneRelation extends atkRelation
         // the size of the field of the primary key of the node we have a
         // relationship with.
         if ($this->createDestination()) {
-            if (count($this->m_refKey) > 1) {
+            if (atkcount($this->m_refKey) > 1) {
                 $keys = array();
-                for ($i = 0, $_i = count($this->m_refKey); $i < $_i; $i ++) {
+                for ($i = 0, $_i = atkcount($this->m_refKey); $i < $_i; $i ++) {
                     $keys [] = $this->m_destInstance->m_attribList[$this->m_destInstance->m_primaryKey[$i]]->dbFieldSize();
                 }
                 return $keys;
@@ -1785,7 +1785,7 @@ class atkManyToOneRelation extends atkRelation
             $realtablename = $this->m_ownerInstance->m_table;
         $joinconditions = array();
 
-        for ($i = 0, $_i = count($this->m_refKey); $i < $_i; $i ++) {
+        for ($i = 0, $_i = atkcount($this->m_refKey); $i < $_i; $i ++) {
             $joinconditions[] = $realtablename . "." . $this->m_refKey[$i] .
                 "=" .
                 $fieldalias . "." . $this->m_destInstance->m_primaryKey[$i];
@@ -1832,7 +1832,7 @@ class atkManyToOneRelation extends atkRelation
             // only check if hidewhenempty is set to true
             if ($this->m_hidewhenempty) {
                 $recs = $this->_getSelectableRecords($defaults, $mode);
-                if (count($recs) == 0)
+                if (atkcount($recs) == 0)
                     return $this->hide($defaults, $fieldprefix);
             }
         }
@@ -1907,7 +1907,7 @@ class atkManyToOneRelation extends atkRelation
             return implode(', ', $newParts);
         } else {
             $fields = $this->m_destInstance->descriptorFields();
-            if (count($fields) == 0)
+            if (atkcount($fields) == 0)
                 $fields = array($this->m_destInstance->primaryKeyField());
 
             $order = "";
@@ -2148,7 +2148,7 @@ class atkManyToOneRelation extends atkRelation
     function createOnChangeCaller($fieldId, $fieldPrefix, $none = 'null')
     {
         $function = $none;
-        if (count($this->m_onchangecode)) {
+        if (atkcount($this->m_onchangecode)) {
             $function = "{$fieldId}_callChangeHandler";
 
             $js = "
@@ -2238,7 +2238,7 @@ class atkManyToOneRelation extends atkRelation
 
         $records = $this->_getSelectableRecords($record, $mode);
 
-        if (count($records) == 0) {
+        if (atkcount($records) == 0) {
             if (in_array($this->m_autocomplete_searchmode, array("exact", "startswith", "contains")))
                 $str = $this->text('autocomplete_no_results_' . $this->m_autocomplete_searchmode);
             else
@@ -2358,11 +2358,11 @@ class atkManyToOneRelation extends atkRelation
                 $filter[] = $tmp;
             }
 
-            if (count($filter) > 0)
+            if (atkcount($filter) > 0)
                 $mainFilter[] = "(" . implode(") OR (", $filter) . ")";
         }
 
-        if (count($mainFilter) > 0)
+        if (atkcount($mainFilter) > 0)
             $searchFilter = "(" . implode(") AND (", $mainFilter) . ")";
         else
             $searchFilter = "";
@@ -2391,7 +2391,7 @@ class atkManyToOneRelation extends atkRelation
     {
         // If we have a descriptor with multiple fields, use CONCAT
         $attribs = $this->m_destInstance->descriptorFields();
-        if (count($attribs) > 1) {
+        if (atkcount($attribs) > 1) {
             $fields = array();
             foreach ($attribs as $attribname) {
                 if (strstr($attribname, '.')) {

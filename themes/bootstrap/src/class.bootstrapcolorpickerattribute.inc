@@ -52,7 +52,7 @@ class bootstrapColorPickerAttribute extends atkAttribute
         $id = $this->getHtmlId($fieldprefix);
         $this->registerKeyListener($id, KB_CTRLCURSOR | KB_UPDOWN);
 
-        if (count($this->m_onchangecode)) {
+        if (atkcount($this->m_onchangecode)) {
             $onchange = 'onChange="' . $id . '_onChange(this);"';
             $this->_renderChangeHandler($fieldprefix);
         } else {

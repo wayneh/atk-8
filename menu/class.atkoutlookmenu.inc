@@ -83,7 +83,7 @@ class atkOutlookMenu extends atkmenuinterface
                 $atkmenutop = $name;
                 $panelbuttons = "";
 
-                for ($i = 0; $i < count($g_menu[$atkmenutop]); $i++) {
+                for ($i = 0; $i < atkcount($g_menu[$atkmenutop]); $i++) {
                     $menu = "";
                     $name = $g_menu[$atkmenutop][$i]["name"];
                     $url = session_url($g_menu[$atkmenutop][$i]["url"], SESSION_NEW);
@@ -92,7 +92,7 @@ class atkOutlookMenu extends atkmenuinterface
 
                     if (is_array($enable)) {
                         $enabled = false;
-                        for ($j = 0; $j < (count($enable) / 2); $j++) {
+                        for ($j = 0; $j < (atkcount($enable) / 2); $j++) {
                             $enabled |= is_allowed($enable[(2 * $j)], $enable[(2 * $j) + 1]);
                         }
                         $enable = $enabled;

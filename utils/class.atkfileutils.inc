@@ -113,7 +113,7 @@ class atkFileUtils
     function is_writable($orgdest)
     {
         if ($orgdest{0} == '/') {
-            if (count($orgdest) == 1)
+            if (atkcount($orgdest) == 1)
                 $testdest = $orgdest;
             else
                 $testdest = substr($orgdest, 0, strpos($orgdest, '/', 1));

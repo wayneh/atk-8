@@ -117,7 +117,7 @@ class bootstrapDateTimeAttribute extends atkAttribute
             'sideBySide' => $this->m_sideBySide
         );
 
-        if (count($this->m_disabledDates)) {
+        if (atkcount($this->m_disabledDates)) {
             $dates = array();
             foreach ($this->m_disabledDates as $d) {
                 $dates[] = 'function:moment("' . $d . '")';
@@ -416,7 +416,7 @@ class bootstrapDateTimeAttribute extends atkAttribute
         $opening = '{';
         $closing = '}';
         $inner = array();
-        $numericarray = array_keys($input) === range(0, count($input) - 1);
+        $numericarray = array_keys($input) === range(0, atkcount($input) - 1);
         if ($numericarray) {
             // This is a numerically sequential array
             $opening = '[';

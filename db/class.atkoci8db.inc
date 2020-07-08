@@ -563,7 +563,7 @@ class atkOci8Db extends atkDb
         }
 
         if ($full)
-            $meta['num_fields'] = count($rows);
+            $meta['num_fields'] = atkcount($rows);
 
         return $meta;
     }
@@ -669,9 +669,9 @@ class atkOci8Db extends atkDb
      */
     public function func_concat($fields)
     {
-        if (count($fields) == 0 or !is_array($fields))
+        if (atkcount($fields) == 0 or !is_array($fields))
             return '';
-        elseif (count($fields) == 1)
+        elseif (atkcount($fields) == 1)
             return $fields[0];
         return implode('||', $fields);
     }

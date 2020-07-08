@@ -297,7 +297,7 @@ class atkPasswordAttribute extends atkAttribute
     function getRestrictionsText()
     {
         // If no restrictions are set, return "No restrictions apply to this password"
-        if (count($this->m_restrictions) == 0) {
+        if (atkcount($this->m_restrictions) == 0) {
             return atktext("no_restrictions_apply_to_this_password", "atk");
         }
 

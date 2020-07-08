@@ -82,7 +82,7 @@ function menuitem($name = "", $url = "", $parent = "main", $enable = 1, $order =
     if (isset($s_dupelookup[$parent][$name]) && ($name != "-")) {
         $g_menu[$parent][$s_dupelookup[$parent][$name]] = $item;
     } else {
-        $s_dupelookup[$parent][$name] = isset($g_menu[$parent]) ? count($g_menu[$parent])
+        $s_dupelookup[$parent][$name] = isset($g_menu[$parent]) ? atkcount($g_menu[$parent])
                 : 0;
         $g_menu[$parent][] = $item;
     }
@@ -99,7 +99,7 @@ function menuitem($name = "", $url = "", $parent = "main", $enable = 1, $order =
 function menuitems($menu)
 {
     while (list($parent, $items) = each($menu))
-        for ($i = 0; $i < count($items); $i++) {
+        for ($i = 0; $i < atkcount($items); $i++) {
             $GLOBALS["g_menu"][$parent][] = $items[$i];
             if (empty($items[$i]["url"]))
                 $GLOBALS["g_menu_parent"][$items[$i]["name"]] = $parent;

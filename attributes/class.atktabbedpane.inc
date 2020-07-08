@@ -211,7 +211,7 @@ class atkTabbedPane extends atkAttribute
 
         // Handle errors - need more testing for move to right tab
         /* $errors = array();
-          if (count($data['error']) > 0)
+          if (atkcount($data['error']) > 0)
           {
           $error_title = '<b>'.atktext('error_formdataerror').'</b>';
 
@@ -230,7 +230,7 @@ class atkTabbedPane extends atkAttribute
           {
           $type = (empty($error["node"]) ? $node->m_type : $error["node"]);
 
-          if (count($node->getTabs($node->m_action)) > 1 && $error["tab"])
+          if (atkcount($node->getTabs($node->m_action)) > 1 && $error["tab"])
           $error_tab = ' ('.atktext("error_tab").' '.'<a href="javascript:showTab(\''.$error["tab"].'\');">'.atktext(array("tab_".$error["tab"], $error["tab"]),$node->m_module, $node->m_type).'</a> )';
           else $error_tab = "";
 
@@ -250,12 +250,12 @@ class atkTabbedPane extends atkAttribute
           $errors[] = array("msg"=>$error['msg'].$error_tab, "label"=>$label);
           }
           }
-          if (count($pk_err_attrib)>0) // Make primary key error message
+          if (atkcount($pk_err_attrib)>0) // Make primary key error message
           {
           for($i=0;$i<count($pk_err_attrib); $i++)
           {
           $pk_err_msg .= atktext($pk_err_attrib[$i], $node->m_module);
-          if (($i+1) < count($pk_err_attrib)) $pk_err_msg .= ", ";
+          if (($i+1) < atkcount($pk_err_attrib)) $pk_err_msg .= ", ";
           }
           $errors[] = array("label"=>atktext("error_primarykey_exists"),
           "msg"=>$pk_err_msg);
@@ -273,7 +273,7 @@ class atkTabbedPane extends atkAttribute
         $fields = array();
         $tab = $this->getDefaultTab();
 
-        for ($i = 0, $_i = count($data["fields"]); $i < $_i; $i++) {
+        for ($i = 0, $_i = atkcount($data["fields"]); $i < $_i; $i++) {
             $field = &$data["fields"][$i];
             $tplfield = array();
 
@@ -471,7 +471,7 @@ class atkTabbedPane extends atkAttribute
     {
         $activeTabName = "tabbedPaneTab" . $this->getDefaultTab();
         $list = $this->getPaneTabs($action);
-        if (count($list) > 0) {
+        if (atkcount($list) > 0) {
             $node = &$this->m_ownerInstance;
             $node->addStyle("tabs.css");
 

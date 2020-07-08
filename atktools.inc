@@ -341,7 +341,7 @@ function atkGetTrace($format = "html")
     $theSpacer = "";
 
     // Loop through all items found in the backtrace
-    for ($i = 0, $_i = count($traceArr); $i < $_i; $i++) {
+    for ($i = 0, $_i = atkcount($traceArr); $i < $_i; $i++) {
         //for($i=count($traceArr)-1; $i >= 0; $i--)
         // Skip this item in the backtrace if empty
         if (empty($traceArr[$i]))
@@ -390,7 +390,7 @@ function atkGetTrace($format = "html")
                             if (is_object($value))
                                 $valArr[] = sprintf("%s=Object(%s)", $name, get_class($value));
                             else if (is_array($value))
-                                $valArr[] = sprintf("%s=Array(%s)", $name, count($value));
+                                $valArr[] = sprintf("%s=Array(%s)", $name, atkcount($value));
                             else
                                 $valArr[] = $name . "=" . @json_encode($value);
                         }*/
@@ -655,7 +655,7 @@ function atk_in_array($needle, $haystack, $strict = false)
  */
 function dataSetContains($set, $key, $value)
 {
-    for ($i = 0; $i < count($set); $i++) {
+    for ($i = 0; $i < atkcount($set); $i++) {
         if ($set[$i][$key] == $value)
             return true;
     }
@@ -707,7 +707,7 @@ function decodeKeyValueSet($set)
 {
     $result = array();
     $items = explode(" AND ", $set);
-    for ($i = 0; $i < count($items); $i++) {
+    for ($i = 0; $i < atkcount($items); $i++) {
         $items[$i] = trim($items[$i], '()'); // trim parenthesis if present, e.g. (id=3) AND (name='joe')
         if (strstr($items[$i], '!=') !== false) {
             list($key, $value) = explode("!=", $items[$i]);
@@ -781,7 +781,7 @@ function atkDataDecode(&$vars)
             list($dimension1, $dimension2) = explode("_AMDAE_", strtoupper($varname));
             if (is_array($value)) {
                 // Multidimensional thing
-                for ($i = 0; $i < count($value); $i++) {
+                for ($i = 0; $i < atkcount($value); $i++) {
                     $vars[strtolower($dimension1)][$i][strtolower($dimension2)] = $value[$i];
                 }
             } else {
@@ -804,7 +804,7 @@ function atkDataDecode(&$vars)
 function AE_decode(&$dest, $var)
 {
     $items = explode("_AE_", $var);
-    if (count($items) <= 1)
+    if (atkcount($items) <= 1)
         return;
 
     $current = &$dest;
@@ -855,10 +855,10 @@ function stringparse($string, $data, $encode = false)
 {
     atkdebug("Warning: deprecated use of stringparse(). Use atkStringParser class instead");
     $fields = stringfields($string);
-    for ($i = 0; $i < count($fields); $i++) {
+    for ($i = 0; $i < atkcount($fields); $i++) {
         $elements = explode(".", $fields[$i]);
         $databin = $data;
-        for ($j = 0; $j < count($elements); $j++) {
+        for ($j = 0; $j < atkcount($elements); $j++) {
             if (array_key_exists($elements[$j], $databin)) {
                 $value = $databin[$elements[$j]];
                 $databin = $databin[$elements[$j]];
@@ -1006,7 +1006,7 @@ function atkTriggerError(&$record, $attrib, $error, $message = '')
         $attribName = array();
         $label = array();
 
-        for ($i = 0; $i < count($attrib); $i++) {
+        for ($i = 0; $i < atkcount($attrib); $i++) {
             $attribName[$i] = $attrib[$i]->fieldName();
             $label[$i] = $attrib[$i]->label($record);
         }
@@ -1233,7 +1233,7 @@ function atkgetinclude($type, $name)
 {
     global $config_atkroot;
     $a = explode(".", $name);
-    if (count($a) == 2)
+    if (atkcount($a) == 2)
         $include = moduleDir(strtolower($a[0])) . $type . "s/class." . strtolower($a[1]) . ".inc";
     else
         $include = $config_atkroot . "atk/" . $type . "s/class." . strtolower($name) . ".inc";
@@ -1311,7 +1311,7 @@ function makeUrlFromPostvars($target)
 {
     global $ATK_VARS;
 
-    if (count($ATK_VARS)) {
+    if (atkcount($ATK_VARS)) {
         $url = $target . "?";
         foreach ($ATK_VARS as $key => $val) {
             $url .= $key . "=" . rawurlencode($val) . "&";
@@ -1330,7 +1330,7 @@ function makeHiddenPostvars($excludes = array())
     global $ATK_VARS;
     $str = "";
 
-    if (count($ATK_VARS)) {
+    if (atkcount($ATK_VARS)) {
         foreach ($ATK_VARS as $key => $val) {
             if (!in_array($key, $excludes)) {
                 $inputs = array();
@@ -1429,7 +1429,7 @@ function dispatch_url($node, $action, $params = array(), $phpfile = '')
         $atkparams["atkaction"] = $action;
     $params = array_merge($atkparams, $params);
 
-    if ($params != "" && is_array($params) && count($params) > 0)
+    if ($params != "" && is_array($params) && atkcount($params) > 0)
         $url .= '?' . buildQueryString($params);
 
     return $url;

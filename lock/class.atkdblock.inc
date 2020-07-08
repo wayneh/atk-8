@@ -48,7 +48,7 @@ class atkDbLock extends atkLock
             $atklock = &$atklockList[atkStackID()];
             $this->m_id = (int) $atklock["id"];
 
-            for ($i = 0, $_i = count($atklock["stack"]) - atkLevel(); $i < $_i; $i++) {
+            for ($i = 0, $_i = atkcount($atklock["stack"]) - atkLevel(); $i < $_i; $i++) {
                 $selectorList = array_pop($atklock["stack"]);
                 if (is_array($selectorList))
                     foreach ($selectorList as $selector => $table)
@@ -63,14 +63,14 @@ class atkDbLock extends atkLock
             }
 
             $empty = TRUE;
-            for ($i = 0, $_i = count($atklock["stack"]); $i < $_i; $i++)
-                if (count($atklock["stack"][$i]) > 0)
+            for ($i = 0, $_i = atkcount($atklock["stack"]); $i < $_i; $i++)
+                if (atkcount($atklock["stack"][$i]) > 0)
                     $empty = FALSE;
             if ($empty)
                 $atklock["id"] = 0;
         }
 
-        for ($i = count($atklock["stack"]); $i < atkLevel(); $i++)
+        for ($i = atkcount($atklock["stack"]); $i < atkLevel(); $i++)
             $atklock["stack"][] = array();
         $this->m_id = (int) $atklock["id"];
         $this->storeLockList($atklockList);
@@ -122,7 +122,7 @@ class atkDbLock extends atkLock
         $atklockList = $this->loadLockList();
         if (is_array($atklockList)) {
             $atklock = $atklockList[atkStackID()];
-            for ($i = atkLevel() - 1, $_i = count($atklock["stack"]); $i < $_i; $i++)
+            for ($i = atkLevel() - 1, $_i = atkcount($atklock["stack"]); $i < $_i; $i++)
                 if (is_array($atklock["stack"][$i]) && in_array($selector, array_keys($atklock["stack"][$i])))
                     return TRUE;
         }
@@ -309,7 +309,7 @@ class atkDbLock extends atkLock
         $atklockList = $this->loadLockList();
         if (is_array($atklockList)) {
             $atklock = $atklockList[atkStackID()];
-            for ($i = atkLevel() - 1, $_i = count($atklock["stack"]); $i < $_i; $i++)
+            for ($i = atkLevel() - 1, $_i = atkcount($atklock["stack"]); $i < $_i; $i++)
                 if (is_array($atklock["stack"][$i]) && in_array($selector, array_keys($atklock["stack"][$i])))
                     return NULL;
         }
@@ -334,7 +334,7 @@ class atkDbLock extends atkLock
 
         /* search for lock */
         $locks = array();
-        for ($i = 0, $_i = count($_cache[$table]); $i < $_i; $i++) {
+        for ($i = 0, $_i = atkcount($_cache[$table]); $i < $_i; $i++) {
             if ($_cache[$table][$i]["lock_record"] == $selector)
                 $locks[] = $_cache[$table][$i];
         }

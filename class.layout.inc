@@ -584,7 +584,7 @@ class layout
             $form .= $hide;
 
         /* check for errors and display them */
-        if (count($data['error']) > 0) {
+        if (atkcount($data['error']) > 0) {
             $form .= '<tr>';
             $error_title = '<b>' . atktext('error_formdataerror') . '</b>';
             $errormsg = "";
@@ -597,7 +597,7 @@ class layout
                     $type = (empty($error["node"]) ? $node->m_type : $error["node"]);
                     $index = $node->m_attribList[$error['attrib_name']]->m_index;
                     $tabs = $node->m_attribIndexList[$index]["tabs"];
-                    if (count($node->m_tabList[$node->m_action]) > 1 &&
+                    if (atkcount($node->m_tabList[$node->m_action]) > 1 &&
                         $tabs != "*" && !atk_in_array($tab, $tabs)) {
                         $error_tab = ' (' . atktext("error_tab") . ' ' . atkHref(atkSelf() . "?atktab=" . $tabs[0], atktext("tab_" . $tabs[0], "", $node->m_type), SESSION_DEFAULT, true) . ')';
                     } else {
@@ -606,11 +606,11 @@ class layout
                     $errormsg.="<br>" . atktext($error['attrib_name'], "", $type) . ': ' . $error['msg'] . $error_tab;
                 }
             }
-            if (count($pk_err_attrib) > 0) { // Make primary key error message
+            if (atkcount($pk_err_attrib) > 0) { // Make primary key error message
                 $pk_err_msg = "<br>" . atktext(error_primarykey_exists) . ": ";
-                for ($i = 0; $i < count($pk_err_attrib); $i++) {
+                for ($i = 0; $i < atkcount($pk_err_attrib); $i++) {
                     $pk_err_msg .= atktext($pk_err_attrib[$i]);
-                    if (($i + 1) < count($pk_err_attrib))
+                    if (($i + 1) < atkcount($pk_err_attrib))
                         $pk_err_msg .= ", ";
                 }
                 $form.=$this->ret_td($error_title . $pk_err_msg . $errormsg . '<br><br>', 'colspan="2"');
@@ -627,7 +627,7 @@ class layout
         $tipimg = $this->getImgSrc("help.gif");
 
         /* display the edit fields */
-        for ($i = 0; $i < count($data["fields"]); $i++) {
+        for ($i = 0; $i < atkcount($data["fields"]); $i++) {
             $field = &$data["fields"][$i];
 
             /* check for separator */

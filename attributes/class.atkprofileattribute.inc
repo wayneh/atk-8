@@ -68,7 +68,7 @@ class atkProfileAttribute extends atkAttribute
 
         $result = Array();
         $rows = $db->getrows($query);
-        for ($i = 0; $i < count($rows); $i++) {
+        for ($i = 0; $i < atkcount($rows); $i++) {
             $result[$rows[$i]["node"]][] = $rows[$i]["action"];
         }
         return $result;
@@ -156,7 +156,7 @@ class atkProfileAttribute extends atkAttribute
                     }
                 }
 
-                if (count($children) > 0 && count($validActions) > 0) {
+                if (atkcount($children) > 0 && atkcount($validActions) > 0) {
                     $query = "DELETE FROM " . atkconfig("auth_accesstable") . " " .
                         "WHERE " . $this->m_accessField . " IN (" . implode(",", $children) . ") " .
                         "AND node = '" . $db->escapeSQL($node) . "' " .
@@ -192,7 +192,7 @@ class atkProfileAttribute extends atkAttribute
         $rights = "";
 
         foreach ($checked as $key => $val) {
-            for ($i = 0; $i <= count($val) - 1; $i++) {
+            for ($i = 0; $i <= atkcount($val) - 1; $i++) {
                 $value = $key . "." . $val[$i];
                 $rights .= '<input type="hidden" name="rights[]" value="' . $value . '">';
             }
@@ -347,7 +347,7 @@ class atkProfileAttribute extends atkAttribute
         $editableActions = $this->getEditableActions($record);
         $selectedActions = $this->getSelectedActions($record);
 
-        $showModule = count($allActions) > 1 && ($isAdmin || count($editableActions) > 1);
+        $showModule = atkcount($allActions) > 1 && ($isAdmin || count($editableActions) > 1);
 
         $firstModule = true;
 
@@ -454,7 +454,7 @@ class atkProfileAttribute extends atkAttribute
         $editableActions = $this->getEditableActions($record);
         $selectedActions = $this->getSelectedActions($record);
 
-        $showSection = count($allActions) > 1;
+        $showSection = atkcount($allActions) > 1;
 
         foreach ($allActions as $section => $modules) {
             if ($showSection) {
@@ -566,12 +566,12 @@ class atkProfileAttribute extends atkAttribute
         }
 
         $actions = Array();
-        for ($i = 0; $i < count($checkboxes); $i++) {
+        for ($i = 0; $i < atkcount($checkboxes); $i++) {
             $elems = explode(".", $checkboxes[$i]);
-            if (count($elems) == 4) {
+            if (atkcount($elems) == 4) {
                 $node = $elems[1] . "." . $elems[2];
                 $action = $elems[3];
-            } else if (count($elems) == 3) {
+            } else if (atkcount($elems) == 3) {
                 $node = $elems[1];
                 $action = $elems[2];
             } else {

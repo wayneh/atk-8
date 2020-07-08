@@ -110,7 +110,7 @@ class atkManyToOneTreeRelation extends atkManyToOneRelation
     function createdd($recordset)
     {
         $t = new tree;
-        for ($i = 0; $i < count($recordset); $i++) {
+        for ($i = 0; $i < atkcount($recordset); $i++) {
             $group = $recordset[$i];
             $t->addNode($recordset[$i][$this->m_destInstance->m_primaryKey[0]], $this->m_destInstance->descriptor($group), $recordset[$i][$this->m_destInstance->m_parent][$this->m_destInstance->m_primaryKey[0]]);
         }
@@ -140,7 +140,7 @@ class atkManyToOneTreeRelation extends atkManyToOneRelation
 
             $res.= '<option value="' . $this->m_destInstance->m_table . "." . $this->m_destInstance->m_primaryKey[0] . "='" . $objarr->m_id . "'" . '" ' . $sel . '>' . str_repeat("-", (2 * $level)) . " " . $objarr->m_label;
 
-            if (count($objarr->m_sub) > 0 && $sel == "") {
+            if (atkcount($objarr->m_sub) > 0 && $sel == "") {
                 $res.=$this->render($objarr->m_sub, $level + 1);
             }
         }

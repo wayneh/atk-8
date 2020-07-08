@@ -95,7 +95,7 @@ class atkTreeNode extends atkNode
         $recordset = $this->selectDb(atkArrayNvl($this->m_postvars, "atkfilter", ""), "", "", $this->m_listExcludes, "", "admin");
 
         $treeobject = new tree;
-        for ($i = 0; $i < count($recordset); $i++)
+        for ($i = 0; $i < atkcount($recordset); $i++)
             $treeobject->addNode($recordset[$i][$this->m_primaryKey[0]], $recordset[$i], $recordset[$i][$this->m_parent][$this->m_primaryKey[0]]);
 
         return $treeobject;
@@ -192,7 +192,7 @@ class atkTreeNode extends atkNode
             // Store extra info in the record, so the recordActions override can make
             // use of some extra info to determine whether or not to show certain actions.
             if (is_array($objarr->m_label))
-                $objarr->m_label["subcount"] = count($objarr->m_sub);
+                $objarr->m_label["subcount"] = atkcount($objarr->m_sub);
             $this->m_tree[$s_count]["label"] = $objarr->m_label;
             $this->m_tree[$s_count]["img"] = $objarr->m_img;
             $this->m_tree[$s_count]["id"] = $objarr->m_id;
@@ -202,7 +202,7 @@ class atkTreeNode extends atkNode
                 $g_maxlevel = $this->m_tree[$s_count]["level"];
 
             $s_count++;
-            if (count($objarr->m_sub) > 0) {
+            if (atkcount($objarr->m_sub) > 0) {
                 $this->treeToArray($objarr->m_sub, $level + 1);
             }
         }
@@ -235,7 +235,7 @@ class atkTreeNode extends atkNode
         atkimport("atk.utils.atkstringparser");
 
         // Return
-        if (count($this->m_tree) == 1)
+        if (atkcount($this->m_tree) == 1)
             return "";
 
         $img_expand = $this->getIcon('expand');
@@ -257,7 +257,7 @@ class atkTreeNode extends atkNode
         //echo $this->m_tree[0]["expand"]."--".$this->m_tree[0]["colapse"];
         $explevels = array();
         if ($this->m_tree[0]["expand"] != 1 && $this->m_tree[0]["colapse"] != 1) { // normal operation
-            for ($i = 0; $i < count($this->m_tree); $i++) {
+            for ($i = 0; $i < atkcount($this->m_tree); $i++) {
                 if ($this->m_tree[$i]["level"] < 2) {
                     if ($this->m_tree[$i]["isleaf"] == 1 && $this->m_tree[$i]["level"] < 1) {
                         $expand[$i] = 1;
@@ -276,14 +276,14 @@ class atkTreeNode extends atkNode
                 $explevels = explode("|", $this->m_postvars["atktree"]);
         }
         elseif ($this->m_tree[0]["expand"] == 1) { // expand all mode!
-            for ($i = 0; $i < count($this->m_tree); $i++) {
+            for ($i = 0; $i < atkcount($this->m_tree); $i++) {
                 $expand[$i] = 1;
                 $visible[$i] = 1;
                 $levels[$i] = 0;
             }
             $this->m_tree[0]["expand"] = 0; // next time we are back in normal view mode!
         } elseif ($this->m_tree[0]["colapse"] == 1) { //  colapse all mode!
-            for ($i = 0; $i < count($this->m_tree); $i++) {
+            for ($i = 0; $i < atkcount($this->m_tree); $i++) {
                 if ($this->m_tree[$i]["level"] < 2) {
                     if ($this->m_tree[$i]["isleaf"] == 1 && $this->m_tree[$i]["level"] < 1) {
                         $expand[$i] = 1;
@@ -301,7 +301,7 @@ class atkTreeNode extends atkNode
         /*  Get Node numbers to expand               */
         /*         * ****************************************** */
         $i = 0;
-        while ($i < count($explevels)) {
+        while ($i < atkcount($explevels)) {
             //$expand[$explevels[$i]]=1;
             $expand[$exp_index[$explevels[$i]]] = 1;
 
@@ -313,7 +313,7 @@ class atkTreeNode extends atkNode
 
         $lastlevel = $g_maxlevel;
 
-        for ($i = count($this->m_tree) - 1; $i >= 0; $i--) {
+        for ($i = atkcount($this->m_tree) - 1; $i >= 0; $i--) {
             if ($this->m_tree[$i]["level"] < $lastlevel) {
                 for ($j = $this->m_tree[$i]["level"] + 1; $j <= $g_maxlevel; $j++) {
                     $levels[$j] = 0;
@@ -331,7 +331,7 @@ class atkTreeNode extends atkNode
         /*         * ****************************************** */
 
         $visible[0] = 1;   // root is always visible
-        for ($i = 0; $i < count($explevels); $i++) {
+        for ($i = 0; $i < atkcount($explevels); $i++) {
             $n = $exp_index[$explevels[$i]];
             if (($visible[$n] == 1) && ($expand[$n] == 1)) {
                 $j = $n + 1;
@@ -360,7 +360,7 @@ class atkTreeNode extends atkNode
         }
         $res.= "</tr>\n";
         $cnt = 0;
-        while ($cnt < count($this->m_tree)) {
+        while ($cnt < atkcount($this->m_tree)) {
             if ($visible[$cnt]) {
                 $currentlevel = (isset($this->m_tree[$cnt]["level"]) ? $this->m_tree[$cnt]["level"]
                             : 0);
@@ -401,7 +401,7 @@ class atkTreeNode extends atkNode
                             /*                             * ************************************* */
                             $i = 0;
                             $params = "atktree=";
-                            while ($i < count($expand)) {
+                            while ($i < atkcount($expand)) {
                                 if (($expand[$i] == 1) && ($cnt != $i) || ($expand[$i] == 0 && $cnt == $i)) {
                                     $params = $params . $this->m_tree[$i]["id"];
                                     $params = $params . "|";
@@ -430,7 +430,7 @@ class atkTreeNode extends atkNode
                             /*                             * ************************************* */
                             $i = 0;
                             $params = "atktree=";
-                            while ($i < count($expand)) {
+                            while ($i < atkcount($expand)) {
                                 if (($expand[$i] == 1) && ($cnt != $i) || ($expand[$i] == 0 && $cnt == $i)) {
                                     $params = $params . $this->m_tree[$i]["id"];
                                     $params = $params . "|";
@@ -477,7 +477,7 @@ class atkTreeNode extends atkNode
                     if ($foldable) {
                         $i = 0;
                         $params = "atktree=";
-                        while ($i < count($expand)) {
+                        while ($i < atkcount($expand)) {
                             if (($expand[$i] == 1) && ($cnt != $i) || ($expand[$i] == 0 && $cnt == $i)) {
                                 $params = $params . $this->m_tree[$i]["id"];
                                 $params = $params . "|";
@@ -613,8 +613,8 @@ class atkTreeNode extends atkNode
     {
         $recordset = $this->selectDb($selector, "", "", "", "", "copy");
 
-        if (count($recordset) > 0) {
-            for ($i = 0; $i < count($recordset); $i++) {
+        if (atkcount($recordset) > 0) {
+            for ($i = 0; $i < atkcount($recordset); $i++) {
                 $recordset[$i][$this->m_parent] = array("" => "", $this->m_primaryKey[0] => $parent);
                 $oldrec = $recordset[$i];
                 parent::copyDb($recordset[$i], $mode);
@@ -640,7 +640,7 @@ class atkTreeNode extends atkNode
     {
         atkdebug("Retrieve record");
         $recordset = $this->selectDb($selector, "", "", "", "", "delete");
-        for ($i = 0; $i < count($recordset); $i++) {
+        for ($i = 0; $i < atkcount($recordset); $i++) {
             foreach (array_keys($this->m_attribList) as $attribname) {
                 $p_attrib = &$this->m_attribList[$attribname];
                 if ($p_attrib->hasFlag(AF_CASCADE_DELETE)) {
@@ -653,7 +653,7 @@ class atkTreeNode extends atkNode
             atkdebug("Check for child records");
             $children = $this->selectDb($this->m_table . '.' . $this->m_parent . '=' . $parent, "", "", "", "", "delete");
 
-            if (count($children) > 0) {
+            if (atkcount($children) > 0) {
                 atkdebug('DeleteChildren(' . $this->m_table . '.' . $this->m_parent . '=' . $parent . ',' . $parent . ')');
                 $this->deleteChildren($this->m_table . '.' . $this->m_parent . '=' . $parent, $parent);
             }
@@ -663,7 +663,7 @@ class atkTreeNode extends atkNode
         $query = "DELETE FROM " . $this->m_table . " WHERE " . $selector;
         $db->query($query);
 
-        for ($i = 0; $i < count($recordset); $i++) {
+        for ($i = 0; $i < atkcount($recordset); $i++) {
             $this->postDel($recordset[$i]);
             $this->postDelete($recordset[$i]);
         }
@@ -682,7 +682,7 @@ class atkTreeNode extends atkNode
     {
         atkdebug("Check for child records of the Child");
         $recordset = $this->selectDb($this->m_table . '.' . $this->m_parent . '=' . $parent, "", "", "", "", "delete");
-        for ($i = 0; $i < count($recordset); $i++) {
+        for ($i = 0; $i < atkcount($recordset); $i++) {
             foreach (array_keys($this->m_attribList) as $attribname) {
                 $p_attrib = &$this->m_attribList[$attribname];
                 if ($p_attrib->hasFlag(AF_CASCADE_DELETE)) {
@@ -691,8 +691,8 @@ class atkTreeNode extends atkNode
             }
         }
 
-        if (count($recordset) > 0) {
-            for ($i = 0; $i < count($recordset); $i++) {
+        if (atkcount($recordset) > 0) {
+            for ($i = 0; $i < atkcount($recordset); $i++) {
                 $parent = $recordset[$i][$this->m_primaryKey[0]];
                 atkdebug('DeleteChildren(' . $this->m_table . '.' . $this->m_parent . '=' . $recordset[$i][$this->m_primaryKey[0]] . ',' . $parent . ')');
                 $this->deleteChildren($this->m_table . '.' . $this->m_parent . '=' . $recordset[$i][$this->m_primaryKey[0]], $parent);

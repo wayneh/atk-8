@@ -253,11 +253,11 @@ class atkExtendableShuttleRelation extends atkManyToManyRelation
         }
 
         $availableFilter = '';
-        if (count($filtersBySection[atkShuttleControl::AVAILABLE]) > 0)
+        if (atkcount($filtersBySection[atkShuttleControl::AVAILABLE]) > 0)
             $availableFilter = '(' . implode(') AND (', $filtersBySection[atkShuttleControl::AVAILABLE]) . ')';
 
         $selectedFilter = '';
-        if (count($filtersBySection[atkShuttleControl::SELECTED]) > 0)
+        if (atkcount($filtersBySection[atkShuttleControl::SELECTED]) > 0)
             $selectedFilter = '(' . implode(') AND (', $filtersBySection[atkShuttleControl::SELECTED]) . ')';
 
         // Get controls for 'available' side
@@ -273,13 +273,13 @@ class atkExtendableShuttleRelation extends atkManyToManyRelation
         // Get available records
         $left = ($this->hasFlag(AF_SHUTTLERELATION_NO_AUTOLOAD)) ? array() : $this->getAvailableFields($record, $mode, $availableFilter);
 
-        for ($i = 0, $_i = count($left); $i < $_i; $i++) {
+        for ($i = 0, $_i = atkcount($left); $i < $_i; $i++) {
             $available_options[$left[$i][$this->m_destInstance->primaryKeyField()]] = $this->m_destInstance->descriptor($left[$i]);
         }
 
         // Get selected records
         $right = $this->getSelectedFields($record, $mode, $selectedFilter, $availableFilter);
-        for ($i = 0, $_i = count($right); $i < $_i; $i++) {
+        for ($i = 0, $_i = atkcount($right); $i < $_i; $i++) {
             $selected_options[$right[$i][$this->m_destInstance->primaryKeyField()]] = $this->m_destInstance->descriptor($right[$i]);
         }
 
@@ -410,7 +410,7 @@ class atkExtendableShuttleRelation extends atkManyToManyRelation
             $parser = new atkStringParser($this->m_descriptor_tooltip_template);
         }
 
-        for ($i = 0, $_i = count($recordset); $i < $_i; $i++) {
+        for ($i = 0, $_i = atkcount($recordset); $i < $_i; $i++) {
             $title = $this->m_destInstance->descriptor($recordset[$i]);
             $ttip = isset($this->m_descriptor_tooltip_template) ? $parser->parse($recordset[$i])
                     : $title;
@@ -511,7 +511,7 @@ class atkExtendableShuttleRelation extends atkManyToManyRelation
         $selectables = array();
         if ($availableFilter != $selectedFilter || empty($this->unfilteredAvailableRecords)) {
             /** fetch it from db * */
-            if (count($selectedFields) > 0) {
+            if (atkcount($selectedFields) > 0) {
                 if (empty($selectedFilter))
                     $selectedFilter = " (" . implode(') OR (', $selectedFields) . ")  ";
 

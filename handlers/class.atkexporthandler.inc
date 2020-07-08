@@ -160,7 +160,7 @@ class atkExportHandler extends atkActionHandler
         if ($selected) {
             $db = atkGetDb();
             $rows = $db->getRows('SELECT name FROM atk_exportcriteria WHERE id = ' . (int) $selected);
-            if (count($rows) == 1) {
+            if (atkcount($rows) == 1) {
                 $value = htmlentities($rows[0]['name']);
             }
         }
@@ -275,7 +275,7 @@ class atkExportHandler extends atkActionHandler
           <option value="none">' . atktext('none', 'atk');
 
         $options = $this->getExportSelections();
-        if (count($options)) {
+        if (atkcount($options)) {
             foreach ($options AS $option) {
                 $html .= '
            <option value="' . $option['id'] . '">' . htmlentities($option['name']) . '</option>';
@@ -309,7 +309,7 @@ class atkExportHandler extends atkActionHandler
                             WHERE nodetype = '" . $this->m_postvars['atknodetype'] . "'
                             AND name = '" . $this->m_postvars['export_selection_name'] . "'
                             AND user_id = " . $user_id);
-        if (count($rows)) {
+        if (atkcount($rows)) {
             return;
         }
 
@@ -342,7 +342,7 @@ class atkExportHandler extends atkActionHandler
                             AND name = '" . $this->m_postvars['export_selection_name'] . "'
                             AND user_id = " . $user_id . "
                             AND id <> " . (int) $this->m_postvars['exportvalue']);
-        if (count($rows)) {
+        if (atkcount($rows)) {
             return;
         }
 
@@ -518,7 +518,7 @@ class atkExportHandler extends atkActionHandler
 
         $node = &$this->m_node;
         $node_bk = $node;
-        $num_atts = count($node_bk->m_attribList);
+        $num_atts = atkcount($node_bk->m_attribList);
         $atts = &$node_bk->m_attribList;
 
         foreach ($atts as $name => $object) {

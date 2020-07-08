@@ -171,7 +171,7 @@ class atkPage
                 // lookup the dependency and inject script right before it.
                 $result = array();
                 $injected = false;
-                for ($i = 0, $_i = count($this->m_scriptfiles); $i < $_i; $i++) {
+                for ($i = 0, $_i = atkcount($this->m_scriptfiles); $i < $_i; $i++) {
                     if (stristr($this->m_scriptfiles[$i], $before) !== false) {
                         // inject the new one here.
                         $result[] = $file;
@@ -411,7 +411,7 @@ class atkPage
      */
     function addScripts(&$res, $partial = false)
     {
-        $count_scriptcode = count($this->m_scriptcode['before']);
+        $count_scriptcode = atkcount($this->m_scriptcode['before']);
         if ($count_scriptcode > 0)
             $res .= '  <script type="text/javascript">' . "\n";
         $res.= $this->renderScriptCode("before");
@@ -420,11 +420,11 @@ class atkPage
             $res .= "  </script>\n";
 
         if (!$partial) {
-            for ($i = 0; $i < count($this->m_scriptfiles); $i++)
+            for ($i = 0; $i < atkcount($this->m_scriptfiles); $i++)
                 $res .= '  <script type="text/javascript" src="' . $this->m_scriptfiles[$i] . '"></script>' . "\n";
         } else {
             $files = '';
-            for ($i = 0; $i < count($this->m_scriptfiles); $i++) {
+            for ($i = 0; $i < atkcount($this->m_scriptfiles); $i++) {
                 $files .= "ATK.Tools.loadScript('" . $this->m_scriptfiles[$i] . "');\n";
             }
 
@@ -456,7 +456,7 @@ class atkPage
     function renderScriptCode($position)
     {
         $res = "";
-        for ($i = 0, $_i = count($this->m_scriptcode[$position]); $i < $_i; $i++) {
+        for ($i = 0, $_i = atkcount($this->m_scriptcode[$position]); $i < $_i; $i++) {
             $res.= $this->m_scriptcode[$position][$i] . "\n";
         }
         return $res;
@@ -480,7 +480,7 @@ class atkPage
         $res .= "      var retval = true; var bag = {};\n";
         $res .= "      if (typeof(preGlobalSubmit) == 'function') { preGlobalSubmit(form, bag, standardSubmit); }\n";
 
-        for ($i = 0, $_i = count($this->m_submitscripts); $i < $_i; $i++) {
+        for ($i = 0, $_i = atkcount($this->m_submitscripts); $i < $_i; $i++) {
             $res .= "      retval = " . $this->m_submitscripts[$i] . "\n";
             $res .= "      if (retval != true) {\n";
             $res .= "        if (typeof(postGlobalSubmit) == 'function') {\n";
@@ -505,14 +505,14 @@ class atkPage
     function _getGlobalLoadScriptCode($partial = false)
     {
         $res = '';
-        if (count($this->m_loadscripts)) {
+        if (atkcount($this->m_loadscripts)) {
             $res = "";
             if (!$partial) {
                 $res .= "function globalLoad()\n";
                 $res .= "{\n";
             }
 
-            for ($i = 0, $_i = count($this->m_loadscripts); $i < $_i; $i++) {
+            for ($i = 0, $_i = atkcount($this->m_loadscripts); $i < $_i; $i++) {
                 $res .= "{$this->m_loadscripts[$i]}\n";
             }
 
@@ -537,7 +537,7 @@ class atkPage
                 $res.='  <link href="' . $file . '" rel="stylesheet" type="text/css" media="' . $media . '" />' . "\n";
             }
 
-            for ($i = 0; $i < count($this->m_stylecode); $i++)
+            for ($i = 0; $i < atkcount($this->m_stylecode); $i++)
                 $res.= '<style type="text/css"> ' . $this->m_stylecode[$i] . ' </style>' . "\n";
         } else {
             $files = '';

@@ -182,7 +182,7 @@ class atkFileAttribute extends atkAttribute
         }
 
         while ($item = $dirHandle->read()) {
-            if (count($this->m_allowedFileTypes) == 0) {
+            if (atkcount($this->m_allowedFileTypes) == 0) {
                 if (is_file($this->m_dir . $item))
                     $file_arr[] = $item;
             }
@@ -234,7 +234,7 @@ class atkFileAttribute extends atkAttribute
         $result.='<input type="hidden" name="' . $id . '_postfileskey" value="' . $id . '">';
 
         $onchange = '';
-        if (count($this->m_onchangecode)) {
+        if (atkcount($this->m_onchangecode)) {
             $onchange = ' onchange="' . $id . '_onChange(this);"';
             $this->_renderChangeHandler($fieldprefix);
         }
@@ -246,7 +246,7 @@ class atkFileAttribute extends atkAttribute
 
         if (!$this->hasFlag(AF_FILE_NO_SELECT)) {
             $file_arr = $this->getFiles($this->m_dir);
-            if (count($file_arr) > 0) {
+            if (atkcount($file_arr) > 0) {
                 natcasesort($file_arr);
 
                 $this->registerKeyListener($id . '_select', KB_CTRLCURSOR | KB_LEFTRIGHT);
@@ -444,7 +444,7 @@ class atkFileAttribute extends atkAttribute
      */
     function isAllowedFileType(&$rec)
     {
-        if (count($this->m_allowedFileTypes) == 0)
+        if (atkcount($this->m_allowedFileTypes) == 0)
             return true;
 
         // detect whether the file is uploaded or is an existing file.
@@ -583,7 +583,7 @@ class atkFileAttribute extends atkAttribute
             }
 
             // if no new file has been uploaded..
-            elseif (count($_FILES) == 0 || $_FILES[$postfiles_basename]["tmp_name"] == "none" || $_FILES[$postfiles_basename]["tmp_name"] == "") {
+            elseif (atkcount($_FILES) == 0 || $_FILES[$postfiles_basename]["tmp_name"] == "none" || $_FILES[$postfiles_basename]["tmp_name"] == "") {
                 // No file to upload, then check if the select box is filled
                 if ($fileselected) {
                     atkdebug("file selected!");
@@ -813,7 +813,7 @@ class atkFileAttribute extends atkAttribute
 
         $records = $this->m_ownerInstance->selectDb("($selector)", "", array($this->fieldName()));
 
-        if (count($records) > 0) {
+        if (atkcount($records) > 0) {
             // Check for the highest number
             $max_count = 0;
             foreach ($records as $record) {

@@ -58,7 +58,7 @@ function colorMatrix($colHeight, $colWidth, $field, $extern = 0, $userColors)
 {
     $webColors = array("00", "11", "22", "33", "44", "55", "66", "77", "88", "99", "AA", "BB", "CC", "DD", "EE", "FF");
     $stdColors = array("000000", "A4358E", "C79476", "6699cc", "cc6699", "669933", "ff9900", "cccc99", "663399", "5dabdd", "cafe00", "ffcc33"); // standard favorite colors
-    $nrColors = count($webColors);
+    $nrColors = atkcount($webColors);
 
     // Mix RED / BLUE (16x16 = 256 items)
     $matrix_rb = '<table width ="100%" border="0" cellspacing="1" cellpadding="0">';
@@ -119,7 +119,7 @@ function colorMatrix($colHeight, $colWidth, $field, $extern = 0, $userColors)
         $tmpColors = explode("|", $userColors);
 
         $matrix_user = '<table border="0" cellspacing="1" cellpadding="0"><tr>';
-        for ($i = 0; $i <= count($tmpColors) - 1; $i++) {
+        for ($i = 0; $i <= atkcount($tmpColors) - 1; $i++) {
             $dummy = $tmpColors[$i];
             if (substr($dummy, 0, 1) != "#") {
                 $dummy = "#" . $dummy;

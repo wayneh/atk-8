@@ -168,7 +168,7 @@ class atkOci9Query extends atkOci8Query
     {
         $query = str_replace("\\'", "''", $query);
         $explodedQuery = explode("'", $query);
-        for ($i = 0, $count = count($explodedQuery); $i < $count; $i+=2) {
+        for ($i = 0, $count = atkcount($explodedQuery); $i < $count; $i+=2) {
             if ($explodedQuery[$i] != "")
                 $explodedQuery[$i] = $this->replaceAliases($explodedQuery[$i]);
         }
@@ -187,11 +187,11 @@ class atkOci9Query extends atkOci8Query
         $replace = array();
 
         $pattern = array_keys($this->m_joinaliases);
-        if (count($pattern)) {
+        if (atkcount($pattern)) {
             //usort($pattern, "sortSearchPattern");
             sort($pattern);
 
-            for ($i = 0, $count = count($pattern); $i < $count; $i++) {
+            for ($i = 0, $count = atkcount($pattern); $i < $count; $i++) {
                 $replace[$i] = "\\1" . $this->m_joinaliases[$pattern[$i]] . "\\2";
                 //$replace[$i+$count] = "\\1".$this->m_joinaliases[$pattern[$i]]."\\2";
                 //$pattern[$i] = "/([\s,\(=])".$pattern[$i]."(([\.])|(\s*[,])|(\s+))/";

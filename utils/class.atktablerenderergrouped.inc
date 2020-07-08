@@ -105,7 +105,7 @@ class atkTableRendererGrouped extends atkTableRenderer
         $tbodyOpened = false;
         $max = $this->_getMaxCols($data);
 
-        $entryCount = count($data);
+        $entryCount = atkcount($data);
         $this->m_currentRow = $rowOffset;
         for ($entry = $rowOffset; $entry < $entryCount; $entry++) {
             $entryData = $data[$entry];
@@ -224,7 +224,7 @@ class atkTableRendererGrouped extends atkTableRenderer
 
         $output = $this->_renderRowGroupHeader($group, $headerWidth);
         $output .= "<tbody id=\"{$group['id']}\" class=\"grouped\" {$style}>";
-        $rowCount = count($group['rows']);
+        $rowCount = atkcount($group['rows']);
 
         $row = $rowOffset;
         for ($i = 0; $i < $rowCount; $i++) {
@@ -251,14 +251,14 @@ class atkTableRendererGrouped extends atkTableRenderer
     {
         $max = 0;
 
-        for ($i = 0, $_i = count($data); $i < $_i; $i++) {
+        for ($i = 0, $_i = atkcount($data); $i < $_i; $i++) {
             if (is_array($data[$i]) && $this->_isGroup($data[$i])) {
                 // check the group's rows
-                for ($j = 0, $_j = count($data[$i]['rows']); $j < $_j; $j++) {
-                    $max = max(count($data[$i]['rows'][$j]), $max);
+                for ($j = 0, $_j = atkcount($data[$i]['rows']); $j < $_j; $j++) {
+                    $max = max(atkcount($data[$i]['rows'][$j]), $max);
                 }
             } else {
-                $max = max(count($data[$i]), $max);
+                $max = max(atkcount($data[$i]), $max);
             }
         }
         return $max;

@@ -65,7 +65,7 @@ class atkMlSelectorAttribute extends atkMlAttribute
 
         if (!$s_wroteStrings) {
             $script = "str_languages = new Array();\n";
-            for ($i = 0, $_i = count($languages); $i < $_i; $i++) {
+            for ($i = 0, $_i = atkcount($languages); $i < $_i; $i++) {
                 $script.= "str_languages['" . $languages[$i] . "'] = '" . atktext('language_' . strtolower($languages[$i])) . "';\n";
             }
             $page = &atkPage::getInstance();
@@ -185,7 +185,7 @@ class atkMlSelectorAttribute extends atkMlAttribute
     function addToEditArray($mode, &$arr, &$defaults, &$error, $fieldprefix)
     {
         $lngs = $this->getLanguages();
-        if (count($lngs) <= 2)
+        if (atkcount($lngs) <= 2)
             $this->addFlag(AF_HIDE);
         return parent::addToEditArray($mode, $arr, $defaults, $error, $fieldprefix);
     }

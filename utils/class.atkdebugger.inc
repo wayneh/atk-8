@@ -119,7 +119,7 @@ class atkDebugger
             $data = &$this->getDebuggerData();
             global $g_debug_msg;
             $data["statements"][] = array("statement" => $txt, "trace" => atk_get_trace());
-            $link = $this->consoleLink("trace", "statement", array("stmt_id" => count($data["statements"]) - 1), true);
+            $link = $this->consoleLink("trace", "statement", array("stmt_id" => atkcount($data["statements"]) - 1), true);
             $txt = preg_replace("|MB\]|", "MB] [$link]", $txt, 1);
             $g_debug_msg[] = $txt;
             return true;
@@ -140,7 +140,7 @@ class atkDebugger
 
             $data["queries"][] = array("query" => $query, "trace" => atk_get_trace());
 
-            atkdebug("[" . $this->consoleLink("query&nbsp;details", "query", array("query_id" => count($data["queries"]) - 1), true) . "] " . atk_htmlentities($query));
+            atkdebug("[" . $this->consoleLink("query&nbsp;details", "query", array("query_id" => atkcount($data["queries"]) - 1), true) . "] " . atk_htmlentities($query));
 
             return true;
         }
@@ -187,7 +187,7 @@ class atkDebugger
      */
     public function urlParams($params)
     {
-        if (count($params)) {
+        if (atkcount($params)) {
             $res = "";
             foreach ($params as $key => $value) {
                 $res.='&' . $key . "=" . rawurlencode($value);
@@ -249,7 +249,7 @@ class atkDebugger
         if (strtolower(substr(trim($query), 0, 6)) == "select") {
             $output.= '<h1>Resultset</h1>';
             $result = $db->getrows($query);
-            if (count($result)) {
+            if (atkcount($result)) {
                 $output.=$this->arrToTable($result, $_REQUEST["full"], $id);
             } else {
                 $output.= "Query returned no rows";
@@ -295,14 +295,14 @@ class atkDebugger
      */
     public function arrToTable($result, $full = true, $id = "")
     {
-        if (count($result)) {
+        if (atkcount($result)) {
             $cols = array_keys($result[0]);
             $data = '<table border="1"><tr>';
             foreach ($cols as $col) {
                 $data.= '<th>' . $col . '</th>';
             }
             $data.= '</tr>';
-            for ($i = 0, $_i = count($result); $i < $_i && ($i < 10 || $full); $i++) {
+            for ($i = 0, $_i = atkcount($result); $i < $_i && ($i < 10 || $full); $i++) {
                 $data.= '<tr><td>' . implode('</td><td>', $result[$i]) . '</td></tr>';
             }
             $data.= '</table>';
@@ -371,10 +371,10 @@ class atkDebugger
     public function renderQueryList($queries)
     {
         $output = 'Number of queries performed: ' . count($queries);
-        if (count($queries)) {
+        if (atkcount($queries)) {
             $output.= '<table border="1" width="100%"><tr><th>#</th><th>Details</th><th>Query</th></tr>';
 
-            for ($i = 0, $_i = count($queries); $i < $_i; $i++) {
+            for ($i = 0, $_i = atkcount($queries); $i < $_i; $i++) {
                 $query = $queries[$i]["query"];
                 if ($query == "") {
                     $detaillink = 'EMPTY QUERY!';
@@ -398,10 +398,10 @@ class atkDebugger
     public function renderStatementList($statements)
     {
         $output = 'Number of debug statements: ' . count($statements);
-        if (count($statements)) {
+        if (atkcount($statements)) {
             $output.= '<table border="1" width="100%"><tr><th>#</th><th>Details</th><th>Statement</th></tr>';
 
-            for ($i = 0, $_i = count($statements); $i < $_i; $i++) {
+            for ($i = 0, $_i = atkcount($statements); $i < $_i; $i++) {
 
                 $detaillink = $this->consoleLink("details", "statement", array("stmt_id" => $i));
                 $output.= '<tr><td valign="top">' . ($i + 1) . '</td><td>' . $detaillink . '</td><td>' . $statements[$i]["statement"] . '</td></tr>';
@@ -455,13 +455,13 @@ class atkDebugger
         $label = "[{$time}h / {$duration}s / {$usage}MB / " . self::$s_queryCount . " Queries / " . self::$s_systemQueryCount . " System Queries] $method $url";
 
         $output = '
-        <div class="atkDebugBlock' . (count($g_error_msg) > 0 ? " atkDebugBlockContainsErrors"
+        <div class="atkDebugBlock' . (atkcount($g_error_msg) > 0 ? " atkDebugBlockContainsErrors"
                     : "") . ' atkDebug' . ($expanded ? 'Expanded' : 'Collapsed') . '">
           <div class="atkDebugToggle" onclick="ATK.Debug.toggle(this)">
            ' . $label . '
           </div>
           <div class="atkDebugData">
-            ' . (count($g_debug_msg) > 0 ? '<div class="atkDebugLine">' . implode($g_debug_msg, '</div><div class="atkDebugLine">') . '</div>'
+            ' . (atkcount($g_debug_msg) > 0 ? '<div class="atkDebugLine">' . implode($g_debug_msg, '</div><div class="atkDebugLine">') . '</div>'
                     : '') . '
           </div>
         </div>';
@@ -513,12 +513,12 @@ class atkDebugger
         $isPartial = isset($ATK_VARS['atkpartial']);
 
         // only display error messages
-        if (count($g_error_msg) > 0 && atkconfig('display_errors') && atkconfig('debug') <= 0 && !$isPartial) {
+        if (atkcount($g_error_msg) > 0 && atkconfig('display_errors') && atkconfig('debug') <= 0 && !$isPartial) {
             return $this->renderPlainErrorMessages();
         }
 
         // no debug messages or error messages to output
-        else if (atkconfig('debug') <= 0 || (count($g_debug_msg) == 0 && count($g_error_msg) == 0)) {
+        else if (atkconfig('debug') <= 0 || (atkcount($g_debug_msg) == 0 && atkcount($g_error_msg) == 0)) {
             return '';
         }
 

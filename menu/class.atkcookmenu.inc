@@ -105,7 +105,7 @@ class atkcookmenu extends atkModernMenu
                     $target = "null";
                 }
                 $menu_javascript.="[null, '" . addslashes($item["name"]) . "', " . $url . ", " . $target . ", null";
-                if (isset($item["submenu"]) && count($item["submenu"]) > 0) {
+                if (isset($item["submenu"]) && atkcount($item["submenu"]) > 0) {
                     $menu_javascript.=',';
                     if ($item["header"] != "") {
                         $menu_javascript.="[_cmNoAction, '<td colspan=\"3\"" . $item["header"] . "</td>', null, null, null],\n";

@@ -36,9 +36,9 @@ class atkCompatSelector extends atkSelector
     {
         $selector = '';
 
-        if (count($this->m_conditions) == 1) {
+        if (atkcount($this->m_conditions) == 1) {
             $selector = $this->m_conditions[0]['condition']; // can't support binds
-        } else if (count($this->m_conditions) > 1) {
+        } else if (atkcount($this->m_conditions) > 1) {
             $conditions = array(); // can't support binds
             foreach ($this->m_conditions as $condition) {
                 $conditions[] = $condition['condition'];

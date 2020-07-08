@@ -74,7 +74,7 @@ class atkFormatAttribute extends atkAttribute
         $elems = $this->_breakDown();
         $values = $this->_valueBreakDown($record[$this->fieldName()]);
 
-        for ($i = 0, $j = 0, $_i = count($elems); $i < $_i; $i++) {
+        for ($i = 0, $j = 0, $_i = atkcount($elems); $i < $_i; $i++) {
             if ($elems[$i]['type'] != '/') {
                 if (!$this->_checkString($elems[$i]['type'], $values[$j])) {
                     triggerError($record, $this->fieldName(), 'err', $this->_formatErrorString(($j + 1), str_repeat($elems[$i]['type'], $elems[$i]['size'])));
@@ -100,7 +100,7 @@ class atkFormatAttribute extends atkAttribute
 
         $inputs = array();
         $hints = array();
-        for ($i = 0, $j = 0, $_i = count($elems); $i < $_i; $i++) {
+        for ($i = 0, $j = 0, $_i = atkcount($elems); $i < $_i; $i++) {
             if ($elems[$i]['type'] == '/') { // literal
                 $inputs[] = $elems[$i]['mask'];
             } else { // format
@@ -192,7 +192,7 @@ class atkFormatAttribute extends atkAttribute
      */
     function _breakDown()
     {
-        if (count($this->m_breakdownCached) == 0) {
+        if (atkcount($this->m_breakdownCached) == 0) {
             $elems = array();
             $elem = array();
             $last = "";
@@ -289,7 +289,7 @@ class atkFormatAttribute extends atkAttribute
         $masks = $this->_breakDown();
         $elems = $postvars[$this->fieldName()];
 
-        for ($i = 0, $_i = count($masks); $i < $_i; $i++) {
+        for ($i = 0, $_i = atkcount($masks); $i < $_i; $i++) {
             if ($masks[$i]['type'] == '/') { // literal
                 $result.=$masks[$i]['mask'];
             } else { // mask
@@ -326,7 +326,7 @@ class atkFormatAttribute extends atkAttribute
         // value is empty if all non-literals have not been filled in.
         $values = $this->_valueBreakDown($record[$this->fieldName()]);
         $elems = $this->_breakDown();
-        for ($i = 0, $_i = count($elems); $i < $_i; $i++) {
+        for ($i = 0, $_i = atkcount($elems); $i < $_i; $i++) {
             if ($elems[$i]['type'] != '/') { // not a literal
                 if ($values[$i] != '')
                     return false;

@@ -85,7 +85,7 @@ class atkMatrixRelation extends atkRelation
         $query = 'SELECT ' . $this->m_name1 . ',' . $this->m_name2 . ' FROM ' . $this->m_name;
         $checked = $db->getRows($query);
 
-        for ($i = 0; $i < count($checked); $i++) {
+        for ($i = 0; $i < atkcount($checked); $i++) {
             $field = $checked[$i][0] . '_' . $checked[$i][1];
             $checkedArray[$field] = 'on';
         }
@@ -121,7 +121,7 @@ class atkMatrixRelation extends atkRelation
 
         $recordset = $this->m_destInstance->selectDb($where, "", "", "", atk_array_merge($this->m_destInstance->descriptorFields(), $this->m_destInstance->m_primaryKey));
 
-        for ($i = 0; $i < count($recordset); $i++) {
+        for ($i = 0; $i < atkcount($recordset); $i++) {
             $matrix_fields_row[$i] = $this->m_destInstance->descriptor($recordset[$i]);
 
             $primaryKeyValue = explode("'", $this->m_destInstance->primaryKey($recordset[$i]));
@@ -139,7 +139,7 @@ class atkMatrixRelation extends atkRelation
 
         $recordset = $this->m_destInstance->selectDb($where, "", "", "", atk_array_merge($this->m_destInstance->descriptorFields(), $this->m_destInstance->m_primaryKey));
 
-        for ($i = 0; $i < count($recordset); $i++) {
+        for ($i = 0; $i < atkcount($recordset); $i++) {
             $matrix_fields_col[$i] = $this->m_destInstance->descriptor($recordset[$i]);
 
             $primaryKeyValue = explode("'", $this->m_destInstance->primaryKey($recordset[$i]));
@@ -147,9 +147,9 @@ class atkMatrixRelation extends atkRelation
         }
 
 
-        if (count($matrix_fields_col) > 1 && count($matrix_fields_row) > 1) {      //matrix
+        if (atkcount($matrix_fields_col) > 1 && atkcount($matrix_fields_row) > 1) {      //matrix
             $form = '<table border=1><tr><td>&nbsp;</td>';
-            for ($i = 0; $i < count($matrix_fields_col); $i++) {
+            for ($i = 0; $i < atkcount($matrix_fields_col); $i++) {
                 $form .= '<td align="center" valign="top" bgcolor="#cccccc"><b><div style="line-height: 10px">';
                 $text = $matrix_fields_col[$i];
                 for ($j = 0; $j < strlen($text); $j++) {
@@ -160,11 +160,11 @@ class atkMatrixRelation extends atkRelation
             $form .= '</tr>';
 
             $counter = 0;
-            for ($i = 0; $i < count($matrix_fields_row); $i++) {
+            for ($i = 0; $i < atkcount($matrix_fields_row); $i++) {
                 $form .= '<tr><td bgcolor="#cccccc"><b>';
                 $form .= '&nbsp;' . $matrix_fields_row[$i] . '&nbsp;';
                 $form .= '</b></td>';
-                for ($j = 0; $j < count($matrix_fields_col); $j++) {
+                for ($j = 0; $j < atkcount($matrix_fields_col); $j++) {
                     $key = $matrix_values_row[$i] . '_' . $matrix_values_col[$j];
                     if ($checkedArray[$key] == 'on')
                         $check = 'CHECKED';
@@ -179,13 +179,13 @@ class atkMatrixRelation extends atkRelation
             }
             $form .= '</table><br>';
         }
-        elseif (count($matrix_fields_row) > 1) { //many bool
+        elseif (atkcount($matrix_fields_row) > 1) { //many bool
             $form = '<table border=0 cellspacing=0 cellpadding=0>';
 
             $counter = 0;
-            for ($i = 0; $i < count($matrix_fields_row); $i++) {
+            for ($i = 0; $i < atkcount($matrix_fields_row); $i++) {
                 $form .= '<tr>';
-                for ($j = 0; $j < count($matrix_fields_col); $j++) {
+                for ($j = 0; $j < atkcount($matrix_fields_col); $j++) {
                     $key = $matrix_values_row[$i] . '_' . $matrix_values_col[$j];
                     if ($checkedArray[$key] == 'on')
                         $check = 'CHECKED';
@@ -261,7 +261,7 @@ class atkMatrixRelation extends atkRelation
 
             $recordset = $this->m_destInstance->selectDb($where, "", "", "", atk_array_merge($this->m_destInstance->descriptorFields(), $this->m_destInstance->m_primaryKey));
 
-            for ($i = 0; $i < count($recordset); $i++) {
+            for ($i = 0; $i < atkcount($recordset); $i++) {
                 $primaryKeyValue = explode("'", $this->m_destInstance->primaryKey($recordset[$i]));
                 $query = 'DELETE FROM ' . $this->m_name . ' WHERE ' . $this->m_name1 . ' = ' . $primaryKeyValue[1];
                 $db->query($query);
@@ -282,7 +282,7 @@ class atkMatrixRelation extends atkRelation
 
         $matrixcheckbox = $record[$this->fieldName()];
 
-        if (is_array($matrixcheckbox) && count($matrixcheckbox) > 0) {
+        if (is_array($matrixcheckbox) && atkcount($matrixcheckbox) > 0) {
             while (list($key, $value) = each($matrixcheckbox)) {
                 $phases = explode('_', $key);
                 $query = 'INSERT INTO ' . $this->m_name . ' (' . $this->m_name1 . ',' . $this->m_name2 . ') VALUES (' . $phases[0] . ',' . $phases[1] . ')';

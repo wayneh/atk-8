@@ -61,7 +61,7 @@ class atkMultiSelectAttribute extends atkListAttribute
         // size must be large enough to store a combination of all values.
         if ($size == "") {
             $size = 0;
-            for ($i = 0, $_i = count($valueArray); $i < $_i; $i++) {
+            for ($i = 0, $_i = atkcount($valueArray); $i < $_i; $i++) {
                 $size+=(atk_strlen($valueArray[$i]) + 1); // 1 extra for the '|' symbol
             }
         }
@@ -83,7 +83,7 @@ class atkMultiSelectAttribute extends atkListAttribute
     {
         if (is_array($record[$this->fieldName()])) {
             $values = $this->getValues($record);
-            for ($i = 0; $i < count($values); $i++) {
+            for ($i = 0; $i < atkcount($values); $i++) {
                 if (in_array($values[$i], $record[$this->fieldName()]))
                     $result .= '<input type="hidden" name="' . $fieldprefix . $this->fieldName() . '[]"
                       value="' . $values[$i] . '">';
@@ -103,7 +103,7 @@ class atkMultiSelectAttribute extends atkListAttribute
     function value2db($rec)
     {
         //atkdebug("multiselectattribute::value2db()");
-        if (is_array($rec[$this->fieldName()]) && count($rec[$this->fieldName()] >= 1)) {
+        if (is_array($rec[$this->fieldName()]) && atkcount($rec[$this->fieldName()] >= 1)) {
             return $this->escapeSQL(implode($this->m_fieldSeparator, $rec[$this->fieldName()]));
         } else
             return "";
@@ -152,7 +152,7 @@ class atkMultiSelectAttribute extends atkListAttribute
     {
         $values = $record[$this->fieldName()];
         $res = array();
-        for ($i = 0; $i < count($values); $i++) {
+        for ($i = 0; $i < atkcount($values); $i++) {
             $res[] = $this->_translateValue($values[$i], $record);
         }
         return implode(', ', $res);
@@ -191,7 +191,7 @@ class atkMultiSelectAttribute extends atkListAttribute
         else
             $recordvalue = $record[$this->fieldName()];
 
-        for ($i = 0; $i < count($values); $i++) {
+        for ($i = 0; $i < atkcount($values); $i++) {
             if (!$this->hasFlag(AF_CHECK_ALL)) {
                 (atk_in_array($values[$i], $recordvalue)) ? $sel = "checked" : $sel = "";
             } else {
@@ -225,8 +225,8 @@ class atkMultiSelectAttribute extends atkListAttribute
     {
         // Multiselect attribute has only 1 searchmode, and that is substring.
 
-        if (is_array($value) && $value[0] != "" && count($value) > 0) {
-            if (count($value) == 1) {
+        if (is_array($value) && $value[0] != "" && atkcount($value) > 0) {
+            if (atkcount($value) == 1) {
                 $searchcondition = $query->substringCondition($table . "." . $this->fieldName(), $this->escapeSQL($value[0]));
             } else {
                 foreach ($value as $str) {
@@ -271,7 +271,7 @@ class atkMultiSelectAttribute extends atkListAttribute
      */
     function _addLinks($fieldprefix)
     {
-        if (count($this->m_values) > 4 && !hasFlag($this->m_flags, AF_NO_TOGGLELINKS)) {
+        if (atkcount($this->m_values) > 4 && !hasFlag($this->m_flags, AF_NO_TOGGLELINKS)) {
             return '<div align="left"><font size="-2">
                   [<a href="javascript:void(0)" onclick="profile_checkAll(\'' . $fieldprefix . $this->fieldName() . '\'); return false;">' .
                 atktext("check_all") .
@@ -289,7 +289,7 @@ class atkMultiSelectAttribute extends atkListAttribute
      */
     function isEmpty($record)
     {
-        return (!isset($record[$this->fieldName()]) || (!is_array($record[$this->fieldName()])) || (is_array($record[$this->fieldName()]) && count($record[$this->fieldName()]) === 0));
+        return (!isset($record[$this->fieldName()]) || (!is_array($record[$this->fieldName()])) || (is_array($record[$this->fieldName()]) && atkcount($record[$this->fieldName()]) === 0));
     }
 
 }

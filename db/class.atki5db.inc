@@ -86,7 +86,7 @@ class atki5db extends atkdb2db
             $this->m_errno = i5_errormsg();
         }
 
-        if (is_array($this->m_error) && count($this->m_error) > 2) {
+        if (is_array($this->m_error) && atkcount($this->m_error) > 2) {
             $this->m_error = $this->m_error[3];
         }
     }
@@ -243,7 +243,7 @@ class atki5db extends atkdb2db
 
             $result_metadata = $this->getRows($query);
 
-            for ($i = 0, $_i = count($result_metadata); $i < $_i; $i++) {
+            for ($i = 0, $_i = atkcount($result_metadata); $i < $_i; $i++) {
                 $result[$i]["table"] = strtolower($result_metadata[$i]['table_schema']) . "." . strtolower($result_metadata[$i]['table_name']);
                 $result[$i]["table_type"] = NULL;
                 $result[$i]["name"] = strtolower($result_metadata[$i]['column_name']);

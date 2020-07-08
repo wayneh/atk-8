@@ -148,7 +148,7 @@ class atkBootstrapMenu extends atkPlainMenu
 
     function _hasSubmenu($item)
     {
-        return isset($item['submenu']) && count($item['submenu']);
+        return isset($item['submenu']) && atkcount($item['submenu']);
     }
 
     function _getMenuTitle($item, $append = "")

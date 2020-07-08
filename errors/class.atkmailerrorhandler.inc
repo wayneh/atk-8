@@ -36,7 +36,7 @@ class atkMailErrorHandler extends atkErrorHandlerBase
             $body.= "\nDEBUGMESSAGES\n" . str_repeat("-", 70) . "\n";
 
             $lines = array();
-            for ($i = 0, $_ = count($debugMessage); $i < $_; $i++) {
+            for ($i = 0, $_ = atkcount($debugMessage); $i < $_; $i++) {
                 $lines[] = _wordwrap(atk_html_entity_decode(preg_replace('(\[<a.*</a>\])', '', $debugMessage[$i])));
             }
             $body.= implode("\n", $lines);
@@ -50,7 +50,7 @@ class atkMailErrorHandler extends atkErrorHandlerBase
 
             if (function_exists("getallheaders")) {
                 $request = getallheaders();
-                if (count($request) > 0) {
+                if (atkcount($request) > 0) {
                     $body.= "\n\nREQUEST INFORMATION\n" . str_repeat("-", 70) . "\n";
                     foreach ($request as $key => $value) {
                         $body.=_wordwrap($key . str_repeat(" ", max(1, 30 - strlen($key))) . " = " . var_export($value, 1)) . "\n";
@@ -86,7 +86,7 @@ class atkMailErrorHandler extends atkErrorHandlerBase
             }
 
             $body.= "\n\nCurrent User:\n" . str_repeat("-", 70) . "\n";
-            if (is_array($g_user) && count($g_user)) {
+            if (is_array($g_user) && atkcount($g_user)) {
                 foreach ($g_user as $key => $value) {
                     $body.=_wordwrap($key . str_repeat(" ", max(1, 30 - strlen($key))) . " = " . var_export($value, 1)) . "\n";
                 }
@@ -98,7 +98,7 @@ class atkMailErrorHandler extends atkErrorHandlerBase
                 $body.= "\nNamespace: " . $g_sessionManager->getNameSpace() . "\n";
                 if (isset($g_sessionData[$g_sessionManager->getNameSpace()]["stack"])) {
                     $stack = $g_sessionData[$g_sessionManager->getNameSpace()]["stack"];
-                    for ($i = 0; $i < count($stack); $i++) {
+                    for ($i = 0; $i < atkcount($stack); $i++) {
                         $body.="\nStack level $i:\n";
                         $item = isset($stack[$i]) ? $stack[$i] : null;
                         if (is_array($item)) {
@@ -110,7 +110,7 @@ class atkMailErrorHandler extends atkErrorHandlerBase
                 }
                 if (isset($g_sessionData[$g_sessionManager->getNameSpace()]["globals"])) {
                     $ns_globals = $g_sessionData[$g_sessionManager->getNameSpace()]["globals"];
-                    if (count($ns_globals) > 0) {
+                    if (atkcount($ns_globals) > 0) {
                         $body.="\nNamespace globals:\n";
                         foreach ($ns_globals as $key => $value) {
                             $body.=_wordwrap($key . str_repeat(" ", max(1, 30 - strlen($key))) . " = " . var_export($value, 1)) . "\n";
@@ -119,7 +119,7 @@ class atkMailErrorHandler extends atkErrorHandlerBase
                 }
                 if (isset($g_sessionData["globals"])) {
                     $globals = $g_sessionData["globals"];
-                    if (count($globals) > 0) {
+                    if (atkcount($globals) > 0) {
                         $body.="\nGlobals:\n";
                         foreach ($globals as $key => $value) {
                             $body.=_wordwrap($key . str_repeat(" ", max(1, 30 - strlen($key))) . " = " . var_export($value, 1)) . "\n";

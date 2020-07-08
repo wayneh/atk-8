@@ -165,7 +165,7 @@ class Moment extends \DateTime
         {
             preg_match_all('/(\wS)/', $format, $matches);
 
-            if (count($matches) >= 1)
+            if (atkcount($matches) >= 1)
             {
                 foreach ($matches[1] as $part)
                 {

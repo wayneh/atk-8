@@ -103,35 +103,35 @@ class atkDb2Query extends atkQuery
      */
     function buildCount($distinct = FALSE)
     {
-        if (($distinct || $this->m_distinct) && count($this->m_fields) > 0) {
+        if (($distinct || $this->m_distinct) && atkcount($this->m_fields) > 0) {
             $result = "SELECT COUNT(DISTINCT ";
             $fields = $this->quoteFields($this->m_fields);
-            for ($i = 0; $i < count($fields); $i++)
+            for ($i = 0; $i < atkcount($fields); $i++)
                 $fields[$i] = "COALESCE({$fields[$i]}, '###ATKNULL###')";
             $result.=implode($this->quoteFields($fields), ", ");
             $result.=") as count FROM ";
         } else
             $result = "SELECT COUNT(*) as count FROM ";
 
-        for ($i = 0; $i < count($this->m_tables); $i++) {
+        for ($i = 0; $i < atkcount($this->m_tables); $i++) {
             $result.= $this->quoteField($this->m_tables[$i]);
             if ($this->m_aliases[$i] != "")
                 $result.=" " . $this->m_aliases[$i];
-            if ($i < count($this->m_tables) - 1)
+            if ($i < atkcount($this->m_tables) - 1)
                 $result.=", ";
         }
 
-        for ($i = 0; $i < count($this->m_joins); $i++) {
+        for ($i = 0; $i < atkcount($this->m_joins); $i++) {
             $result.=$this->m_joins[$i];
         }
 
-        if (count($this->m_conditions) > 0) {
+        if (atkcount($this->m_conditions) > 0) {
             $result.= " WHERE " . implode(" AND ", $this->m_conditions);
         }
 
-        if (count($this->m_searchconditions) > 0) {
+        if (atkcount($this->m_searchconditions) > 0) {
             $prefix = " ";
-            if (count($this->m_conditions) == 0) {
+            if (atkcount($this->m_conditions) == 0) {
                 $prefix = " WHERE ";
             } else {
                 $prefix = " AND ";
@@ -143,7 +143,7 @@ class atkDb2Query extends atkQuery
             }
         }
 
-        if (count($this->m_groupbys) > 0) {
+        if (atkcount($this->m_groupbys) > 0) {
             $result.= " GROUP BY " . implode(", ", $this->m_groupbys);
         }
         return $result;

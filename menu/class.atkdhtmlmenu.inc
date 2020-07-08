@@ -62,7 +62,7 @@ class atkDhtmlMenu extends atkmenuinterface
             $tabName = addslashes(atktext($atkmenutop, "", "menu"));
             $items = 0;
 
-            for ($i = 0; $i < count($g_menu[$atkmenutop]); $i++) {
+            for ($i = 0; $i < atkcount($g_menu[$atkmenutop]); $i++) {
                 $menu = "";
                 $name = $g_menu[$atkmenutop][$i]["name"];
                 $url = session_url($g_menu[$atkmenutop][$i]["url"], SESSION_NEW);
@@ -74,7 +74,7 @@ class atkDhtmlMenu extends atkmenuinterface
 
                     // include every node and perform an allowed() action on it
                     // to see wether we have ther rights to perform the action
-                    for ($j = 0; $j < (count($enable) / 2); $j++) {
+                    for ($j = 0; $j < (atkcount($enable) / 2); $j++) {
                         $action = $enable[(2 * $j) + 1];
 
                         $instance = &getNode($enable[(2 * $j)]);
@@ -92,7 +92,7 @@ class atkDhtmlMenu extends atkmenuinterface
                     if ($g_menu[$atkmenutop][$i]["url"] != "") {
                         $tabContent .= "<a target='main' class='tablink' href='$url'>" . atktext($name, "", "menu") . "</a>";
 
-                        if ($i < count($g_menu[$atkmenutop]) - 1) {
+                        if ($i < atkcount($g_menu[$atkmenutop]) - 1) {
                             $tabContent .= "&nbsp;|&nbsp;";
                         }
 

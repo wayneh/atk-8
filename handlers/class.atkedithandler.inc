@@ -514,7 +514,7 @@ class atkEditHandler extends atkViewEditBase
 
         // Handle errors
         $errors = array();
-        if (count($data['error']) > 0) {
+        if (atkcount($data['error']) > 0) {
             $error_title = '<b>' . atktext('error_formdataerror') . '</b>';
 
             foreach ($data["error"] as $error) {
@@ -523,7 +523,7 @@ class atkEditHandler extends atkViewEditBase
                 } else {
                     $type = (empty($error["node"]) ? $node->m_type : $error["node"]);
 
-                    if (count($tabs) > 1 && $error["tab"]) {
+                    if (atkcount($tabs) > 1 && $error["tab"]) {
                         $tabLink = $this->getTabLink($node, $error);
                         $error_tab = ' (' . atktext("error_tab") . ' ' . $tabLink . ' )';
                     } else {
@@ -558,11 +558,11 @@ class atkEditHandler extends atkViewEditBase
                     $errors[] = $err;
                 }
             }
-            if (count($pk_err_attrib) > 0) { // Make primary key error message
+            if (atkcount($pk_err_attrib) > 0) { // Make primary key error message
                 $pk_err_msg = '';
-                for ($i = 0; $i < count($pk_err_attrib); $i++) {
+                for ($i = 0; $i < atkcount($pk_err_attrib); $i++) {
                     $pk_err_msg .= atktext($pk_err_attrib[$i], $node->m_module, $node->m_type);
-                    if (($i + 1) < count($pk_err_attrib))
+                    if (($i + 1) < atkcount($pk_err_attrib))
                         $pk_err_msg .= ", ";
                 }
                 $errors[] = array("label" => atktext("error_primarykey_exists"), "message" => $pk_err_msg);
@@ -574,7 +574,7 @@ class atkEditHandler extends atkViewEditBase
         $errorFields = array();
         $attributes = array();
 
-        for ($i = 0, $_i = count($data["fields"]); $i < $_i; $i++) {
+        for ($i = 0, $_i = atkcount($data["fields"]); $i < $_i; $i++) {
             $field = &$data["fields"][$i];
 
             $tplfield = $this->createTplField($data["fields"], $i, $mode, $tab);
@@ -599,7 +599,7 @@ class atkEditHandler extends atkViewEditBase
             // a selection using the select handler or generated an error, in either way we assume
             // the form has been changed, so we always warn the user when leaving the page.
             $isChanged = 'false';
-            if ((isset($record['atkerror']) && count($record['atkerror']) > 0) ||
+            if ((isset($record['atkerror']) && atkcount($record['atkerror']) > 0) ||
                 (isset($this->m_node->m_postvars['__atkunloadhelper']) && $this->m_node->m_postvars['__atkunloadhelper'])) {
                 $isChanged = 'true';
             }
@@ -647,7 +647,7 @@ class atkEditHandler extends atkViewEditBase
      */
     function getTabLink(&$node, $error)
     {
-        if (count($node->getTabs($node->m_action)) < 2)
+        if (atkcount($node->getTabs($node->m_action)) < 2)
             return '';
         return '<a href="javascript:void(0)" onclick="showTab(\'' . $error["tab"] . '\'); return false;">' . $this->getTabLabel($node, $error["tab"]) . '</a>';
     }

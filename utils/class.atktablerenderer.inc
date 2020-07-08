@@ -375,7 +375,7 @@ class atkTableRenderer
 
         // should render a footer
         if (hasFlag($this->m_flags, TBL_FOOTER)) {
-            $footer_row = count($data) - 1;
+            $footer_row = atkcount($data) - 1;
             $footer = array_pop($data);
 
             $output .= $this->_renderBody($data, $rowOffset);
@@ -503,7 +503,7 @@ class atkTableRenderer
         $output = "\n<tr {$class}>";
 
         // render all cells inside
-        $colCount = count($data);
+        $colCount = atkcount($data);
 
         for ($col = 0; $col < $colCount; $col++) {
             $output .= $this->_renderCell($data[$col], $row, $col, $columntype);
@@ -542,7 +542,7 @@ class atkTableRenderer
      */
     function _renderBody($data, $rowOffset = 0)
     {
-        $rowCount = count($data);
+        $rowCount = atkcount($data);
         if ($rowOffset >= $rowCount)
             return "";
 

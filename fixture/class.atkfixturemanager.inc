@@ -104,7 +104,7 @@ class atkFixtureManager
         $path = NULL;
 
         // beneath test-case directory
-        if (count($parts) == 1 && !empty($testCasePath)) {
+        if (atkcount($parts) == 1 && !empty($testCasePath)) {
             $path = $testCasePath . 'fixtures/' . $fullname;
         }
 
@@ -119,11 +119,11 @@ class atkFixtureManager
 
         // full path (without testcases/fixtures directory?)
         else {
-            $tmpFullname = implode('.', array_slice($parts, 0, count($parts) - 1)) . '.testcases.fixtures.' . $parts[count($parts) - 1];
+            $tmpFullname = implode('.', array_slice($parts, 0, atkcount($parts) - 1)) . '.testcases.fixtures.' . $parts[count($parts) - 1];
             $path = getClassPath($tmpFullname, false);
 
             // full path
-            if (count(glob("{$path}.*")) == 0) {
+            if (atkcount(glob("{$path}.*")) == 0) {
                 $path = getClassPath($fullname, false);
             }
         }

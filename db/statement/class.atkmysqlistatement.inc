@@ -87,13 +87,13 @@ class atkMySQLiStatement extends atkStatement
      */
     private function _bindParams($params)
     {
-        if (count($params) == 0) {
+        if (atkcount($params) == 0) {
             return;
         }
 
         $i = 0;
         $args = array();
-        $args[] = str_repeat('s', count($this->_getBindPositions()));
+        $args[] = str_repeat('s', atkcount($this->_getBindPositions()));
         foreach ($this->_getBindPositions() as $param) {
             atkdebug("Bind param {$i}: " . ($params[$param] === null ? 'NULL' : $params[$param]));
             $args[] = &$params[$param];
@@ -144,7 +144,7 @@ class atkMySQLiStatement extends atkStatement
         $this->m_values = array();
         $refs = array();
 
-        for ($i = 0; $i < count($this->m_columnNames); $i++) {
+        for ($i = 0; $i < atkcount($this->m_columnNames); $i++) {
             $this->m_values[$i] = null;
             $refs[$i] = &$this->m_values[$i];
         }

@@ -207,7 +207,7 @@ class atkEditFormModifier
 
         atkimport('atk.utils.atkjson');
 
-        $offset = count($this->getNode()->getPage()->getLoadScripts());
+        $offset = atkcount($this->getNode()->getPage()->getLoadScripts());
 
         $error = array();
         $editArray = array('fields' => array());

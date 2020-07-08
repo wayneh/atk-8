@@ -207,7 +207,7 @@ class atkManyToManyRelation extends atkRelation
         $keys = array();
 
         if (isset($record[$this->fieldName()])) {
-            for ($i = 0; $i < count($record[$this->fieldName()]); $i++) {
+            for ($i = 0; $i < atkcount($record[$this->fieldName()]); $i++) {
                 if (is_array($record[$this->fieldName()][$i][$this->getRemoteKey()])) {
                     $key = $this->m_destInstance->primaryKey($record[$this->fieldName()][$i][$this->getRemoteKey()]);
                 } else {
@@ -315,7 +315,7 @@ class atkManyToManyRelation extends atkRelation
      */
     public function getOwnerFields()
     {
-        if (is_array($this->m_ownerFields) && count($this->m_ownerFields) > 0) {
+        if (is_array($this->m_ownerFields) && atkcount($this->m_ownerFields) > 0) {
             return $this->m_ownerFields;
         }
         return $this->m_ownerInstance->m_primaryKey;
@@ -371,7 +371,7 @@ class atkManyToManyRelation extends atkRelation
         if ($this->createDestination() && atk_value_in_array($record[$this->fieldName()])) {
             $recordset = array();
             $remotekey = $this->getRemoteKey();
-            for ($i = 0; $i < count($record[$this->fieldName()]); $i++) {
+            for ($i = 0; $i < atkcount($record[$this->fieldName()]); $i++) {
                 $rec = $record[$this->fieldName()][$i][$remotekey];
                 if (!is_array($rec)) {
                     $selector = $this->m_destInstance->m_table . "." . $this->m_destInstance->primaryKeyField() . "= '$rec'";
@@ -465,7 +465,7 @@ class atkManyToManyRelation extends atkRelation
 
         $ownerfields = $this->getOwnerFields();
 
-        for ($i = 0, $_i = count($localkey); $i < $_i; $i++) {
+        for ($i = 0, $_i = atkcount($localkey); $i < $_i; $i++) {
             $primkeyattr = &$this->m_ownerInstance->m_attribList[$ownerfields[$i]];
 
             if (!$primkeyattr->isEmpty($record)) {
@@ -598,7 +598,7 @@ class atkManyToManyRelation extends atkRelation
         $localKey = $this->getLocalKey();
 
         if (is_array($localKey)) {
-            for ($j = 0; $j < count($localKey); $j++) {
+            for ($j = 0; $j < atkcount($localKey); $j++) {
                 $locKey = $this->checkKeyDimension($ownerRecord[$ownerFields[$j]]);
                 $record[$localKey[0]][$ownerFields[$j]] = $locKey;
             }
@@ -696,7 +696,7 @@ class atkManyToManyRelation extends atkRelation
         $result = "";
         if (is_array(atkArrayNvl($record, $this->fieldName())) && $this->createDestination()) {
             $ownerFields = $this->getOwnerFields();
-            for ($i = 0, $_i = count($record[$this->fieldName()]); $i < $_i; $i++) {
+            for ($i = 0, $_i = atkcount($record[$this->fieldName()]); $i < $_i; $i++) {
                 if (atkArrayNvl($record[$this->fieldName()][$i], $this->getLocalKey()))
                     $result .= '<input type="hidden" name="' . $fieldprefix . $this->formName() .
                         '[' . $i . '][' . $this->getLocalKey() . ']" value="' .
@@ -734,7 +734,7 @@ class atkManyToManyRelation extends atkRelation
         $recordset = $this->m_destInstance->selectDb("", "", "", "", atk_array_merge($this->m_destInstance->descriptorFields(), $this->m_destInstance->m_primaryKey));
         $result = '<select class="form-control"';
         if ($extended) {
-            $result.='multiple="multiple" size="' . min(5, count($recordset) + 1) . '"';
+            $result.='multiple="multiple" size="' . min(5, atkcount($recordset) + 1) . '"';
         }
 
         $result.='name="' . $this->getSearchFieldName($fieldprefix) . '[]">';
@@ -745,7 +745,7 @@ class atkManyToManyRelation extends atkRelation
             $result .= '<option value="">' . atktext("search_all", "atk") . '</option>';
         }
 
-        for ($i = 0; $i < count($recordset); $i++) {
+        for ($i = 0; $i < atkcount($recordset); $i++) {
             $pk = $recordset[$i][$pkfield];
             if (atk_in_array($pk, $record[$this->fieldName()]))
                 $sel = ' selected="selected"';
@@ -776,12 +776,12 @@ class atkManyToManyRelation extends atkRelation
         // We only support 'exact' matches.
         // But you can select more than one value, which we search using the IN() statement,
         // which should work in any ansi compatible database.
-        if (is_array($value) && count($value) > 0 && $value[0] != "") { // This last condition is for when the user selected the 'search all' option, in which case, we don't add conditions at all.
+        if (is_array($value) && atkcount($value) > 0 && $value[0] != "") { // This last condition is for when the user selected the 'search all' option, in which case, we don't add conditions at all.
             $this->createLink();
             $query->addJoin($this->m_linkInstance->m_table, $this->fieldName(), $table . "." . $ownerFields[0] . "=" . $this->fieldName() . "." . $this->getLocalKey(), FALSE);
             $query->setDistinct(TRUE);
 
-            if (count($value) == 1) { // exactly one value
+            if (atkcount($value) == 1) { // exactly one value
                 $query->addSearchCondition($query->exactCondition($this->fieldName() . "." . $this->getRemoteKey(), $this->escapeSQL($value[0])));
             } else { // search for more values using IN()
                 $query->addSearchCondition($this->fieldName() . "." . $this->getRemoteKey() . " IN ('" . implode("','", $value) . "')");

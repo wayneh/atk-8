@@ -73,7 +73,7 @@ class atkSecurityManager
      */
     function notifyListeners($event, $username, $message = "")
     {
-        for ($i = 0, $_i = count($this->m_listeners); $i < $_i; $i++)
+        for ($i = 0, $_i = atkcount($this->m_listeners); $i < $_i; $i++)
                 $this->m_listeners[$i]->handleEvent($event, $username, $message);
     }
 
@@ -132,7 +132,7 @@ class atkSecurityManager
         atkimport("atk.security.auth_interface");
 
         $tmp_listeners = atkconfig("security_listeners", "atk.security.atksecuritylistener");
-        if (is_array($tmp_listeners) && (count($tmp_listeners) > 0)) {
+        if (is_array($tmp_listeners) && (atkcount($tmp_listeners) > 0)) {
             foreach ($tmp_listeners as $listener_name) {
                 $this->addListener(atknew($listener_name));
             }
@@ -182,7 +182,7 @@ class atkSecurityManager
         $usernode = &atkGetNode(atkconfig("auth_usernode"));
         $selector = sprintf("%s.%s = '%s'", atkconfig("auth_usertable"), atkconfig("auth_userfield"), $username);
         $userrecords = $usernode->selectDb($selector, "", "", "", array(atkconfig("auth_userpk"), atkconfig("auth_emailfield"), atkconfig("auth_passwordfield")), "edit");
-        if (count($userrecords) != 1) {
+        if (atkcount($userrecords) != 1) {
             atkdebug("User '$username' not found.");
             return false;
         }
@@ -646,7 +646,7 @@ class atkSecurityManager
 
             $userField = '<select id="auth_user" name="auth_user" class="form-control">' . "\n";
 
-            for ($i = 0, $_i = count($userlist); $i < $_i; $i++) {
+            for ($i = 0, $_i = atkcount($userlist); $i < $_i; $i++) {
                 $selected = "";
                 if (trim(strtolower($defaultname)) == strtolower(trim($userlist[$i]["userid"]))) {
                     $selected = " selected";
@@ -705,7 +705,7 @@ class atkSecurityManager
     {
         if (is_array($level)) {
             if (is_array($this->m_user["level"])) {
-                return (count(array_intersect($this->m_user["level"], $level)) >= 1);
+                return (atkcount(array_intersect($this->m_user["level"], $level)) >= 1);
             } else {
                 return in_array($this->m_user["level"], $level);
             }

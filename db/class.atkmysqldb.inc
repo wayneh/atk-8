@@ -593,7 +593,7 @@ class atkMysqlDb extends atkDb
     function tableExists($table)
     {
         $res = $this->getrows("SHOW TABLES LIKE '$table'");
-        return (count($res) == 0 ? false : true);
+        return (atkcount($res) == 0 ? false : true);
     }
 
     /**

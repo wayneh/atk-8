@@ -577,7 +577,7 @@ function tln_fixatts(
                 $attary{$attname} = '"disallowed character"';
             }
             preg_match_all("/url\s*\((.+)\)/si", $attvalue, $aMatch);
-            if (count($aMatch)) {
+            if (atkcount($aMatch)) {
                 foreach($aMatch[1] as $sMatch) {
                     $urlvalue = $sMatch;
                     tln_fixurl($attname, $urlvalue, $trans_image_path, $block_external_images);
@@ -759,7 +759,7 @@ function tln_fixstyle($body, $pos, $trans_image_path, $block_external_images)
 
     $content = preg_replace("/(\\\\)?u(\\\\)?r(\\\\)?l(\\\\)?/i", 'url', $content);
     preg_match_all("/url\s*\((.+)\)/si",$content,$aMatch);
-    if (count($aMatch)) {
+    if (atkcount($aMatch)) {
         $aValue = $aReplace = array();
         foreach($aMatch[1] as $sMatch) {
             // url value

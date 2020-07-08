@@ -392,7 +392,7 @@ class atkPgsqlDb extends atkDb
         }
 
         if ($full)
-            $meta['num_fields'] = count($rows);
+            $meta['num_fields'] = atkcount($rows);
 
         return $meta;
     }
@@ -427,7 +427,7 @@ class atkPgsqlDb extends atkDb
     function tableExists($table)
     {
         $res = $this->getrows("SELECT relname FROM pg_class WHERE relkind = 'r' AND UPPER(relname) = UPPER('" . $table . "')");
-        return (count($res) == 0 ? false : true);
+        return (atkcount($res) == 0 ? false : true);
     }
 
     /**

@@ -184,7 +184,7 @@ class atkTagAttribute extends atkFuzzySearchAttribute
             $html = $this->displayDefaultTags($prefix);
 
             //only refill the record, if we are not in TA_ERROR mode, and no errors are found.
-            if (!(count($this->m_nonematching) && $this->m_mode == TA_ERROR))
+            if (!(atkcount($this->m_nonematching) && $this->m_mode == TA_ERROR))
                 $rec[$this->fieldName()] = $this->refillRecord($rec);
 
             $html .= atkTextAttribute::edit($rec, $prefix, $mode);
@@ -210,9 +210,9 @@ class atkTagAttribute extends atkFuzzySearchAttribute
 
         $html = '<div id="' . $this->fieldName() . '_tags">';
 
-        if (count($defaults)) {
+        if (atkcount($defaults)) {
             $html.= $this->text("available_default_tags") . ": ";
-            for ($i = 0, $_i = count($defaults); $i < $_i; $i++) {
+            for ($i = 0, $_i = atkcount($defaults); $i < $_i; $i++) {
                 $key = $defaults[$i][$this->m_destinationfield];
 
                 $jsclick = "ta_addTag('$id', '$key');";
@@ -341,7 +341,7 @@ class atkTagAttribute extends atkFuzzySearchAttribute
 
         //loop through all the matches for each keyword
         foreach ($this->m_matches as $keyword => $matches) {
-            $cnt_matches = count($matches);
+            $cnt_matches = atkcount($matches);
             //We remember the none-matching ones.
             if (!$cnt_matches)
                 $no_match[] = $keyword;
@@ -397,7 +397,7 @@ class atkTagAttribute extends atkFuzzySearchAttribute
 
         //loop through all the matches for each keyword
         foreach ($this->m_matches as $keyword => $matches) {
-            $cnt_matches = count($matches);
+            $cnt_matches = atkcount($matches);
 
             //We remember the none-matching ones.
             if (!$cnt_matches)
@@ -412,7 +412,7 @@ class atkTagAttribute extends atkFuzzySearchAttribute
         }
 
         //if we are in the TA_ADD mode, we add the none-matching keywords.
-        if (count($no_match) && $this->m_mode == TA_ADD) {
+        if (atkcount($no_match) && $this->m_mode == TA_ADD) {
             // add default keyword
             foreach ($no_match as $keyword) {
                 $defaultsRec[$this->m_destinationfield] = $keyword;

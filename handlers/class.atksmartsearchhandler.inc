@@ -126,7 +126,7 @@ class atkSmartSearchHandler extends atkAbstractSearchHandler
         $path = $this->getNodeAndAttrPath($attrNames);
         $path = array_slice($path, $field_nr + 1);
 
-        if (count($path) > 0) {
+        if (atkcount($path) > 0) {
             return $this->getCriteriumField($criterium_id, $path, $scriptCode) .
                 '<script language="javascript">' . implode("\n", $scriptCode) . '</script>';
         } else {
@@ -150,7 +150,7 @@ class atkSmartSearchHandler extends atkAbstractSearchHandler
         $attrNames = array_slice($attrNames, 0, $field_nr + 1);
         $path = $this->getNodeAndAttrPath($attrNames);
 
-        if (count($path) == $field_nr + 1) {
+        if (atkcount($path) == $field_nr + 1) {
             if ($type == "mode") {
                 return $this->getCriteriumMode($criterium_id, $path);
             } else {
@@ -184,7 +184,7 @@ class atkSmartSearchHandler extends atkAbstractSearchHandler
      */
     function redirectToResults($criteria)
     {
-        for ($i = 0, $_i = count($criteria); $i < $_i; $i++) {
+        for ($i = 0, $_i = atkcount($criteria); $i < $_i; $i++) {
             $attrs = &$criteria[$i]['attrs'];
             if ($attrs[count($attrs) - 1] == '.')
                 array_pop($attrs);
@@ -260,7 +260,7 @@ class atkSmartSearchHandler extends atkAbstractSearchHandler
      */
     function getAttributeList($entry)
     {
-        if (count($entry['attrs']) == 1 && !$entry['includeSelf']) {
+        if (atkcount($entry['attrs']) == 1 && !$entry['includeSelf']) {
             $attr = &$entry['attrs'][0];
             $label = is_a($attr, 'atkmanytoonerelation') ? '' : atk_htmlentities(strip_tags($attr->label()));
             return $label . '<input type="hidden" name="' . $entry['name'] . '" value="' . $attr->fieldName() . '">';
@@ -277,7 +277,7 @@ class atkSmartSearchHandler extends atkAbstractSearchHandler
         }
 
         $current = &$entry['attr'];
-        for ($i = 0, $_i = count($entry['attrs']); $i < $_i; $i++) {
+        for ($i = 0, $_i = atkcount($entry['attrs']); $i < $_i; $i++) {
             $attr = &$entry['attrs'][$i];
             $selected = $current != NULL && $attr->fieldName() == $current->fieldName()
                     ? ' selected="selected"' : '';
@@ -317,10 +317,10 @@ class atkSmartSearchHandler extends atkAbstractSearchHandler
     {
         $attr = &$node->getAttribute($attrName);
 
-        $nr = count($path);
+        $nr = atkcount($path);
         $attrs = $this->getSearchableAttributes($node, $excludes);
 
-        if (count($attrs) == 1 && !$includeSelf) {
+        if (atkcount($attrs) == 1 && !$includeSelf) {
             $attr = &$attrs[0];
         }
 
@@ -383,17 +383,17 @@ class atkSmartSearchHandler extends atkAbstractSearchHandler
     {
         $prefix = "criteria[{$id}][attrs]";
 
-        for ($i = 0, $_i = count($path); $i < $_i; $i++) {
+        for ($i = 0, $_i = atkcount($path); $i < $_i; $i++) {
             $entry = &$path[$i];
             $entry['name'] = "{$prefix}[{$entry[nr]}]";
             $entry['field'] = $this->getAttributeList($entry);
         }
 
         $result = '';
-        for ($i = count($path) - 1, $_i = 0; $i >= $_i; $i--) {
+        for ($i = atkcount($path) - 1, $_i = 0; $i >= $_i; $i--) {
             $entry = &$path[$i];
             $fieldName = "criterium_{$id}_{$entry[nr]}_other";
-            $readOnly = count($entry['attrs']) == 1 && !$entry['includeSelf'];
+            $readOnly = atkcount($entry['attrs']) == 1 && !$entry['includeSelf'];
             $hasLabel = !$readOnly || !is_a($entry['attr'], 'atkmanytoonerelation');
 
             if (!$readOnly) {

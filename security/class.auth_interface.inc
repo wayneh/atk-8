@@ -154,7 +154,7 @@ class auth_interface
         else {
             $required = $this->getEntity($node, $privilege);
 
-            if (count($required) == 0) {
+            if (atkcount($required) == 0) {
                 // No access restrictions found..
                 // so either nobody or anybody can perform this
                 // operation, depending on the configuration.
@@ -166,7 +166,7 @@ class auth_interface
                 } else if ($securityMgr->m_scheme == "group") {
                     // user may have more then one level
                     if (is_array($securityMgr->m_user["level"])) {
-                        $allowed = (count(array_intersect($securityMgr->m_user["level"], $required)) > 0);
+                        $allowed = (atkcount(array_intersect($securityMgr->m_user["level"], $required)) > 0);
                     } else {
                         // user has only one level
                         $allowed = in_array($securityMgr->m_user["level"], $required);

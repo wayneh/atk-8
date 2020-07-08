@@ -63,7 +63,7 @@ class atkEditCopyHandler extends atkActionHandler
     {
         $selector = $this->m_postvars['atkselector'];
         $recordset = $this->m_node->selectDb($selector, "", "", "", "", "copy");
-        if (count($recordset) > 0) {
+        if (atkcount($recordset) > 0) {
             return $recordset[0];
         } else {
             atkdebug("Geen records gevonden met selector: $selector");

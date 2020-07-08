@@ -286,7 +286,7 @@ class atkWysiwygAttribute extends atkTextAttribute
             }
 
             // echo the buttons:
-            for ($i = 0, $_i = count($btns["buttons"]); $i < $_i; $i++) {
+            for ($i = 0, $_i = atkcount($btns["buttons"]); $i < $_i; $i++) {
                 $result.='<td valign="middle">' . $btns["buttons"][$i];
             }
             $btncnt+=$btns["size"];

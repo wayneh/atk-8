@@ -444,7 +444,7 @@ class atkAttributeEditHandler extends atkActionHandler
 
             // You cannot give multiple records a value for a field that should be unique.
             $atkselector = $this->getSelector();
-            if (isset($atkselector) && count($atkselector) > 1 && $attr->hasFlag(AF_UNIQUE))
+            if (isset($atkselector) && atkcount($atkselector) > 1 && $attr->hasFlag(AF_UNIQUE))
                 continue;
 
             // You cannot update readonly fields

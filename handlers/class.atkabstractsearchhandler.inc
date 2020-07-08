@@ -179,7 +179,7 @@ abstract class atkAbstractSearchHandler extends atkActionHandler
     function getLoadCriteria($current)
     {
         $criteria = $this->listCriteria();
-        if (count($criteria) == 0)
+        if (atkcount($criteria) == 0)
             return NULL;
 
         $result = '

@@ -446,9 +446,9 @@ class atkSessionManager
         // Prevent going more than 1 level above the current stack top which
         // causes a new stackitem to be pushed onto the stack at the wrong
         // location.
-        if ($atklevel > count($stack)) {
+        if ($atklevel > atkcount($stack)) {
             atkdebug("Requested ATKLevel (" . $atklevel . ") too high for stack, lowering to " . count($stack));
-            $atklevel = count($stack);
+            $atklevel = atkcount($stack);
         }
 
         if (isset($postvars["atkescape"]) && $postvars["atkescape"] != "") {
@@ -501,14 +501,14 @@ class atkSessionManager
                 // Note that the atklevel is now -2. This is actually wrong. We are at
                 // some level in the stack. We can determine the real level by
                 // counting the stack.
-                $atklevel = count($stack);
+                $atklevel = atkcount($stack);
             } else if ($atklevel == -3) { // SESSION_PARTIAL
                 $partial = true;
 
                 // Note that the atklevel is now -3. This is actually wrong. We are at
                 // some level in the stack. We can determine the real level by
                 // counting the stack.
-                $atklevel = count($stack) - 1;
+                $atklevel = atkcount($stack) - 1;
             }
 
             if (isset($stack[$atklevel]))
@@ -558,7 +558,7 @@ class atkSessionManager
             } else {
                 // Stay at the current level..
                 // If we are getting back from a higher level, we may now delete everything above
-                $deletecount = (count($stack) - 1) - $atklevel;
+                $deletecount = (atkcount($stack) - 1) - $atklevel;
                 for ($i = 0; $i < $deletecount; $i++) {
                     atkdebug("popped an item out of the stack");
                     array_pop($stack);
@@ -568,7 +568,7 @@ class atkSessionManager
                     $recursive = $var{strlen($var) - 1} == '*';
                     $var = $recursive ? substr($var, 0, -1) : $var;
 
-                    if (isset($postvars[$var]) && count($postvars[$var]) > 0 && (!$partial || !in_array($var, $lockedVars))) {
+                    if (isset($postvars[$var]) && atkcount($postvars[$var]) > 0 && (!$partial || !in_array($var, $lockedVars))) {
                         if ($recursive && is_array($currentitem[$var]) && is_array($postvars[$var])) {
                             $currentitem[$var] = atk_array_merge_recursive($currentitem[$var], $postvars[$var]);
                         } else {
@@ -582,7 +582,7 @@ class atkSessionManager
 
                 // session vars need not be remembered..
                 foreach ($sessionVars as $var) {
-                    if (isset($postvars[$var]) && count($postvars[$var]) > 0 && (!$partial || !in_array($var, $lockedVars))) {
+                    if (isset($postvars[$var]) && atkcount($postvars[$var]) > 0 && (!$partial || !in_array($var, $lockedVars))) {
                         $currentitem[$var] = $postvars[$var];
                     }
                 }
@@ -636,7 +636,7 @@ class atkSessionManager
         $res = array();
         $stack = $g_sessionData[$this->m_namespace]["stack"][atkStackID()];
 
-        for ($i = 0; $i < count($stack); $i++) {
+        for ($i = 0; $i < atkcount($stack); $i++) {
             if (!isset($stack[$i]["atknodetype"]))
                 continue;
 
@@ -657,7 +657,7 @@ class atkSessionManager
                 'actiontitle' => atktext($action, $module, $type)
             );
 
-            if ($i < count($stack) - 1) {
+            if ($i < atkcount($stack) - 1) {
                 $entry['url'] = session_url(getDispatchFile() . '?atklevel=' . $i);
             }
 
@@ -683,7 +683,7 @@ class atkSessionManager
         $stack = $g_sessionData[$this->m_namespace]["stack"][atkStackID()];
         $res = array();
 
-        $stackcount = count($stack);
+        $stackcount = atkcount($stack);
         for ($i = 0; $i < $stackcount; $i++) {
             if (isset($stack[$i]["descriptor"]) || $i == ($stackcount - 1)) {
                 if ($stack[$i]["atknodetype"] != "") {
@@ -728,7 +728,7 @@ class atkSessionManager
         if (!is_array($stack))
             $prevlevelfromstack = 0;
         else
-            $prevlevelfromstack = count($stack) - 1;
+            $prevlevelfromstack = atkcount($stack) - 1;
 
         $oldStackId = atkStackID();
 
@@ -745,7 +745,7 @@ class atkSessionManager
             // (there may be more levels on the stack than we should have, because
             // we forked from another window which might already be at a higher
             // stack level).
-            $deletecount = (count($stack) - 1) - $atkprevlevel;
+            $deletecount = (atkcount($stack) - 1) - $atkprevlevel;
             for ($i = 0; $i < $deletecount; $i++) {
                 atkdebug("popped an item out of the forked stack");
                 array_pop($stack);
@@ -886,7 +886,7 @@ class atkSessionManager
         $res .= '<input type="hidden" name="' . session_name() . '" value="' . session_id() . '" />';
         $res .= '<input type="hidden" name="atkescape" value="" autocomplete="off" />';
 
-        for ($i = 0; $i < count($g_stickyurl); $i++) {
+        for ($i = 0; $i < atkcount($g_stickyurl); $i++) {
             $value = $GLOBALS[$g_stickyurl[$i]];
             if ($value != "") {
                 $res.="\n" . '<input type="hidden" name="' . $g_stickyurl[$i] . '" value="' . $value . '" />';
@@ -922,7 +922,7 @@ class atkSessionManager
         }
         $vars.= "&" . SID;
 
-        for ($i = 0; $i < count($g_stickyurl); $i++) {
+        for ($i = 0; $i < atkcount($g_stickyurl); $i++) {
             $value = $GLOBALS[$g_stickyurl[$i]];
             if ($value != "") {
                 if (substr($vars, -1) != "&")

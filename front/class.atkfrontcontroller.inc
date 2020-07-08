@@ -1075,7 +1075,7 @@ class atkFrontController implements ArrayAccess
                         : '') . $template;
         } else {
             $parts = explode('/', $template);
-            $template = implode('/', array_slice($parts, 0, count($parts) - 1)) . '/' . ($partial
+            $template = implode('/', array_slice($parts, 0, atkcount($parts) - 1)) . '/' . ($partial
                         ? '_' : '') . $parts[count($parts) - 1];
         }
 

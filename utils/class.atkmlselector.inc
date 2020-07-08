@@ -77,7 +77,7 @@ class atkMLSelector extends atkSelector
 
             foreach ($rows as $row) {
                 if (!in_array($row[$this->_getNode()->primaryKeyField()], $ids)) {
-                    $key = count($result);
+                    $key = atkcount($result);
                     $result[$key][] = $row;
                     $ids[] = $row[$this->_getNode()->primaryKeyField()];
                     $indexes[] = $key;

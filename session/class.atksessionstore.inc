@@ -236,7 +236,7 @@ class atkSessionStore
         $selector = decodeKeyValuePair($selector);
         $selector_values = array_values($selector);
 
-        if (count($selector_values) === 1 && is_numeric($selector_values[0]) && $selector_values[0] <= 0) {
+        if (atkcount($selector_values) === 1 && is_numeric($selector_values[0]) && $selector_values[0] <= 0) {
             return -1 * $selector_values[0];
         }
         return false;

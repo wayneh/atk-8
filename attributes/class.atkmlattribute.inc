@@ -139,7 +139,7 @@ class atkMlAttribute extends atkAttribute
             $entry["sections"] = $this->m_sections;
 
             /* first language of other languages */
-            $entry["html"] = '<input type="text" name="' . $fieldprefix . $this->formName() . '[' . (count($this->m_languages) == 2
+            $entry["html"] = '<input type="text" name="' . $fieldprefix . $this->formName() . '[' . (atkcount($this->m_languages) == 2
                         ? $curlng : "multilanguage") . ']"' .
                 ' value="' . htmlspecialchars($defaults[$this->fieldName()][$curlng]) . '"' .
                 ($this->m_size > 0 ? ' size="' . $this->m_size . '"' : '') .
@@ -188,7 +188,7 @@ class atkMlAttribute extends atkAttribute
     function isEmpty($record)
     {
         $languages = $this->getLanguages();
-        for ($i = 0, $_i = count($languages); $i < $_i; $i++) {
+        for ($i = 0, $_i = atkcount($languages); $i < $_i; $i++) {
             if (isset($record[$this->fieldName()][$languages[$i]]))
                 return 0;
         }
@@ -265,7 +265,7 @@ class atkMlAttribute extends atkAttribute
                 $result = stripslashes($rec[$this->fieldName()]);
             }
         } else {
-            for ($i = 0, $_i = count($languages); $i < $_i; $i++) {
+            for ($i = 0, $_i = atkcount($languages); $i < $_i; $i++) {
                 $result[$languages[$i]] = stripslashes($rec[$this->fieldName() . '_' . $languages[$i]]);
             }
         }
@@ -285,7 +285,7 @@ class atkMlAttribute extends atkAttribute
             return $res;
         } else {
             $languages = $this->getLanguages();
-            for ($i = 0, $_i = count($languages); $i < $_i; $i++) {
+            for ($i = 0, $_i = atkcount($languages); $i < $_i; $i++) {
                 $result[$languages[$i]] = stripslashes($rec[$this->fieldName()][$languages[$i]]);
             }
             return $result;
@@ -319,11 +319,11 @@ class atkMlAttribute extends atkAttribute
         $languages = $this->getLanguages();
         if (!$this->isMlNode()) {
             if ($mode == "add" || $mode == "update") {
-                for ($i = 0, $_i = count($languages); $i < $_i; $i++) {
+                for ($i = 0, $_i = atkcount($languages); $i < $_i; $i++) {
                     $query->addField($this->fieldName() . '_' . $languages[$i], $this->escapeSQL($rec[$this->fieldName()][$languages[$i]]), "", "", !$this->hasFlag(AF_NO_QUOTES));
                 }
             } else {
-                for ($i = 0, $_i = count($languages); $i < $_i; $i++) {
+                for ($i = 0, $_i = atkcount($languages); $i < $_i; $i++) {
                     $query->addField($this->fieldName() . '_' . $languages[$i], "", $tablename, $fieldaliasprefix, !$this->hasFlag(AF_NO_QUOTES));
                 }
             }

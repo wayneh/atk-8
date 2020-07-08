@@ -106,7 +106,7 @@ class atkUrlVault
      */
     function _purge()
     {
-        $cnt = count($this->m_vault);
+        $cnt = atkcount($this->m_vault);
         if ($cnt > $this->m_vaultsize) {
             array_splice($this->m_vault, 0, $cnt - $this->m_vaultsize);
         }

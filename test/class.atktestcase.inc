@@ -322,7 +322,7 @@ abstract class atkTestCase extends PHPUnit_Framework_TestCase
                 //If both $attribName and $entry["attrib_name"] are arrays, we could have a match.
                 if (is_array($attribName) && is_array($entry["attrib_name"])) {
                     //if the number of elements is not the same, we do not have a match.
-                    if (count($attribName) == count($entry["attrib_name"])) {
+                    if (atkcount($attribName) == atkcount($entry["attrib_name"])) {
                         //check if the attributes in the arrays are the same
                         $allIn = true;
                         foreach ($attribName as $att) {

@@ -93,7 +93,7 @@ class atkMlFckAttribute extends atkMlTextAttribute
         $this->m_edited = $fckIsEdited;
 
         $languages = $this->getLanguages();
-        $langCount = count($languages);
+        $langCount = atkcount($languages);
 
         for ($i = 1; $i < $langCount; $i ++) {
             $curlng = $languages[$i];
@@ -137,7 +137,7 @@ class atkMlFckAttribute extends atkMlTextAttribute
 
         if (strstr($fieldname, '[')) {
             preg_match('/^(.+)\[(.+?)\]$/', $fieldname, $matches);
-            if (count($matches) == 3) {
+            if (atkcount($matches) == 3) {
                 $value = $record[$matches[1]][$matches[2]];
             } else {
                 $value = isset($record[$fieldname]) ? $record[$fieldname] : "";

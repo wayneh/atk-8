@@ -1374,7 +1374,7 @@ class atkNode
     function primaryKey($rec)
     {
         $primKey = "";
-        $nrOfElements = count($this->m_primaryKey);
+        $nrOfElements = atkcount($this->m_primaryKey);
         for ($i = 0; $i < $nrOfElements; $i ++) {
             $p_attrib = &$this->m_attribList[$this->m_primaryKey[$i]];
             $primKey.=$this->m_table . "." . $this->m_primaryKey[$i] . "='" . $p_attrib->value2db($rec) . "'";
@@ -1394,7 +1394,7 @@ class atkNode
      */
     function primaryKeyField()
     {
-        if (count($this->m_primaryKey) === 0) {
+        if (atkcount($this->m_primaryKey) === 0) {
             atkwarning($this->atkNodeType() . "::primaryKeyField() called, but there are no primary key fields defined!");
             return null;
         }
@@ -1415,7 +1415,7 @@ class atkNode
     function primaryKeyTpl()
     {
         $primKey = "";
-        $nrOfElements = count($this->m_primaryKey);
+        $nrOfElements = atkcount($this->m_primaryKey);
         for ($i = 0; $i < $nrOfElements; $i ++) {
             $primKey.=$this->m_primaryKey[$i] . "='[" . $this->m_primaryKey[$i] . "]'";
             if ($i < ($nrOfElements - 1))
@@ -1525,8 +1525,8 @@ class atkNode
             $list = &$this->m_tabList[$action];
             if ($new_index < 0)
                 $new_index = 0;
-            if ($new_index > count($list))
-                $new_index = count($list);
+            if ($new_index > atkcount($list))
+                $new_index = atkcount($list);
             $current_index = array_search($tabname, $list);
             if ($current_index !== NULL) {
                 $tmp = array_splice($list, $current_index, 1);
@@ -1588,7 +1588,7 @@ class atkNode
 
             if (is_object($p_attrib)) {
                 $additional = $p_attrib->getAdditionalTabs($action);
-                if (is_array($additional) && count($additional) > 0) {
+                if (is_array($additional) && atkcount($additional) > 0) {
                     $list = atk_array_merge($list, $additional);
                     $this->m_filledTabs = atk_array_merge($this->m_filledTabs, $additional);
                 }
@@ -1671,7 +1671,7 @@ class atkNode
         if (empty($this->m_module))
             return $disable;
 
-        for ($i = 0, $_i = count($tablist); $i < $_i; $i ++) {
+        for ($i = 0, $_i = atkcount($tablist); $i < $_i; $i ++) {
             if ($tablist[$i] == "" || $tablist[$i] == "default")
                 continue;
             $secMgr = &atkGetSecurityManager();
@@ -1907,7 +1907,7 @@ class atkNode
             $nomodule = true;
             $descrtrace = "";
             // only show the last 3 elems
-            $cnt = count($descriptortrace);
+            $cnt = atkcount($descriptortrace);
             if ($maxel > 1 && $cnt > $maxel) {
                 $descrtrace = "... - ";
             }
@@ -1938,9 +1938,9 @@ class atkNode
         $this->addStyle("tabs.css");
         $list = $this->getTabs($action);
         $sections = $this->getSections($action);
-        $tabs = count($list);
+        $tabs = atkcount($list);
 
-        if (count($sections) > 0 || $tabs > 1) {
+        if (atkcount($sections) > 0 || $tabs > 1) {
             $page = &$this->getPage();
             $page->register_script(atkconfig("atkroot") . "atk/javascript/dhtml_tabs.js.php?stateful=" . (atkconfig('dhtml_tabs_stateful')
                         ? 1 : 0));
@@ -2090,7 +2090,7 @@ class atkNode
             /* nodes can define initial values, if they don't already have values. */
             if (!isset($defaults['atkerror'])) { // only load initial values the first time (not after an error occured)
                 $overrides = $this->initial_values();
-                if (is_array($overrides) && count($overrides) > 0) {
+                if (is_array($overrides) && atkcount($overrides) > 0) {
                     foreach ($overrides as $varname => $value) {
                         if (!isset($defaults[$varname]) || $defaults[$varname] == "")
                             $defaults[$varname] = $value;
@@ -2188,7 +2188,7 @@ class atkNode
                     $notOnTab = !$p_attrib->showOnTab($tab);
                 }
 
-                if ((is_array($suppressList) && count($suppressList) > 0 && in_array($attribname, $suppressList)) || $notOnTab) {
+                if ((is_array($suppressList) && atkcount($suppressList) > 0 && in_array($attribname, $suppressList)) || $notOnTab) {
                     $p_attrib->m_flags |= ($mode == "add" ? AF_HIDE_ADD : AF_HIDE_EDIT);
                 }
 
@@ -2283,7 +2283,7 @@ class atkNode
                 $fieldSections = array($fieldSections);
 
             $newSections = array_diff($fieldSections, $addedSections);
-            if (count($newSections) > 0) {
+            if (atkcount($newSections) > 0) {
                 foreach ($newSections as $section) {
                     if (strpos($section, '.') !== FALSE) {
                         $result[] = array("html" => "section", "name" => $section,
@@ -2312,7 +2312,7 @@ class atkNode
         // first find sectionless fields and collect all sections
         foreach ($fields as $field) {
             if ($field["sections"] == "*" ||
-                (count($field["sections"]) == 1 && $field["sections"][0] == $this->m_default_tab)) {
+                (atkcount($field["sections"]) == 1 && $field["sections"][0] == $this->m_default_tab)) {
                 $result[] = $field;
             } else if (is_array($field['sections'])) {
                 $sections = array_merge($sections, $field['sections']);
@@ -2322,7 +2322,7 @@ class atkNode
         $sections = array_unique($sections);
 
         // loop through each section (except the default tab/section) of the mode we are currently in.
-        while (count($sections) > 0) {
+        while (atkcount($sections) > 0) {
             $section = array_shift($sections);
 
             // find fields for this section
@@ -2472,7 +2472,7 @@ class atkNode
 
 
         if (is_array($list)) {
-            $newtab["total"] = count($list);
+            $newtab["total"] = atkcount($list);
             foreach ($list as $t) {
                 $newtab["title"] = $this->text(array("tab_$t", $t));
                 $newtab["tab"] = $t;
@@ -2519,7 +2519,7 @@ class atkNode
         $actions = array();
         $postfix = "";
 
-        if (count($params) > 0) {
+        if (atkcount($params) > 0) {
             foreach ($params as $key => $value) {
                 $postfix.= "&$key=" . rawurlencode($value);
             }
@@ -2656,14 +2656,14 @@ class atkNode
         }
 
         $buttons = $this->getFormButtons($action, array());
-        if (count($buttons) == 0) {
+        if (atkcount($buttons) == 0) {
             $buttons[] = '<input name="confirm" type="submit" class="btn btn-default btn_ok atkdefaultbutton" value="' . $this->text('yes') . '">';
             $buttons[] = '<input name="cancel" type="submit" class="btn btn-default btn_cancel" value="' . $this->text('no') . '">';
         }
 
         $content = "";
         $recs = $this->selectDb($atkselector_str, "", "", "", $this->descriptorFields());
-        if (count($recs) == 1) {
+        if (atkcount($recs) == 1) {
             // 1 record, put it in the page title (with the actionTitle call, a few lines below)
             $record = $recs[0];
             $this->getPage()->setTitle(atktext('app_shorttitle') . " - " . $this->actionTitle($action, $record));
@@ -2674,7 +2674,7 @@ class atkNode
             if ($this->m_descTemplate != NULL || method_exists($this, "descriptor_def")) {
                 $record = "";
                 $content.= "<ul>";
-                for ($i = 0, $_i = count($recs); $i < $_i; $i ++) {
+                for ($i = 0, $_i = atkcount($recs); $i < $_i; $i ++) {
                     $content.="<li>" . str_replace(' ', '&nbsp;', atk_htmlentities($this->descriptor($recs[$i])));
                 }
                 $content.= "</ul>";
@@ -2706,7 +2706,7 @@ class atkNode
         if ($checkoverride && method_exists($this, $method))
             return $this->$method($atkselector);
         else
-            return $this->text("confirm_$action" . (is_array($atkselector) && count($atkselector) > 1
+            return $this->text("confirm_$action" . (is_array($atkselector) && atkcount($atkselector) > 1
                             ? '_multi' : ''));
     }
 
@@ -2917,7 +2917,7 @@ class atkNode
     function setFeedback($action, $statusmask)
     {
         if (is_array($action)) {
-            for ($i = 0, $_i = count($action); $i < $_i; $i ++) {
+            for ($i = 0, $_i = atkcount($action); $i < $_i; $i ++) {
                 $this->m_feedback[$action[$i]] = $statusmask;
             }
         } else {
@@ -2992,7 +2992,7 @@ class atkNode
             $location = atkSessionManager::sessionUrl(atkSelf(), SESSION_BACK, $levelskip);
         }
 
-        if (count($record)) {
+        if (atkcount($record)) {
             if (isset($this->m_postvars["atkpkret"])) {
                 $location.="&" . $this->m_postvars["atkpkret"] . "=" . rawurlencode($this->primaryKey($record));
             }
@@ -3140,9 +3140,9 @@ class atkNode
             // a concatenation of an attributename (probably a relation), and a subfield
             // (a field of the destination node).
             // The actual field is the one in front of the '.'.
-            for ($i = 0, $_i = count($fields); $i < $_i; $i ++) {
+            for ($i = 0, $_i = atkcount($fields); $i < $_i; $i ++) {
                 $elems = explode(".", $fields[$i]);
-                if (count($elems) > 1) {
+                if (atkcount($elems) > 1) {
                     // dot found. attribute is the first item.
                     $fields[$i] = $elems[0];
                 }
@@ -3354,12 +3354,12 @@ class atkNode
             if (!$this->_storeAttributes($storelist["pre"], $record, "update"))
                 return false;
 
-            for ($i = 0, $_i = count($storelist["query"]); $i < $_i; $i ++) {
+            for ($i = 0, $_i = atkcount($storelist["query"]); $i < $_i; $i ++) {
                 $p_attrib = &$this->m_attribList[$storelist["query"][$i]];
                 $p_attrib->addToQuery($query, $this->m_table, "", $record, 1, "update"); // start at level 1
             }
 
-            if (count($query->m_fields) && !$query->executeUpdate())
+            if (atkcount($query->m_fields) && !$query->executeUpdate())
                 return false;
 
             if ($this->hasFlag(NF_ML) && $record["atkmlsplit"] == "") {
@@ -3398,7 +3398,7 @@ class atkNode
     function _storeAttributes($storelist, &$record, $mode)
     {
         // store special storage attributes.
-        for ($i = 0, $_i = count($storelist); $i < $_i; $i ++) {
+        for ($i = 0, $_i = atkcount($storelist); $i < $_i; $i ++) {
             $p_attrib = &$this->m_attribList[$storelist[$i]];
             if (!$p_attrib->store($this->getDb(), $record, $mode)) {
                 // something went wrong.
@@ -3643,7 +3643,7 @@ class atkNode
             }
         }
 
-        if (count($searchConditions)) {
+        if (atkcount($searchConditions)) {
             return "(" . implode(" OR ", $searchConditions) . ")";
         } else {
             return "";
@@ -3697,7 +3697,7 @@ class atkNode
         if (!$this->_storeAttributes($storelist["pre"], $record, $mode))
             return false;
 
-        for ($i = 0, $_i = count($storelist["query"]); $i < $_i; $i ++) {
+        for ($i = 0, $_i = atkcount($storelist["query"]); $i < $_i; $i ++) {
             $p_attrib = &$this->m_attribList[$storelist["query"][$i]];
             $p_attrib->addToQuery($query, $this->m_table, "", $record, 1, 'add'); // start at level 1
         }
@@ -3758,7 +3758,7 @@ class atkNode
                 return false;
             }
 
-            for ($i = 0, $_i = count($this->m_triggerListeners); $i < $_i; $i ++) {
+            for ($i = 0, $_i = atkcount($this->m_triggerListeners); $i < $_i; $i ++) {
                 $listener = &$this->m_triggerListeners[$i];
                 $return = $listener->notify($trigger, $record, $mode);
 
@@ -3801,13 +3801,13 @@ class atkNode
         $recordset = $this->selectDb($selector, "", "", "", "", "delete");
 
         // nothing to delete, throw an error (determined by $failwhenempty)!
-        if (count($recordset) == 0) {
+        if (atkcount($recordset) == 0) {
             atkwarning($this->atknodetype() . "->deleteDb($selector): 0 records found, not deleting anything.");
             return !$failwhenempty;
         }
 
         if ($exectrigger) {
-            for ($i = 0, $_i = count($recordset); $i < $_i; $i ++) {
+            for ($i = 0, $_i = atkcount($recordset); $i < $_i; $i ++) {
                 $return = $this->executeTrigger("preDelete", $recordset[$i]);
                 if (!$return)
                     return false;
@@ -3815,9 +3815,9 @@ class atkNode
         }
 
         // delete on "cascading" attributes (like relations, file attribute) BEFORE the query execution
-        if (count($this->m_cascadingAttribs) > 0) {
-            for ($i = 0, $_i = count($recordset); $i < $_i; $i ++) {
-                for ($j = 0, $_j = count($this->m_cascadingAttribs); $j < $_j; $j ++) {
+        if (atkcount($this->m_cascadingAttribs) > 0) {
+            for ($i = 0, $_i = atkcount($recordset); $i < $_i; $i ++) {
+                for ($j = 0, $_j = atkcount($this->m_cascadingAttribs); $j < $_j; $j ++) {
                     $p_attrib = $this->m_attribList[$this->m_cascadingAttribs[$j]];
                     if (isset($recordset[$i][$this->m_cascadingAttribs[$j]]) && !$p_attrib->isEmpty($recordset[$i])) {
                         if (!$p_attrib->delete($recordset[$i])) {
@@ -3835,9 +3835,9 @@ class atkNode
         if ($query->executeDelete()) {
 
             // postDelete on "cascading" attributes (like relations, file attribute) AFTER the query execution
-            if (count($this->m_cascadingAttribs) > 0) {
-                for ($i = 0, $_i = count($recordset); $i < $_i; $i ++) {
-                    for ($j = 0, $_j = count($this->m_cascadingAttribs); $j < $_j; $j ++) {
+            if (atkcount($this->m_cascadingAttribs) > 0) {
+                for ($i = 0, $_i = atkcount($recordset); $i < $_i; $i ++) {
+                    for ($j = 0, $_j = atkcount($this->m_cascadingAttribs); $j < $_j; $j ++) {
                         $p_attrib = $this->m_attribList[$this->m_cascadingAttribs[$j]];
                         if (isset($recordset[$i][$this->m_cascadingAttribs[$j]]) && !$p_attrib->isEmpty($recordset[$i])) {
                             if (!$p_attrib->postDelete($recordset[$i])) {
@@ -3850,7 +3850,7 @@ class atkNode
             }
 
             if ($exectrigger) {
-                for ($i = 0, $_i = count($recordset); $i < $_i; $i ++) {
+                for ($i = 0, $_i = atkcount($recordset); $i < $_i; $i ++) {
                     $return = ($this->executeTrigger("postDel", $recordset[$i]) && $this->executeTrigger("postDelete", $recordset[$i]));
                     if (!$return)
                         return false;
@@ -4193,7 +4193,7 @@ class atkNode
 
         if (strpos($action, ".") !== false) {
             $complete = explode(".", $action);
-            if (count($complete) == 3) {
+            if (atkcount($complete) == 3) {
                 $alias = $complete[0] . "." . $complete[1];
                 $action = $complete[2];
             } else {
@@ -4634,7 +4634,7 @@ class atkNode
      */
     function notify($action, $record)
     {
-        for ($i = 0, $_i = count($this->m_actionListeners); $i < $_i; $i ++) {
+        for ($i = 0, $_i = atkcount($this->m_actionListeners); $i < $_i; $i ++) {
             $this->m_actionListeners[$i]->notify($action, $record);
         }
     }
@@ -4647,7 +4647,7 @@ class atkNode
      */
     function preNotify($action, &$record)
     {
-        for ($i = 0, $_i = count($this->m_actionListeners); $i < $_i; $i ++) {
+        for ($i = 0, $_i = atkcount($this->m_actionListeners); $i < $_i; $i ++) {
             $this->m_actionListeners[$i]->preNotify($action, $record);
         }
     }

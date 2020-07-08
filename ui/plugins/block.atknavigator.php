@@ -105,7 +105,7 @@ function smarty_block_atknavigator($params, $content, &$smarty, &$repeat)
                 'type' => 'page',
                 'page' => $i,
                 'offset' => max(0, ($i - 1) * $limit),
-                'isFirst' => count($pages) == 0,
+                'isFirst' => atkcount($pages) == 0,
                 'isLast' => $currentPage == $lastPage,
                 'isCurrent' => $i == $currentPage
             );
@@ -134,7 +134,7 @@ function smarty_block_atknavigator($params, $content, &$smarty, &$repeat)
     } else {
         $loopToggles[$name] = true;
 
-        $repeat = count($loopPages[$name]) > 0;
+        $repeat = atkcount($loopPages[$name]) > 0;
         if (!$repeat) {
             unset($loopPages[$name]);
             unset($loopToggles[$name]);

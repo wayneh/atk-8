@@ -112,7 +112,7 @@ class atkCountryAttribute extends atkListAttribute
             }
         }
 
-        if (count($custom_list) == 0) {
+        if (atkcount($custom_list) == 0) {
             atkerror('atkCountryAttribute: setList: empty custom country list');
             return false;
         }

@@ -64,7 +64,7 @@ class auth_pop3 extends auth_interface
             $res = $db->getrows("SELECT auth_server
                                FROM " . atkconfig("auth_usertable") . "
                               WHERE " . atkconfig("auth_userfield") . "='" . $user . "'");
-            if (count($res) == 0) {
+            if (atkcount($res) == 0) {
                 // User not found.
                 return AUTH_MISMATCH;
             }

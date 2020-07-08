@@ -36,7 +36,7 @@ class atkDGNoRecordsFound extends atkDGComponent
         $grid = $this->getGrid();
 
         $usesIndex = $grid->getIndex() != null;
-        $isSearching = is_array($grid->getPostvar('atksearch')) && count($grid->getPostvar('atksearch')) > 0;
+        $isSearching = is_array($grid->getPostvar('atksearch')) && atkcount($grid->getPostvar('atksearch')) > 0;
 
         if ($grid->getCount() == 0 && ($usesIndex || $isSearching)) {
             return $grid->text('datagrid_norecordsfound_search');

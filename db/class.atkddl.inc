@@ -342,7 +342,7 @@ class atkDDL
      */
     function buildPrimaryKey($fieldlist = array())
     {
-        if (count($fieldlist) > 0) {
+        if (atkcount($fieldlist) > 0) {
             return "PRIMARY KEY (" . implode(", ", $fieldlist) . ")";
         }
         return "";
@@ -417,7 +417,7 @@ class atkDDL
     function buildFields()
     {
         $fields = $this->_buildFieldsArray();
-        if (count($fields) > 0)
+        if (atkcount($fields) > 0)
             return implode(",\n", $fields);
         else
             return "";
@@ -448,7 +448,7 @@ class atkDDL
     function buildConstraints()
     {
         $constraints = $this->_buildConstraintsArray();
-        if (count($constraints) > 0)
+        if (atkcount($constraints) > 0)
             return implode(",\n", $constraints);
         else
             return "";
@@ -491,8 +491,8 @@ class atkDDL
             $this->m_db = &atkGetDb();
 
         $queries = $this->buildAlter();
-        if (count($queries) > 0) {
-            for ($i = 0, $_i = count($queries); $i < $_i; $i++) {
+        if (atkcount($queries) > 0) {
+            for ($i = 0, $_i = atkcount($queries); $i < $_i; $i++) {
                 if ($queries[$i] != "") {
                     if (!$this->m_db->query($queries[$i]))
                         return false;

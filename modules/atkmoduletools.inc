@@ -63,7 +63,7 @@ $GLOBALS['g_nodeControllers'] = array();
 function getNodeType($node)
 {
     $arr = explode(".", $node);
-    if (count($arr) == 2)
+    if (atkcount($arr) == 2)
         return $arr[1];
     else
         return $node;
@@ -77,7 +77,7 @@ function getNodeType($node)
 function getNodeModule($node)
 {
     $arr = explode(".", $node);
-    if (count($arr) == 2)
+    if (atkcount($arr) == 2)
         return $arr[0];
     else
         return "";
@@ -569,13 +569,13 @@ function atkPreloadModule($modname, $modpath)
     $listeners = array();
     include_once($filename);
 
-    for ($i = 0, $_i = count($modifiers); $i < $_i; $i++)
+    for ($i = 0, $_i = atkcount($modifiers); $i < $_i; $i++)
         $g_modifiers[$modifiers[$i]][] = $modname;
 
-    if (count($overloaders) > 0)
+    if (atkcount($overloaders) > 0)
         $g_overloaders = array_merge($g_overloaders, $overloaders);
 
-    if (count($listeners) > 0)
+    if (atkcount($listeners) > 0)
         $g_nodeListeners = array_merge_recursive($g_nodeListeners, $listeners);
 }
 

@@ -724,7 +724,7 @@ class atkController
      */
     function getHiddenVarsString()
     {
-        if (count($this->m_hidden_vars) == 0)
+        if (atkcount($this->m_hidden_vars) == 0)
             return "";
         foreach ($this->m_hidden_vars as $hiddenVarName => $hiddenVarValue) {
             $varString .= '<input type="hidden" name="' . $hiddenVarName . '" value="' . $hiddenVarValue . '">';

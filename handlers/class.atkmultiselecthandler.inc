@@ -65,7 +65,7 @@ class atkMultiSelectHandler extends atkAdminHandler
         $atktargetvar = $node->m_postvars['atktargetvar'];
         $atktargettpl = $node->m_postvars['atktargetvartpl'];
 
-        for ($i = 0; $i < count($recordset); $i++) {
+        for ($i = 0; $i < atkcount($recordset); $i++) {
             if ($i == 0 && strpos($atktarget, '&') === false)
                 $atktarget.= '?';
             else

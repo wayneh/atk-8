@@ -375,7 +375,7 @@ class atkdb2db extends atkDb
                 $query .= " AND TABLE_SCHEMA = '{$dbconfig['i5_lib']}'";
             $result_metadata = $this->getRows($query);
 
-            for ($i = 0, $_i = count($result_metadata); $i < $_i; $i++) {
+            for ($i = 0, $_i = atkcount($result_metadata); $i < $_i; $i++) {
                 $result[$i]["table"] = $result_metadata[$i]['table_schema'] . "." . $result_metadata[$i]['table_name'];
                 $result[$i]["table_type"] = NULL;
                 $result[$i]["name"] = strtolower($result_metadata[$i]['column_name']);
@@ -456,7 +456,7 @@ class atkdb2db extends atkDb
             $query .= " AND TABLE_SCHEMA = '{$dbconfig['i5_lib']}'";
 
         $res = $this->getrows($query);
-        return (count($res) == 0 ? false : true);
+        return (atkcount($res) == 0 ? false : true);
     }
 
     /**
@@ -556,7 +556,7 @@ class atkdb2db extends atkDb
         // parameters.
         if ($offset == -1 && $limit == -1) {
             $lines = explode("\n", $query);
-            if (count($lines) > 0 && strpos($lines[count($lines) - 1], 'LIMIT') === 0) {
+            if (atkcount($lines) > 0 && strpos($lines[count($lines) - 1], 'LIMIT') === 0) {
                 $last = array_pop($lines);
                 $query = implode("\n", $lines);
                 if (preg_match('/LIMIT ([0-9]+) OFFSET ([0-9]+)/', $last, $matches)) {
@@ -581,8 +581,8 @@ class atkdb2db extends atkDb
                 $result[] = $this->m_record;
         }
 
-        if (is_array($result) && count($result) > 0 && is_array($replaceEbcdic) && count($replaceEbcdic) > 0) {
-            for ($i = 0, $_i = count($result); $i < $_i; $i++) {
+        if (is_array($result) && atkcount($result) > 0 && is_array($replaceEbcdic) && atkcount($replaceEbcdic) > 0) {
+            for ($i = 0, $_i = atkcount($result); $i < $_i; $i++) {
                 foreach ($replaceEbcdic as $colname)
                     $result[$i][$colname] = ebcdic2ascii($result[$i][$colname]);
             }

@@ -67,7 +67,7 @@ class atkManyBoolRelation extends atkManyToManyRelation
         $selectedPk = $this->getSelectedRecords($record);
 
         $recordset = $this->_getSelectableRecords($record, $mode);
-        $total_records = count($recordset);
+        $total_records = atkcount($recordset);
         if ($total_records > 0) {
             $page = &atkPage::getInstance();
             $page->register_script(atkconfig("atkroot") . "atk/javascript/class.atkprofileattribute.js.php");
@@ -109,7 +109,7 @@ class atkManyBoolRelation extends atkManyToManyRelation
 
                 $inputId = $this->getHtmlId($fieldprefix) . '_' . $i;
 
-                if (count($this->m_onchangecode)) {
+                if (atkcount($this->m_onchangecode)) {
                     $onchange = ' onChange="' . $inputId . '_onChange(this);"';
                     $this->_renderChangeHandler($fieldprefix, '_' . $i);
                 } else {

@@ -65,7 +65,7 @@ class atkmlsplitter
             return $node->getLanguages();
         }
         $lngs = atkconfig("supported_languages");
-        for ($i = 0, $_i = count($lngs); $i < $_i; $i++)
+        for ($i = 0, $_i = atkcount($lngs); $i < $_i; $i++)
             $lngs[$i] = strtoupper($lngs[$i]);
         return $lngs;
     }
@@ -157,7 +157,7 @@ class atkmlsplitter
 
             // check if we have any locally generated excludes. If needed we merge
             // them with the parameter excludes
-            if (count($excludelist)) {
+            if (atkcount($excludelist)) {
                 if (is_array($excludes)) {
                     $excludes = array_unique(array_merge($excludes, $excludelist));
                 } else {
@@ -227,7 +227,7 @@ class atkmlsplitter
     {
         $hasrelationwithmlnode = $this->getMlNodes($node);
         $languages = $this->getLanguages($node);
-        if (count($languages) != count($recordset)) {
+        if (atkcount($languages) != atkcount($recordset)) {
             $recordset = $this->addLngRecords($node, $recordset);
         }
         $this->mergeMlRecords($node, $recordset);
@@ -290,10 +290,10 @@ class atkmlsplitter
         $newrecordset = Array();
         $languages = $this->getLanguages($node);
         atkdebug("atkmlsplitter adding missings lngrecord for " . $node->m_type . "!");
-        for ($i = 0, $max = count($languages); $i < $max; $i++) {
+        for ($i = 0, $max = atkcount($languages); $i < $max; $i++) {
             $index = NULL;
             if (!$this->hasLngRecord($node, $recordset, $languages[$i], $index)) {
-                $recordcount = count($newrecordset);
+                $recordcount = atkcount($newrecordset);
                 $newrecordset[$recordcount] = $recordset[0]; // assume that the first record is OK.
                 $newrecordset[$recordcount][$node->m_lngfield] = $languages[$i];
 
@@ -324,7 +324,7 @@ class atkmlsplitter
         $i = $this->searchRecordDefaultLanguage($recordset, $node->m_defaultlanguage);
         $ml_record[0] = $recordset[$i]; // assume this is the record with the default language
         $ml_record[0]["atklngrecordmodes"] = Array();
-        for ($i = 0, $max = count($recordset); $i < $max; $i++) {
+        for ($i = 0, $max = atkcount($recordset); $i < $max; $i++) {
             if (is_array($recordset[$i]["atklngrecordmodes"]))  // keep track off atkactions
                 $ml_record[0]["atklngrecordmodes"] = array_merge($ml_record[0]["atklngrecordmodes"], $recordset[$i]["atklngrecordmodes"]);
             foreach ($lngattribs as $lngattribname => $lngattrib) {
@@ -346,7 +346,7 @@ class atkmlsplitter
      */
     function searchRecordDefaultLanguage($recordset, $defaultlanguage)
     {
-        for ($i = 0; $i < count($recordset); $i++) {
+        for ($i = 0; $i < atkcount($recordset); $i++) {
             if ($recordset[$i]["lng"] == $defaultlanguage)
                 return $i;
         }

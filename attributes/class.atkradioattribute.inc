@@ -124,7 +124,7 @@ class atkRadioAttribute extends atkListAttribute
     {
         $values = $this->getValues($record);
 
-        $total_items = count($values);
+        $total_items = atkcount($values);
         if ($this->m_cols && !$this->hasFlag(AF_DISPLAY_VERT)) {
             $items = $this->m_amount;
         } elseif ($this->m_rows && !$this->hasFlag(AF_DISPLAY_VERT)) {
@@ -156,7 +156,7 @@ class atkRadioAttribute extends atkListAttribute
             $id = $this->getHtmlId($fieldprefix);
 
             $onchange = '';
-            if (count($this->m_onchangecode)) {
+            if (atkcount($this->m_onchangecode)) {
                 $onchange = 'onClick="' . $id . '_onChange(this);" ';
                 $this->_renderChangeHandler($fieldprefix);
             }
@@ -170,7 +170,7 @@ class atkRadioAttribute extends atkListAttribute
             if ($this->hasflag(AF_DISPLAY_VERT)) {
                 $tmp_items = $items;
                 if ($this->hasFlag(AF_DISPLAY_VERT) && $this->m_rows) {
-                    $tmp_items = count($values);
+                    $tmp_items = atkcount($values);
                 } else {
                     $tmp_items = $items * $this->m_amount;
                 }

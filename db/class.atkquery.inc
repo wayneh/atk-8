@@ -437,21 +437,21 @@ class atkQuery
      */
     function buildSelect($distinct = FALSE)
     {
-        if (count($this->m_fields) < 1 && count($this->m_expressions) < 1)
+        if (atkcount($this->m_fields) < 1 && atkcount($this->m_expressions) < 1)
             return false;
         $result = "SELECT " . ($distinct || $this->m_distinct ? "DISTINCT " : "");
-        for ($i = 0; $i < count($this->m_fields); $i++) {
+        for ($i = 0; $i < atkcount($this->m_fields); $i++) {
             $result.= $this->quoteField($this->m_fields[$i]);
             $fieldalias = (isset($this->m_fieldaliases[$this->m_fields[$i]]) ? $this->m_fieldaliases[$this->m_fields[$i]]
                         : "");
             if ($fieldalias != "")
                 $result.=" AS " . $fieldalias;
-            if ($i < count($this->m_fields) - 1)
+            if ($i < atkcount($this->m_fields) - 1)
                 $result.=", ";
         }
 
         foreach ($this->m_expressions as $i => $entry) {
-            if (count($this->m_fields) > 0 || $i > 0)
+            if (atkcount($this->m_fields) > 0 || $i > 0)
                 $result .= ", ";
             $fieldName = $entry['name'];
             $expression = $entry['expression'];
@@ -463,17 +463,17 @@ class atkQuery
 
         $this->_addFrom($result);
 
-        for ($i = 0; $i < count($this->m_joins); $i++) {
+        for ($i = 0; $i < atkcount($this->m_joins); $i++) {
             $result.=$this->m_joins[$i];
         }
 
-        if (count($this->m_conditions) > 0) {
+        if (atkcount($this->m_conditions) > 0) {
             $result.= " WHERE (" . implode(") AND (", $this->m_conditions) . ")";
         }
 
-        if (count($this->m_searchconditions) > 0) {
+        if (atkcount($this->m_searchconditions) > 0) {
             $prefix = " ";
-            if (count($this->m_conditions) == 0) {
+            if (atkcount($this->m_conditions) == 0) {
                 $prefix = " WHERE ";
             } else {
                 $prefix = " AND ";
@@ -485,11 +485,11 @@ class atkQuery
             }
         }
 
-        if (count($this->m_groupbys) > 0) {
+        if (atkcount($this->m_groupbys) > 0) {
             $result.= " GROUP BY " . implode(", ", $this->m_groupbys);
         }
 
-        if (count($this->m_orderbys) > 0) {
+        if (atkcount($this->m_orderbys) > 0) {
             $this->_addOrderBy($result);
         }
 
@@ -508,11 +508,11 @@ class atkQuery
     function _addFrom(&$query)
     {
         $query.= " FROM ";
-        for ($i = 0; $i < count($this->m_tables); $i++) {
+        for ($i = 0; $i < atkcount($this->m_tables); $i++) {
             $query.= $this->quoteField($this->m_tables[$i]);
             if ($this->m_aliases[$i] != "")
                 $query.=" " . $this->m_aliases[$i];
-            if ($i < count($this->m_tables) - 1)
+            if ($i < atkcount($this->m_tables) - 1)
                 $query.=", ";
         }
         $query.= " ";
@@ -548,7 +548,7 @@ class atkQuery
      */
     function _addOrderBy(&$query)
     {
-        if (count($this->m_orderbys) > 0) {
+        if (atkcount($this->m_orderbys) > 0) {
             $query.= " ORDER BY " . implode(", ", $this->m_orderbys);
         }
     }
@@ -564,32 +564,32 @@ class atkQuery
      */
     function buildCount($distinct = FALSE)
     {
-        if (($distinct || $this->m_distinct) && count($this->m_fields) > 0) {
+        if (($distinct || $this->m_distinct) && atkcount($this->m_fields) > 0) {
             $result = "SELECT COUNT(DISTINCT ";
             $result.=implode($this->quoteFields($this->m_fields), ", ");
             $result.=") as count FROM ";
         } else
             $result = "SELECT COUNT(*) AS count FROM ";
 
-        for ($i = 0; $i < count($this->m_tables); $i++) {
+        for ($i = 0; $i < atkcount($this->m_tables); $i++) {
             $result.= $this->quoteField($this->m_tables[$i]);
             if ($this->m_aliases[$i] != "")
                 $result.=" " . $this->m_aliases[$i];
-            if ($i < count($this->m_tables) - 1)
+            if ($i < atkcount($this->m_tables) - 1)
                 $result.=", ";
         }
 
-        for ($i = 0; $i < count($this->m_joins); $i++) {
+        for ($i = 0; $i < atkcount($this->m_joins); $i++) {
             $result.=$this->m_joins[$i];
         }
 
-        if (count($this->m_conditions) > 0) {
+        if (atkcount($this->m_conditions) > 0) {
             $result.= " WHERE (" . implode(") AND (", $this->m_conditions) . ")";
         }
 
-        if (count($this->m_searchconditions) > 0) {
+        if (atkcount($this->m_searchconditions) > 0) {
             $prefix = " ";
-            if (count($this->m_conditions) == 0) {
+            if (atkcount($this->m_conditions) == 0) {
                 $prefix = " WHERE ";
             } else {
                 $prefix = " AND ";
@@ -601,7 +601,7 @@ class atkQuery
             }
         }
 
-        if (count($this->m_groupbys) > 0) {
+        if (atkcount($this->m_groupbys) > 0) {
             $result.= " GROUP BY " . implode(", ", $this->m_groupbys);
         }
         return $result;
@@ -615,12 +615,12 @@ class atkQuery
     {
         $result = "UPDATE " . $this->quoteField($this->m_tables[0]) . " SET ";
 
-        for ($i = 0; $i < count($this->m_fields); $i++) {
+        for ($i = 0; $i < atkcount($this->m_fields); $i++) {
             $result.= $this->quoteField($this->m_fields[$i]) . "=" . $this->m_values[$this->m_fields[$i]];
-            if ($i < count($this->m_fields) - 1)
+            if ($i < atkcount($this->m_fields) - 1)
                 $result.=",";
         }
-        if (count($this->m_conditions) > 0) {
+        if (atkcount($this->m_conditions) > 0) {
             $result.= " WHERE " . implode(" AND ", $this->m_conditions);
         }
         return $result;
@@ -653,17 +653,17 @@ class atkQuery
 
         $result = "INSERT INTO " . $this->quoteField($this->m_tables[0]) . " (";
 
-        for ($i = 0; $i < count($this->m_fields); $i++) {
+        for ($i = 0; $i < atkcount($this->m_fields); $i++) {
             $result.= $this->quoteField($this->m_fields[$i]);
-            if ($i < count($this->m_fields) - 1)
+            if ($i < atkcount($this->m_fields) - 1)
                 $result.=",";
         }
 
         $result.=") VALUES (";
 
-        for ($i = 0; $i < count($this->m_fields); $i++) {
+        for ($i = 0; $i < atkcount($this->m_fields); $i++) {
             $result.= $this->m_values[$this->m_fields[$i]];
-            if ($i < count($this->m_fields) - 1)
+            if ($i < atkcount($this->m_fields) - 1)
                 $result.=",";
         }
 
@@ -680,7 +680,7 @@ class atkQuery
     {
         $result = "DELETE FROM " . $this->quoteField($this->m_tables[0]);
 
-        if (count($this->m_conditions) > 0) {
+        if (atkcount($this->m_conditions) > 0) {
             $result.= " WHERE " . implode(" AND ", $this->m_conditions);
         }
 

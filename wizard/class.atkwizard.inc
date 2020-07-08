@@ -230,7 +230,7 @@ class atkWizard extends atkWizardBase
     public function addPanel(&$atkWizardPanel)
     {
         $this->m_panelList[] = &$atkWizardPanel;
-        $this->m_panelIndex[$atkWizardPanel->getPanelName()] = count($this->m_panelList) - 1;
+        $this->m_panelIndex[$atkWizardPanel->getPanelName()] = atkcount($this->m_panelList) - 1;
     }
 
     /**
@@ -309,7 +309,7 @@ class atkWizard extends atkWizardBase
         }
 
         //Save the hiddenparams as hiddenvars in the controller
-        if (count($this->m_hiddenParams)) {
+        if (atkcount($this->m_hiddenParams)) {
             foreach ($this->m_hiddenParams as $hiddenVarName => $hiddenVarValue) {
                 $this->setHiddenVar($hiddenVarName, $hiddenVarValue);
             }
@@ -334,7 +334,7 @@ class atkWizard extends atkWizardBase
 
         //Save redirect params as hidden vars in the controller.
         //TODO/Fixme Why the distinction between hiddenvars and redirect params.
-        if (count($this->m_redirectParams)) {
+        if (atkcount($this->m_redirectParams)) {
             foreach ($this->m_redirectParams as $hiddenVarName => $hiddenVarValue)
                 $this->setHiddenVar($hiddenVarName, $hiddenVarValue);
         }
@@ -421,7 +421,7 @@ class atkWizard extends atkWizardBase
      */
     public function isFinishPanel($name)
     {
-        $count = count($this->m_panelList);
+        $count = atkcount($this->m_panelList);
 
         if (!isset($this->m_panelIndex[$name]))
             return false;

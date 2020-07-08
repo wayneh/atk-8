@@ -532,7 +532,7 @@ class atkNumberAttribute extends atkAttribute
     function edit($record = "", $fieldprefix = "", $mode = "")
     {
         $id = $this->getHtmlId($fieldprefix);
-        if (count($this->m_onchangecode)) {
+        if (atkcount($this->m_onchangecode)) {
             $onchange = 'onChange="' . $id . '_onChange(this);"';
             $this->_renderChangeHandler($fieldprefix);
         } else {

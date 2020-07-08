@@ -138,7 +138,7 @@ class atkFuzzySearchAttribute extends atkAttribute
                 // all returned exactly one match, we pass all records and don't
                 // offer selection.
                 foreach ($this->m_matches as $keyword => $res) {
-                    if (count($res) > 1) {
+                    if (atkcount($res) > 1) {
                         $mustselect = true;
                         break;
                     }
@@ -205,12 +205,12 @@ class atkFuzzySearchAttribute extends atkAttribute
                     return atktext("no_results_found");
             }
 
-            if ($this->m_mode == "multiselect" && count($this->m_matches > 1)) {
+            if ($this->m_mode == "multiselect" && atkcount($this->m_matches > 1)) {
                 // Select multiple records from all matches
                 $checkboxes = array();
 
                 foreach ($this->m_matches as $keyword => $matches) {
-                    for ($i = 0, $_i = count($matches); $i < $_i; $i++) {
+                    for ($i = 0, $_i = atkcount($matches); $i < $_i; $i++) {
                         $optionArray[] = $this->m_searchnodeInstance->descriptor($matches[$i]);
                         $valueArray[] = $this->m_searchnodeInstance->primaryKey($matches[$i]);
                     }
@@ -218,13 +218,13 @@ class atkFuzzySearchAttribute extends atkAttribute
 
                 $attrib = new atkMultiSelectAttribute($this->m_name, $optionArray, $valueArray, 1, AF_NO_LABEL | AF_CHECK_ALL | AF_LINKS_BOTTOM);
                 $res.= $attrib->edit();
-            } else if ($this->m_mode == "select" || ($this->m_mode == "multiselect" && count($this->m_matches) == 1)) {
+            } else if ($this->m_mode == "select" || ($this->m_mode == "multiselect" && atkcount($this->m_matches) == 1)) {
                 // Select one record from all matches.
                 $res.= '<SELECT NAME="' . $prefix . $this->fieldName() . '[]" class="form-control">';
                 $res.= '<OPTION VALUE="">' . atktext('select_none');
                 $selects = array();
                 foreach ($this->m_matches as $keyword => $matches) {
-                    for ($i = 0, $_i = count($matches); $i < $_i; $i++) {
+                    for ($i = 0, $_i = atkcount($matches); $i < $_i; $i++) {
                         $item = '<OPTION VALUE="' . $this->m_searchnodeInstance->primaryKey($matches[$i]) . '">' . $this->m_searchnodeInstance->descriptor($matches[$i]);
                         if (!in_array($item, $selects)) {
                             $selects[] = $item;
@@ -237,10 +237,10 @@ class atkFuzzySearchAttribute extends atkAttribute
                 // Select one record per keyword.
                 $res = '<table border="0">';
                 foreach ($this->m_matches as $keyword => $matches) {
-                    if (count($matches) > 0) {
+                    if (atkcount($matches) > 0) {
                         $res.= '<tr><td>\'' . $keyword . '\': </td><td><SELECT NAME="' . $prefix . $this->fieldName() . '[]" class="form-control">';
                         $res.= '<OPTION VALUE="">' . atktext('select_none');
-                        for ($i = 0, $_i = count($matches); $i < $_i; $i++) {
+                        for ($i = 0, $_i = atkcount($matches); $i < $_i; $i++) {
                             $res.= '<OPTION VALUE="' . $this->m_searchnodeInstance->primaryKey($matches[$i]) . '">' . $this->m_searchnodeInstance->descriptor($matches[$i]);
                         }
                         $res.= '</SELECT></td></tr>';
@@ -295,23 +295,23 @@ class atkFuzzySearchAttribute extends atkAttribute
             // First, load the records, based on the where clauses.
             $wheres = array();
             $matches = $rec[$this->fieldName()];
-            for ($i = 0, $_i = count($matches); $i < $_i; $i++) {
+            for ($i = 0, $_i = atkcount($matches); $i < $_i; $i++) {
                 if ($matches[$i] != "")
                     $wheres[] = $matches[$i];
             }
-            if (count($wheres) && $this->createSearchNodeInstance()) {
+            if (atkcount($wheres) && $this->createSearchNodeInstance()) {
                 $whereclause = "((" . implode(") OR (", $wheres) . "))";
 
                 $resultset = $this->m_searchnodeInstance->selectDb($whereclause, $this->m_searchnodeInstance->m_defaultOrder, "", $this->m_searchnodeInstance->m_listExcludes, "", "admin");
             }
-        } else if (count($this->m_matches) > 0) {
+        } else if (atkcount($this->m_matches) > 0) {
             // We didn't come from a select, but we found something anyway.
             // Depending on our mode parameter, we either pass all records to
             // the callback, or the first for every keyword, or the very first.
             if ($this->m_mode == "all") {
                 // Pass all matches.
                 foreach ($this->m_matches as $keyword => $matches) {
-                    for ($i = 0, $_i = count($matches); $i < $_i; $i++) {
+                    for ($i = 0, $_i = atkcount($matches); $i < $_i; $i++) {
                         // Make sure there are no duplicates
                         if (!in_array($matches[$i], $resultset)) {
                             $resultset[] = $matches[$i];
@@ -321,15 +321,15 @@ class atkFuzzySearchAttribute extends atkAttribute
             } else if ($this->m_mode == "firstperkeyword") {
                 // Pass first matches of all keywords.
                 foreach ($this->m_matches as $keyword => $matches) {
-                    if (count($matches)) {
+                    if (atkcount($matches)) {
                         $resultset[] = $matches[0];
                     }
                 }
             } else if ($this->m_mode == "first") {
                 // Pass only the first record of the first match.
-                if (count($this->m_matches)) {
+                if (atkcount($this->m_matches)) {
                     $first = reset($this->m_matches);
-                    if (count($first)) {
+                    if (atkcount($first)) {
                         $resultset[] = $first[0];
                     }
                 }
@@ -341,7 +341,7 @@ class atkFuzzySearchAttribute extends atkAttribute
                 // that were found.
 
                 foreach ($this->m_matches as $keyword => $matches) {
-                    for ($i = 0, $_i = count($matches); $i < $_i; $i++) {
+                    for ($i = 0, $_i = atkcount($matches); $i < $_i; $i++) {
                         // Make sure there are no duplicates
                         if (!in_array($matches[$i], $resultset)) {
                             $resultset[] = $matches[$i];
@@ -351,7 +351,7 @@ class atkFuzzySearchAttribute extends atkAttribute
             }
         }
 
-        if (count($resultset)) {
+        if (atkcount($resultset)) {
             if (method_exists($this->m_ownerInstance, $this->m_callback)) {
                 $funcname = $this->m_callback;
                 return $this->m_ownerInstance->$funcname($rec, $resultset);

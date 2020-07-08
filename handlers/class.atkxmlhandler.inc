@@ -37,7 +37,7 @@ class atkXmlHandler extends atkActionHandler
 
         $document = '<?xml version="1.0"?>' . "\n";
 
-        for ($i = 0, $_i = count($recordset); $i < $_i; $i++) {
+        for ($i = 0, $_i = atkcount($recordset); $i < $_i; $i++) {
             $document.=$this->invoke("xml", $recordset[$i]) . "\n";
         }
         $output->output($document);
@@ -63,7 +63,7 @@ class atkXmlHandler extends atkActionHandler
                 $attrs[] = $attribname . '="' . $p_attrib->display($record, "xml") . '"';
             }
         }
-        if (count($attrs)) {
+        if (atkcount($attrs)) {
             $xml.=implode(" ", $attrs);
         }
 

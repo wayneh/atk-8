@@ -240,7 +240,7 @@ class atkClusterDb extends atkDb
     protected function setRandomNodeFromNodeConfigs($nodeconfigs, $mode)
     {
         $nodenames = array_keys($nodeconfigs);
-        $number = mt_rand(0, count($nodeconfigs) - 1);
+        $number = mt_rand(0, atkcount($nodeconfigs) - 1);
         $nodename = $nodenames[$number];
 
         $this->m_current_clusternode = atkGetDb($nodename, false, $mode);

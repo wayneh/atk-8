@@ -66,8 +66,8 @@ class atkPlainMenu extends atkmenuinterface
         if (is_array($g_menu[$atkmenutop])) {
             usort($g_menu[$atkmenutop], array("atkplainmenu", "menu_cmp"));
             $menuitems = array();
-            for ($i = 0; $i < count($g_menu[$atkmenutop]); $i++) {
-                if ($i == count($g_menu[$atkmenutop]) - 1) {
+            for ($i = 0; $i < atkcount($g_menu[$atkmenutop]); $i++) {
+                if ($i == atkcount($g_menu[$atkmenutop]) - 1) {
                     $delimiter = "";
                 } else {
                     $delimiter = atkconfig("menu_delimiter");

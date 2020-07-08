@@ -217,7 +217,7 @@ class atkDocumentWriter
         $records = $node->selectDb($selector, "", "", "", "", "view");
 
         // Do not continue and return false if no records were found
-        if (count($records) == 0)
+        if (atkcount($records) == 0)
             return false;
 
         // Assign the record to the document.

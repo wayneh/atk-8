@@ -111,14 +111,14 @@ class atkManyToManyListRelation extends atkManyToManyRelation
         $selected = $this->getSelectedRecords($record);
         $selectable = $this->_getSelectableRecords($record, $mode);
 
-        if (count($selectable) == 0) {
+        if (atkcount($selectable) == 0) {
             return $this->text('select_none');
         }
 
         $id = $this->getHtmlId($fieldprefix);
         $name = $fieldprefix . $this->fieldName();
 
-        $size = $this->autoCalculateRows() ? min(count($selectable), $this->getRows())
+        $size = $this->autoCalculateRows() ? min(atkcount($selectable), $this->getRows())
                 : $this->getRows();
         $result = '<select class="form-control" id="' . $id . '" name="' . $name . '[][' . $this->getRemoteKey() . ']" multiple="multiple" size="' . $size . '" style="width: ' . $this->getWidth() . 'px">';
 

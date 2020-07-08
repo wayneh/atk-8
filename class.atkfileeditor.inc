@@ -197,7 +197,7 @@ class atkFileEditor extends atkNode
             $start = 0;
             $max = -1; // no max
 
-            if (is_array($limit) && count($limit) == 2) {
+            if (is_array($limit) && atkcount($limit) == 2) {
                 $start = $limit["offset"];
                 $max = $limit["limit"];
             }
@@ -213,7 +213,7 @@ class atkFileEditor extends atkNode
                 $d->close();
 
 
-                if (count($arr) > 0) {
+                if (atkcount($arr) > 0) {
                     if ($orderby == "dummy.filename DESC") {
                         rsort($arr);
                     } else {
@@ -223,7 +223,7 @@ class atkFileEditor extends atkNode
 
                 $res = array();
 
-                for ($i = 0; $i < count($arr); $i++) {
+                for ($i = 0; $i < atkcount($arr); $i++) {
                     if ($i >= $start && ($max == -1 || count($res) < $max)) {
                         $res[] = array('filename' => $arr[$i]);
                     }

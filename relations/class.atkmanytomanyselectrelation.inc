@@ -179,7 +179,7 @@ class atkManyToManySelectRelation extends atkManyToManyRelation
         $selectedKeys = $this->getSelectedKeys($record, $id);
 
         $selectedRecords = array();
-        if (count($selectedKeys) > 0) {
+        if (atkcount($selectedKeys) > 0) {
             $selector = '(' . implode(') OR (', $selectedKeys) . ')';
             $selectedRecords = $this->getDestination()->select($selector)->includes($this->getDestination()->descriptorFields());
             $this->orderSelectedRecords($selectedRecords, $selectedKeys);
@@ -248,7 +248,7 @@ class atkManyToManySelectRelation extends atkManyToManyRelation
         }
 
         // Ensure we're only adding an item once
-        if ($enforceUnique && is_array($selectedKeys) && count($selectedKeys)) {
+        if ($enforceUnique && is_array($selectedKeys) && atkcount($selectedKeys)) {
             $selectedKeys = array_unique($selectedKeys);
         }
 
@@ -385,7 +385,7 @@ class atkManyToManySelectRelation extends atkManyToManyRelation
         }
 
         $htmlActionLinks = '';
-        if (count($actionLink)) {
+        if (atkcount($actionLink)) {
             $htmlActionLinks = '&nbsp;' . implode(' ', $actionLinks);
         }
         return $htmlActionLinks;

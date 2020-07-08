@@ -112,7 +112,7 @@ class atkConsoleController
             $action = $argv[2];
         }
 
-        for ($i = 3; $i < count($argv); $i++) {
+        for ($i = 3; $i < atkcount($argv); $i++) {
             if (strpos($argv[$i], "=") !== false) {
                 list($key, $value) = explode("=", $argv[$i]);
                 $params[$key] = $value;

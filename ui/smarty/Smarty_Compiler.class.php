@@ -241,7 +241,7 @@ class Smarty_Compiler extends Smarty {
         $rdq = preg_quote($this->right_delimiter, '~');
 
         // run template source through prefilter functions
-        if (count($this->_plugins['prefilter']) > 0) {
+        if (atkcount($this->_plugins['prefilter']) > 0) {
             foreach ($this->_plugins['prefilter'] as $filter_name => $prefilter) {
                 if ($prefilter === false) continue;
                 if ($prefilter[3] || is_callable($prefilter[0])) {
@@ -276,17 +276,17 @@ class Smarty_Compiler extends Smarty {
         $text_blocks = preg_split("~{$ldq}.*?{$rdq}~s", $source_content);
 
         /* loop through text blocks */
-        for ($curr_tb = 0, $for_max = count($text_blocks); $curr_tb < $for_max; $curr_tb++) {
+        for ($curr_tb = 0, $for_max = atkcount($text_blocks); $curr_tb < $for_max; $curr_tb++) {
             /* match anything resembling php tags */
             if (preg_match_all('~(<\?(?:\w+|=)?|\?>|language\s*=\s*[\"\']?\s*php\s*[\"\']?)~is', $text_blocks[$curr_tb], $sp_match)) {
                 /* replace tags with placeholders to prevent recursive replacements */
                 $sp_match[1] = array_unique($sp_match[1]);
                 usort($sp_match[1], '_smarty_sort_length');
-                for ($curr_sp = 0, $for_max2 = count($sp_match[1]); $curr_sp < $for_max2; $curr_sp++) {
+                for ($curr_sp = 0, $for_max2 = atkcount($sp_match[1]); $curr_sp < $for_max2; $curr_sp++) {
                     $text_blocks[$curr_tb] = str_replace($sp_match[1][$curr_sp],'%%%SMARTYSP'.$curr_sp.'%%%',$text_blocks[$curr_tb]);
                 }
                 /* process each one */
-                for ($curr_sp = 0, $for_max2 = count($sp_match[1]); $curr_sp < $for_max2; $curr_sp++) {
+                for ($curr_sp = 0, $for_max2 = atkcount($sp_match[1]); $curr_sp < $for_max2; $curr_sp++) {
                     if ($this->php_handling == SMARTY_PHP_PASSTHRU) {
                         /* echo php contents */
                         $text_blocks[$curr_tb] = str_replace('%%%SMARTYSP'.$curr_sp.'%%%', '<?php echo \''.str_replace("'", "\'", $sp_match[1][$curr_sp]).'\'; ?>'."\n", $text_blocks[$curr_tb]);
@@ -307,12 +307,12 @@ class Smarty_Compiler extends Smarty {
         
         /* Compile the template tags into PHP code. */
         $compiled_tags = array();
-        for ($i = 0, $for_max = count($template_tags); $i < $for_max; $i++) {
+        for ($i = 0, $for_max = atkcount($template_tags); $i < $for_max; $i++) {
             $this->_current_line_no += substr_count($text_blocks[$i], "\n");
             $compiled_tags[] = $this->_compile_tag($template_tags[$i]);
             $this->_current_line_no += substr_count($template_tags[$i], "\n");
         }
-        if (count($this->_tag_stack)>0) {
+        if (atkcount($this->_tag_stack)>0) {
             list($_open_tag, $_line_no) = end($this->_tag_stack);
             $this->_syntax_error("unclosed tag \{$_open_tag} (opened line $_line_no).", E_USER_ERROR, __FILE__, __LINE__);
             return;
@@ -321,7 +321,7 @@ class Smarty_Compiler extends Smarty {
         /* Reformat $text_blocks between 'strip' and '/strip' tags,
            removing spaces, tabs and newlines. */
         $strip = false;
-        for ($i = 0, $for_max = count($compiled_tags); $i < $for_max; $i++) {
+        for ($i = 0, $for_max = atkcount($compiled_tags); $i < $for_max; $i++) {
             if ($compiled_tags[$i] == '{strip}') {
                 $compiled_tags[$i] = '';
                 $strip = true;
@@ -353,7 +353,7 @@ class Smarty_Compiler extends Smarty {
         $tag_guard = '%%%SMARTYOTG' . md5(uniqid(rand(), true)) . '%%%';
         
         /* Interleave the compiled contents and text blocks to get the final result. */
-        for ($i = 0, $for_max = count($compiled_tags); $i < $for_max; $i++) {
+        for ($i = 0, $for_max = atkcount($compiled_tags); $i < $for_max; $i++) {
             if ($compiled_tags[$i] == '') {
                 // tag result empty, remove first newline from following text block
                 $text_blocks[$i+1] = preg_replace('~^(\r\n|\r|\n)~', '', $text_blocks[$i+1]);
@@ -383,7 +383,7 @@ class Smarty_Compiler extends Smarty {
         }
 
         // run compiled template through postfilter functions
-        if (count($this->_plugins['postfilter']) > 0) {
+        if (atkcount($this->_plugins['postfilter']) > 0) {
             foreach ($this->_plugins['postfilter'] as $filter_name => $postfilter) {
                 if ($postfilter === false) continue;
                 if ($postfilter[3] || is_callable($postfilter[0])) {
@@ -402,7 +402,7 @@ class Smarty_Compiler extends Smarty {
 
         /* Emit code to load needed plugins. */
         $this->_plugins_code = '';
-        if (count($this->_plugin_info)) {
+        if (atkcount($this->_plugin_info)) {
             $_plugins_params = "array('plugins' => array(";
             foreach ($this->_plugin_info as $plugin_type => $plugins) {
                 foreach ($plugins as $plugin_name => $plugin_info) {
@@ -560,7 +560,7 @@ class Smarty_Compiler extends Smarty {
                 $this->_current_line_no += substr_count($block[0], "\n");
                 /* the number of matched elements in the regexp in _compile_file()
                    determins the type of folded tag that was found */
-                switch (count($block)) {
+                switch (atkcount($block)) {
                     case 2: /* comment */
                         return '';
 
@@ -848,7 +848,7 @@ class Smarty_Compiler extends Smarty {
         list($object, $obj_comp) = explode('->', $tag_command);
 
         $arg_list = array();
-        if(count($attrs)) {
+        if(atkcount($attrs)) {
             $_assign_var = false;
             foreach ($attrs as $arg_name => $arg_value) {
                 if($arg_name == 'assign') {
@@ -1068,7 +1068,7 @@ class Smarty_Compiler extends Smarty {
         foreach ($attrs as $attr_name => $attr_value) {
             switch ($attr_name) {
                 case 'loop':
-                    $output .= "{$section_props}['loop'] = is_array(\$_loop=$attr_value) ? count(\$_loop) : max(0, (int)\$_loop); unset(\$_loop);\n";
+                    $output .= "{$section_props}['loop'] = is_array(\$_loop=$attr_value) ? atkcount(\$_loop) : max(0, (int)\$_loop); unset(\$_loop);\n";
                     break;
 
                 case 'show':
@@ -1195,12 +1195,12 @@ class Smarty_Compiler extends Smarty {
         $output .= "\$_from = $from; if (!is_array(\$_from) && !is_object(\$_from)) { settype(\$_from, 'array'); }";
         if (isset($name)) {
             $foreach_props = "\$this->_foreach[$name]";
-            $output .= "{$foreach_props} = array('total' => count(\$_from), 'iteration' => 0);\n";
+            $output .= "{$foreach_props} = array('total' => atkcount(\$_from), 'iteration' => 0);\n";
             $output .= "if ({$foreach_props}['total'] > 0):\n";
             $output .= "    foreach (\$_from as $key_part\$this->_tpl_vars['$item']):\n";
             $output .= "        {$foreach_props}['iteration']++;\n";
         } else {
-            $output .= "if (count(\$_from)):\n";
+            $output .= "if (atkcount(\$_from)):\n";
             $output .= "    foreach (\$_from as $key_part\$this->_tpl_vars['$item']):\n";
         }
         $output .= '?>';
@@ -1279,7 +1279,7 @@ class Smarty_Compiler extends Smarty {
 
         $is_arg_stack = array();
 
-        for ($i = 0; $i < count($tokens); $i++) {
+        for ($i = 0; $i < atkcount($tokens); $i++) {
 
             $token = &$tokens[$i];
 
@@ -1384,7 +1384,7 @@ class Smarty_Compiler extends Smarty {
                     $new_tokens = $this->_parse_is_expr($is_arg, array_slice($tokens, $i+1));
 
                     /* Replace the old tokens with the new ones. */
-                    array_splice($tokens, $is_arg_start, count($tokens), $new_tokens);
+                    array_splice($tokens, $is_arg_start, atkcount($tokens), $new_tokens);
 
                     /* Adjust argument start so that it won't change from the
                        current position for the next iteration. */
@@ -1711,7 +1711,7 @@ class Smarty_Compiler extends Smarty {
         $_has_math = false;
         $_math_vars = preg_split('~('.$this->_dvar_math_regexp.'|'.$this->_qstr_regexp.')~', $var_expr, -1, PREG_SPLIT_DELIM_CAPTURE);
 
-        if(count($_math_vars) > 1) {
+        if(atkcount($_math_vars) > 1) {
             $_first_var = "";
             $_complete_var = "";
             $_output = "";
@@ -1777,7 +1777,7 @@ class Smarty_Compiler extends Smarty {
                 }
             } elseif(is_numeric($_var_name) && is_numeric(substr($var_expr, 0, 1))) {
                 // because . is the operator for accessing arrays thru inidizes we need to put it together again for floating point numbers
-                if(count($_indexes) > 0)
+                if(atkcount($_indexes) > 0)
                 {
                     $_var_name .= implode("", $_indexes);
                     $_indexes = array();
@@ -1847,7 +1847,7 @@ class Smarty_Compiler extends Smarty {
         $orig_vals = $match = $match[0];
         $this->_parse_vars_props($match);
         $replace = array();
-        for ($i = 0, $count = count($match); $i < $count; $i++) {
+        for ($i = 0, $count = atkcount($match); $i < $count; $i++) {
             $replace[$orig_vals[$i]] = $match[$i];
         }
         return strtr($parenth_args, $replace);
@@ -1909,7 +1909,7 @@ class Smarty_Compiler extends Smarty {
         preg_match_all('~\|(@?\w+)((?>:(?:'. $this->_qstr_regexp . '|[^|]+))*)~', '|' . $modifier_string, $_match);
         list(, $_modifiers, $modifier_arg_strings) = $_match;
 
-        for ($_i = 0, $_for_max = count($_modifiers); $_i < $_for_max; $_i++) {
+        for ($_i = 0, $_for_max = atkcount($_modifiers); $_i < $_for_max; $_i++) {
             $_modifier_name = $_modifiers[$_i];
 
             if($_modifier_name == 'smarty') {
@@ -1949,7 +1949,7 @@ class Smarty_Compiler extends Smarty {
                     $_modifier_args[0] = '@' . $_modifier_args[0];
                 }
             }
-            if (count($_modifier_args) > 0)
+            if (atkcount($_modifier_args) > 0)
                 $_modifier_args = ', '.implode(', ', $_modifier_args);
             else
                 $_modifier_args = '';
@@ -2165,7 +2165,7 @@ class Smarty_Compiler extends Smarty {
                 break;
         }
 
-        if (isset($_max_index) && count($indexes) > $_max_index) {
+        if (isset($_max_index) && atkcount($indexes) > $_max_index) {
             $this->_syntax_error('$smarty' . implode('', $indexes) .' is an invalid reference', E_USER_ERROR, __FILE__, __LINE__);
         }
 
@@ -2209,7 +2209,7 @@ class Smarty_Compiler extends Smarty {
      */
     function _load_filters()
     {
-        if (count($this->_plugins['prefilter']) > 0) {
+        if (atkcount($this->_plugins['prefilter']) > 0) {
             foreach ($this->_plugins['prefilter'] as $filter_name => $prefilter) {
                 if ($prefilter === false) {
                     unset($this->_plugins['prefilter'][$filter_name]);
@@ -2219,7 +2219,7 @@ class Smarty_Compiler extends Smarty {
                 }
             }
         }
-        if (count($this->_plugins['postfilter']) > 0) {
+        if (atkcount($this->_plugins['postfilter']) > 0) {
             foreach ($this->_plugins['postfilter'] as $filter_name => $postfilter) {
                 if ($postfilter === false) {
                     unset($this->_plugins['postfilter'][$filter_name]);
@@ -2309,7 +2309,7 @@ class Smarty_Compiler extends Smarty {
     function _pop_tag($close_tag)
     {
         $message = '';
-        if (count($this->_tag_stack)>0) {
+        if (atkcount($this->_tag_stack)>0) {
             list($_open_tag, $_line_no) = array_pop($this->_tag_stack);
             if ($close_tag == $_open_tag) {
                 return $_open_tag;

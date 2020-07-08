@@ -82,7 +82,7 @@ class atkCustomRecordList extends atkRecordList
             // are totalisable collumns.
             foreach (array_keys($this->m_node->m_attribList) as $attribname) {
                 $p_attrib = &$this->m_node->m_attribList[$attribname];
-                $musthide = (is_array($suppressList) && count($suppressList) > 0 && in_array($attribname, $suppressList));
+                $musthide = (is_array($suppressList) && atkcount($suppressList) > 0 && in_array($attribname, $suppressList));
                 if (!$this->isHidden($p_attrib) && !$musthide) {
                     $output.=$sof . $this->eolreplace($p_attrib->label(), $rfeplace) . $eof . $fsep;
 
@@ -102,11 +102,11 @@ class atkCustomRecordList extends atkRecordList
         }
 
         // Display the values
-        for ($i = 0, $_i = count($recordset); $i < $_i; $i++) {
+        for ($i = 0, $_i = atkcount($recordset); $i < $_i; $i++) {
             $output.=$sol;
             foreach (array_keys($this->m_node->m_attribList) as $attribname) {
                 $p_attrib = &$this->m_node->m_attribList[$attribname];
-                $musthide = (is_array($suppressList) && count($suppressList) > 0 && in_array($attribname, $suppressList));
+                $musthide = (is_array($suppressList) && atkcount($suppressList) > 0 && in_array($attribname, $suppressList));
 
                 if (!$this->isHidden($p_attrib) && !$musthide) {
                     // An <attributename>_display function may be provided in a derived
@@ -146,7 +146,7 @@ class atkCustomRecordList extends atkRecordList
             // Third loop.. this time for the totals row.
             foreach (array_keys($this->m_node->m_attribList) as $attribname) {
                 $p_attrib = &$this->m_node->m_attribList[$attribname];
-                $musthide = (is_array($suppressList) && count($suppressList) > 0 && in_array($attribname, $suppressList));
+                $musthide = (is_array($suppressList) && atkcount($suppressList) > 0 && in_array($attribname, $suppressList));
                 if (!$this->isHidden($p_attrib) && !$musthide) {
                     if ($p_attrib->hasFlag(AF_TOTAL)) {
                         $value = $this->eolreplace($p_attrib->display($totals[$attribname], $this->m_mode), $rfeplace);

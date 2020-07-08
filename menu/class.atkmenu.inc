@@ -85,7 +85,7 @@ class atkMenu
         $compatiblemenus = $theme->getAttribute('compatible_menus');
         // If this attribute exists then retreive them
         if (is_array($compatiblemenus)) {
-            for ($i = 0, $_i = count($compatiblemenus); $i < $_i; $i++)
+            for ($i = 0, $_i = atkcount($compatiblemenus); $i < $_i; $i++)
                 $compatiblemenus[$i] = atkMenu::layoutToClass($compatiblemenus[$i]);
         }
 

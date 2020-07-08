@@ -982,7 +982,7 @@ class atkAttribute
         $id = $this->getHtmlId($fieldprefix);
         $this->registerKeyListener($id, KB_CTRLCURSOR | KB_UPDOWN);
 
-        if (count($this->m_onchangecode)) {
+        if (atkcount($this->m_onchangecode)) {
             $onchange = 'onChange="' . $id . '_onChange(this);"';
             $this->_renderChangeHandler($fieldprefix);
         } else {
@@ -1029,10 +1029,10 @@ class atkAttribute
      */
     function _renderChangeHandler($fieldprefix, $elementNr = "")
     {
-        if (count($this->m_onchangecode)) {
+        if (atkcount($this->m_onchangecode)) {
 
             // js code to show the spinner during dependencies execution
-            if (count($this->getDependencies()) && $this->m_showSpinner) {
+            if (atkcount($this->getDependencies()) && $this->m_showSpinner) {
                 $id = $this->getHtmlId($fieldprefix);
                 if ($this->m_ownerInstance) {
                     $id = str_replace('.', '_', $this->m_ownerInstance->atknodetype() . '_' . $id);
@@ -1065,7 +1065,7 @@ class atkAttribute
      */
     function getSpinner()
     {
-        if (count($this->getDependencies()) && $this->m_showSpinner) {
+        if (atkcount($this->getDependencies()) && $this->m_showSpinner) {
             $theme = atkinstance("atk.ui.atktheme");
             $ret = sprintf('<div class="atkbusy"><img src="%s" alt="Busy"></div>', $theme->imgPath('spinner.gif'));
             return $ret;
@@ -1469,7 +1469,7 @@ class atkAttribute
      */
     function getError($errors)
     {
-        for ($i = 0; $i < count($errors); $i ++) {
+        for ($i = 0; $i < atkcount($errors); $i ++) {
             if ($errors[$i]['attrib_name'] == $this->fieldName() ||
                 atk_in_array($this->fieldName(), $errors[$i]['attrib_name'])) {
                 return true;
@@ -1620,7 +1620,7 @@ class atkAttribute
         if (!$extended || empty($searchMode) || !in_array($searchMode, $searchModes))
             $searchMode = $searchModes[0];
 
-        if ($extended && count($searchModes) > 1) {
+        if ($extended && atkcount($searchModes) > 1) {
             $field = '<select class="form-control" name="' . $this->getSearchModeFieldname($fieldprefix) . '">';
 
             foreach ($searchModes as $value) {
@@ -1669,7 +1669,7 @@ class atkAttribute
     {
         // default implementation doesn't supported nested paths, this method
         // should be overriden by relations etc. if they want to support this
-        if (count($path) > 0) {
+        if (atkcount($path) > 0) {
             atk_var_dump($path, 'Invalid search path for ' . $this->m_ownerInstance->atkNodeType() . '#' . $this->fieldName() . ', ignoring criterium!');
         } else {
             $this->searchCondition($query, $ownerAlias, $value, $mode);
@@ -2149,7 +2149,7 @@ class atkAttribute
      */
     function setAttribSize($size)
     {
-        if (is_array($size) && count($size) > 0) {
+        if (is_array($size) && atkcount($size) > 0) {
             if (!empty($size[2])) {
                 $this->m_searchsize = $size[2];
             } else {
@@ -2892,7 +2892,7 @@ class atkAttribute
      */
     public function initDependencies(&$record, $fieldPrefix, $mode, $noCall = false)
     {
-        if (count($this->getDependencies()) == 0) {
+        if (atkcount($this->getDependencies()) == 0) {
             return;
         }
 

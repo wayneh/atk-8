@@ -46,21 +46,21 @@ class atkOci805Query extends atkOci8Query
      */
     function _addOrderBy(&$query)
     {
-        if (count($this->m_orderbys) > 0 && $this->m_offset >= 0 && $this->m_limit > 0) {
+        if (atkcount($this->m_orderbys) > 0 && $this->m_offset >= 0 && $this->m_limit > 0) {
             $groupfields = array();
 
             // first group by fields are the fields we want to sort on.
-            for ($i = 0, $_i = count($this->m_orderbys); $i < $_i; $i++) {
+            for ($i = 0, $_i = atkcount($this->m_orderbys); $i < $_i; $i++) {
                 $fieldalias = $this->m_fieldaliases[$this->m_fields[$i]];
 
                 $groupfields[] = $this->m_orderbys[$i];
             }
 
-            for ($i = 0; $i < count($this->m_fields); $i++) {
+            for ($i = 0; $i < atkcount($this->m_fields); $i++) {
                 if (!in_array($this->m_fields[$i], $groupfields))
                     $groupfields[] = $this->m_fields[$i];
             }
-            if (count($groupfields)) {
+            if (atkcount($groupfields)) {
                 $query.= " GROUP BY " . implode(",", $groupfields);
                 $query = str_replace(" DESC", " ", $query); // CENDRIS(ibsticket: 2269) 01-04-2003 Phe:
                 // DESC sort doesn't work in the sorting

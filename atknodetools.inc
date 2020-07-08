@@ -40,7 +40,7 @@ function registerNode($node, $action, $tabs = array(), $section = null)
     $type = getNodeType($node);
 
     // prefix tabs with tab_
-    for ($i = 0, $_i = count($tabs); $i < $_i; $i++)
+    for ($i = 0, $_i = atkcount($tabs); $i < $_i; $i++)
         $tabs[$i] = "tab_" . $tabs[$i];
 
     if ($module == "")

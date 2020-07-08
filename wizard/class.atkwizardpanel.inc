@@ -143,12 +143,12 @@ class atkWizardPanel
             }
 
             //Add listeners to node
-            for ($i = 0, $_i = count($this->m_listeners); $i < $_i; $i++) {
+            for ($i = 0, $_i = atkcount($this->m_listeners); $i < $_i; $i++) {
                 $this->m_node->addListener($this->m_listeners[$i]);
             }
 
             //Add actionhandlers to node
-            for ($i = 0, $_i = count($this->m_actionHandlers); $i < $_i; $i++) {
+            for ($i = 0, $_i = atkcount($this->m_actionHandlers); $i < $_i; $i++) {
                 $handlerName = $this->m_actionHandlers[$i]['name'];
                 $handlerAction = $this->m_actionHandlers[$i]['action'];
 

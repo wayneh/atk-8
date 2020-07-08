@@ -45,7 +45,7 @@ class atkCopyHandler extends atkActionHandler
         atkdebug("atkCopyHandler::nodeCopy()");
         $recordset = $this->m_node->selectDb($this->m_postvars['atkselector'], "", "", "", "", "copy");
         $db = &$this->m_node->getDb();
-        if (count($recordset) > 0) {
+        if (atkcount($recordset) > 0) {
             // allowed to copy record?
             if (!$this->allowed($recordset[0])) {
                 $this->renderAccessDeniedPage();

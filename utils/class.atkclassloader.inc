@@ -167,7 +167,7 @@ class atkClassLoader
     {
         $classpath = self::cleanPath($classpath);
         $elems = explode("/", strtolower($classpath));
-        for ($counter = 0; $counter <= count($elems); $counter++) {
+        for ($counter = 0; $counter <= atkcount($elems); $counter++) {
             if (isset($elems[$counter]) && $elems[$counter] === "../") {
                 array_shift($elems);
             }
@@ -219,7 +219,7 @@ class atkClassLoader
         $classname = $elems[count($elems) - 1];
 
         if (class_exists($classname)) {
-            if (count($args) === 0) {
+            if (atkcount($args) === 0) {
                 return new $classname();
             } else {
                 $class = new ReflectionClass($classname);

@@ -438,7 +438,7 @@ class atkDb
      */
     function errorLookup($errno)
     {
-        if (count($this->m_errorLookup) == 0) {
+        if (atkcount($this->m_errorLookup) == 0) {
             $filename = atkconfig("atkroot") . "atk/db/languages/" . $this->m_vendor . "_" . atkconfig('language') . '.lng';
             @include_once($filename);
             $this->m_errorLookup = $txt_db;
@@ -1007,7 +1007,7 @@ class atkDb
         $meta = $this->metadata($table, false);
 
         $result = array();
-        for ($i = 0, $_i = count($meta); $i < $_i; $i++) {
+        for ($i = 0, $_i = atkcount($meta); $i < $_i; $i++) {
             $meta[$i]['num'] = $i;
             $result[$meta[$i]['name']] = $meta[$i];
         }
@@ -1067,9 +1067,9 @@ class atkDb
      */
     function func_concat($fields)
     {
-        if (count($fields) == 0 or !is_array($fields))
+        if (atkcount($fields) == 0 or !is_array($fields))
             return '';
-        elseif (count($fields) == 1)
+        elseif (atkcount($fields) == 1)
             return $fields[0];
         return "CONCAT(" . implode(',', $fields) . ")";
     }
@@ -1085,9 +1085,9 @@ class atkDb
      */
     function func_concat_ws($fields, $separator, $remove_all_spaces = false)
     {
-        if (count($fields) == 0 or !is_array($fields))
+        if (atkcount($fields) == 0 or !is_array($fields))
             return '';
-        elseif (count($fields) == 1)
+        elseif (atkcount($fields) == 1)
             return $fields[0];
 
         if ($remove_all_spaces) {
@@ -1184,7 +1184,7 @@ class atkDb
     function deleteAll()
     {
         $tables = $this->table_names(false);
-        $count = count($tables);
+        $count = atkcount($tables);
 
         do {
             $prevCount = $count;

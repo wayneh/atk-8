@@ -133,14 +133,14 @@ class atkOci9Db extends atkOci8Db
             /* query database */
             $clobVars = array();
             //$bindLobs = array();
-            if (count($bindLobs) > 0) {
+            if (atkcount($bindLobs) > 0) {
                 $query .= " RETURNING " . implode(", ", array_keys($bindLobs)) . " INTO :" . implode(", :", array_keys($bindLobs));
                 atkdebug("atkoci9db.query(), modified query to: $query");
             }
 
             $this->m_query_id = OCIParse($this->m_link_id, $query);
             if ($this->m_query_id) {
-                if (count($bindLobs) > 0) {
+                if (atkcount($bindLobs) > 0) {
                     foreach ($bindLobs as $bind => $value) {
                         atkdebug("atkoci9db.query(): new descriptor for :$bind");
                         $clobVars[$bind] = &OCINewDescriptor($this->m_link_id, OCI_D_LOB);
@@ -149,7 +149,7 @@ class atkOci9Db extends atkOci8Db
                     }
                 }
 
-                for ($i = 0, $_i = count($bindVars); $i < $_i; $i++) {
+                for ($i = 0, $_i = atkcount($bindVars); $i < $_i; $i++) {
                     OCIBindByName($this->m_query_id, $bindVars[$i], $this->m_bindresult[$bindVars[$i]], 32);
                 }
 
@@ -166,7 +166,7 @@ class atkOci9Db extends atkOci8Db
                     $this->halt($this->_translateError($error));
                     return false;
                 } else {
-                    if (count($bindLobs) > 0) {
+                    if (atkcount($bindLobs) > 0) {
                         foreach ($bindLobs as $bind => $value) {
                             if (!@$clobVars[$bind]->save($value))
                                 atkerror("Error bind save: empty value");
@@ -174,7 +174,7 @@ class atkOci9Db extends atkOci8Db
                     }
                 }
 
-                if (count($bindLobs) > 0) {
+                if (atkcount($bindLobs) > 0) {
                     foreach ($bindLobs as $bind => $value) {
                         OCIFreeDesc($clobVars[$bind]);
                     }

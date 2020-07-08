@@ -291,7 +291,7 @@ class atkOneToOneRelation extends atkRelation
     {
         $condition = "";
         if (is_array($this->m_destinationFilter)) {
-            for ($i = 0, $_i = count($this->m_destinationFilter); $i < $_i; $i++) {
+            for ($i = 0, $_i = atkcount($this->m_destinationFilter); $i < $_i; $i++) {
                 $condition.=" AND " . $fieldaliasprefix . $this->m_name . "." . $this->m_destinationFilter[$i];
             }
         } elseif ($this->m_destinationFilter != "") {
@@ -730,7 +730,7 @@ class atkOneToOneRelation extends atkRelation
                  */
                 if (!is_array($arr['fields']))
                     $arr['fields'] = array();
-                if (!$this->hasFlag(AF_ONETOONE_INTEGRATE) && !$this->hasFlag(AF_NOLABEL) && !(count($a["fields"]) == 1 && $a["fields"][0]["name"] == $this->m_name)) {
+                if (!$this->hasFlag(AF_ONETOONE_INTEGRATE) && !$this->hasFlag(AF_NOLABEL) && !(atkcount($a["fields"]) == 1 && $a["fields"][0]["name"] == $this->m_name)) {
                     /* separator and name */
                     if ($arr['fields'][count($arr['fields']) - 1]['html'] !== '-')
                         $arr["fields"][] = array("html" => "-", "tabs" => $this->m_tabs, 'sections' => $this->getSections());
@@ -749,7 +749,7 @@ class atkOneToOneRelation extends atkRelation
                     $arr["fields"] = array_merge($arr["fields"], $a["fields"]);
                 }
 
-                if (!$this->hasFlag(AF_ONETOONE_INTEGRATE) && !$this->hasFlag(AF_NOLABEL) && !(count($a["fields"]) == 1 && $a["fields"][0]["name"] == $this->m_name)) {
+                if (!$this->hasFlag(AF_ONETOONE_INTEGRATE) && !$this->hasFlag(AF_NOLABEL) && !(atkcount($a["fields"]) == 1 && $a["fields"][0]["name"] == $this->m_name)) {
                     /* separator */
                     $arr["fields"][] = array("html" => "-", "tabs" => $this->m_tabs, 'sections' => $this->getSections());
                 }
@@ -801,7 +801,7 @@ class atkOneToOneRelation extends atkRelation
              */
             if (!is_array($arr['fields']))
                 $arr['fields'] = array();
-            if (!$this->hasFlag(AF_ONETOONE_INTEGRATE) && !$this->hasFlag(AF_NOLABEL) && !(count($a["fields"]) == 1 && $a["fields"][0]["name"] == $this->m_name)) {
+            if (!$this->hasFlag(AF_ONETOONE_INTEGRATE) && !$this->hasFlag(AF_NOLABEL) && !(atkcount($a["fields"]) == 1 && $a["fields"][0]["name"] == $this->m_name)) {
                 /* separator and name */
                 if ($arr['fields'][count($arr['fields']) - 1]['html'] !== '-')
                     $arr["fields"][] = array("html" => "-", "tabs" => $this->m_tabs, 'sections' => $this->getSections());
@@ -819,7 +819,7 @@ class atkOneToOneRelation extends atkRelation
                 $arr["fields"] = array_merge($arr["fields"], $a["fields"]);
             }
 
-            if (!$this->hasFlag(AF_ONETOONE_INTEGRATE) && !$this->hasFlag(AF_NOLABEL) && !(count($a["fields"]) == 1 && $a["fields"][0]["name"] == $this->m_name)) {
+            if (!$this->hasFlag(AF_ONETOONE_INTEGRATE) && !$this->hasFlag(AF_NOLABEL) && !(atkcount($a["fields"]) == 1 && $a["fields"][0]["name"] == $this->m_name)) {
                 /* separator */
                 $arr["fields"][] = array("html" => "-", "tabs" => $this->m_tabs, 'sections' => $this->getSections());
             }
@@ -879,7 +879,7 @@ class atkOneToOneRelation extends atkRelation
         $filter = $this->m_destinationFilter;
         if (is_array($filter)) {
             $tmp_filter = "";
-            for ($i = 0, $_i = count($filter); $i < $_i; $i++) {
+            for ($i = 0, $_i = atkcount($filter); $i < $_i; $i++) {
                 if ($tmp_filter != "")
                     $tmp_filter.=" AND ";
                 $tmp_filter.=$filter[$i];
@@ -908,7 +908,7 @@ class atkOneToOneRelation extends atkRelation
     {
         if ($this->hasFlag(AF_ONETOONE_INTEGRATE) && $this->createDestination()) {
             $detailtabs = $this->m_destInstance->getTabs($action);
-            if (count($detailtabs) == 1 && $detailtabs[0] == "default") {
+            if (atkcount($detailtabs) == 1 && $detailtabs[0] == "default") {
                 // All elements in the relation are on the default tab. That means we should
                 // inherit the tab from the onetoonerelation itself.
                 return parent::getAdditionalTabs($action);
@@ -1247,7 +1247,7 @@ class atkOneToOneRelation extends atkRelation
     else
     {
       $fields = $this->m_destInstance->descriptorFields();
-      if (count($fields) == 0)
+      if (atkcount($fields) == 0)
       $fields = array($this->m_destInstance->primaryKeyField());
       $order = "";
       foreach ($fields as $field)

@@ -98,7 +98,7 @@ class atkMockDb extends atkDb
      */
     public function next_record()
     {
-        if ($this->m_currentResult !== null && count($this->m_currentResult) > 0) {
+        if ($this->m_currentResult !== null && atkcount($this->m_currentResult) > 0) {
             $record = array_shift($this->m_currentResult);
             $this->m_record = $record;
             $this->m_row++;
@@ -170,7 +170,7 @@ class atkMockDb extends atkDb
      */
     function getLastQuery()
     {
-        if (count($this->m_query_history) == 0) {
+        if (atkcount($this->m_query_history) == 0) {
             return null;
         } else {
             return $this->m_query_history[count($this->m_query_history) - 1];

@@ -108,7 +108,7 @@ class atkMlTextAttribute extends atkMlAttribute
             $entry["sections"] = $this->m_sections;
 
             /* first language of other languages */
-            $entry["html"] = '<textarea name="' . $fieldprefix . $this->formName() . '[' . (count($this->m_languages) == 2
+            $entry["html"] = '<textarea name="' . $fieldprefix . $this->formName() . '[' . (atkcount($this->m_languages) == 2
                         ? $curlng : "multilanguage") . ']"' .
                 ' rows="10" wrap="virtual"' . ($this->m_size > 0 ? ' cols="' . $this->m_size . '"'
                         : '') . ' >' . htmlspecialchars($defaults[$this->fieldName()][$curlng]) .

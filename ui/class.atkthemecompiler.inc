@@ -48,7 +48,7 @@ class atkThemeCompiler
         $data = $this->readStructure($name);
 
         // Write it to the compiled theme file
-        if (count($data)) {
+        if (atkcount($data)) {
             if (!file_exists(atkconfig("atktempdir") . "themes/")) {
                 mkdir(atkconfig("atktempdir") . "themes/");
             }

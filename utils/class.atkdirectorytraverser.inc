@@ -128,7 +128,7 @@ class atkDirectoryTraverser
      */
     function _callback($method, $filename)
     {
-        for ($i = 0, $_i = count($this->m_callbackObjects); $i < $_i; $i++) {
+        for ($i = 0, $_i = atkcount($this->m_callbackObjects); $i < $_i; $i++) {
             if (method_exists($this->m_callbackObjects[$i], $method)) {
                 $this->m_callbackObjects[$i]->$method($filename);
             }
@@ -163,7 +163,7 @@ class atkDirectoryTraverser
     {
         $excluded = false;
         $i = 0;
-        $count = count($this->m_excludes);
+        $count = atkcount($this->m_excludes);
         while (!$excluded && $i < $count) {
             $excluded = (preg_match($this->m_excludes[$i], $file) > 0);
             $i++;

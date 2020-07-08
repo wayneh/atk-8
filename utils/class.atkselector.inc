@@ -292,8 +292,8 @@ class atkSelector implements ArrayAccess, Countable, IteratorAggregate
         $indexValue = $this->_getNode()->m_index != '' ? atkArrayNvl($this->_getNode()->m_postvars, 'atkindex', '')
                 : '';
 
-        return (is_array($searchCriteria) && count($searchCriteria) > 0) ||
-            (is_array($smartSearchCriteria) && count($smartSearchCriteria) > 0) ||
+        return (is_array($searchCriteria) && atkcount($searchCriteria) > 0) ||
+            (is_array($smartSearchCriteria) && atkcount($smartSearchCriteria) > 0) ||
             !empty($indexValue);
     }
 
@@ -374,7 +374,7 @@ class atkSelector implements ArrayAccess, Countable, IteratorAggregate
 
             $attr = $this->_getNode()->getAttribute($key);
             if (is_object($attr)) {
-                if (is_array($value) && isset($value[$key]) && count($value) == 1) {
+                if (is_array($value) && isset($value[$key]) && atkcount($value) == 1) {
                     $value = $value[$key];
                 }
 
@@ -749,7 +749,7 @@ class atkSelector implements ArrayAccess, Countable, IteratorAggregate
             $stmt->execute($this->_getBindParameters());
             $rows = $stmt->getAllRows();
             $stmt->close();
-            $this->m_rowCount = count($rows) == 1 ? $rows[0]['count'] : count($rows); // group by fix
+            $this->m_rowCount = atkcount($rows) == 1 ? $rows[0]['count'] : count($rows); // group by fix
         }
 
         return $this->m_rowCount;

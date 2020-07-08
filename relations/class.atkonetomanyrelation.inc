@@ -214,7 +214,7 @@ class atkOneToManyRelation extends atkRelation
      */
     function getOwnerFields()
     {
-        if (is_array($this->m_ownerFields) && count($this->m_ownerFields) > 0) {
+        if (is_array($this->m_ownerFields) && atkcount($this->m_ownerFields) > 0) {
             return $this->m_ownerFields;
         }
         return $this->m_ownerInstance->m_primaryKey;
@@ -380,7 +380,7 @@ class atkOneToManyRelation extends atkRelation
         $records = $record[$this->fieldName()];
 
         // no records
-        if (count($records) == 0) {
+        if (atkcount($records) == 0) {
             return !in_array($mode, array("csv", "plain", "list")) ? $this->text('none') : '';
         }
 
@@ -456,7 +456,7 @@ class atkOneToManyRelation extends atkRelation
 
         if($mode === 'edit') {
             $usesIndex = $grid->getIndex() != null;
-            $isSearching = is_array($grid->getPostvar('atksearch')) && count($grid->getPostvar('atksearch')) > 0;
+            $isSearching = is_array($grid->getPostvar('atksearch')) && atkcount($grid->getPostvar('atksearch')) > 0;
             if ($grid->getCount() == 0 && ($usesIndex || $isSearching)) {
                 $grid->setComponentOption('list', 'alwaysShowGrid', true);
             }
@@ -467,7 +467,7 @@ class atkOneToManyRelation extends atkRelation
             $this->editFooter($record, $grid->getRecords());
 
         if ($this->m_destInstance->allowed("add")) {
-            if (!$this->m_maxRecords || $this->m_maxRecords > count($grid->getRecords())) {
+            if (!$this->m_maxRecords || $this->m_maxRecords > atkcount($grid->getRecords())) {
                 $this->_addAddToEditOutput($output, $record, $mode, $fieldprefix);
             }
         }
@@ -655,7 +655,7 @@ class atkOneToManyRelation extends atkRelation
             $params['atkfilter'] = $filter;
 
         $onchange = '';
-        if (count($this->m_onchangecode)) {
+        if (atkcount($this->m_onchangecode)) {
             $onchange = 'onChange="' . $this->fieldName() . '_onChange(this);"';
             $this->_renderChangeHandler($fieldprefix);
         }
@@ -682,7 +682,7 @@ class atkOneToManyRelation extends atkRelation
             // The referential key must be set to the value of the current
             // primary key.
             $this->createDestination();
-            for ($i = 0, $_i = count($this->m_refKey); $i < $_i; $i ++) {
+            for ($i = 0, $_i = atkcount($this->m_refKey); $i < $_i; $i ++) {
                 $primkeyattr = &$this->m_ownerInstance->m_attribList[$ownerfields[$i]];
                 $value = $primkeyattr->value2db($record);
                 if (!strlen($value))
@@ -692,7 +692,7 @@ class atkOneToManyRelation extends atkRelation
             }
         }
         else {
-            for ($i = 0, $_i = count($this->m_refKey); $i < $_i; $i ++) {
+            for ($i = 0, $_i = atkcount($this->m_refKey); $i < $_i; $i ++) {
                 $value = $record[$ownerfields[$i]];
                 if (!strlen($value))
                     continue;
@@ -786,11 +786,11 @@ class atkOneToManyRelation extends atkRelation
 
         $whereelems = array();
 
-        if (count($this->m_refKey) == 0 || $this->m_refKey[0] == "")
+        if (atkcount($this->m_refKey) == 0 || $this->m_refKey[0] == "")
             $this->m_refKey[0] = $this->m_owner;
         $ownerfields = $this->getOwnerFields();
 
-        for ($i = 0, $_i = count($this->m_refKey); $i < $_i; $i ++) {
+        for ($i = 0, $_i = atkcount($this->m_refKey); $i < $_i; $i ++) {
             $primkeyattr = &$this->m_ownerInstance->m_attribList[$ownerfields[$i]];
 
             if (!$primkeyattr->isEmpty($record)) {
@@ -856,11 +856,11 @@ class atkOneToManyRelation extends atkRelation
      */
     function isEmpty($record)
     {
-        if (!isset($record[$this->fieldName()]) || (is_array($record[$this->fieldName()]) && count($record[$this->fieldName()]) == 0)) {
+        if (!isset($record[$this->fieldName()]) || (is_array($record[$this->fieldName()]) && atkcount($record[$this->fieldName()]) == 0)) {
             // empty. It might be that the record has not yet been fetched. In this case, we do
             // a forced load to see if it's really empty.
             $recs = $this->load($this->m_ownerInstance->getDb(), $record);
-            return (count($recs) == 0);
+            return (atkcount($recs) == 0);
         }
         return false;
     }
@@ -883,7 +883,7 @@ class atkOneToManyRelation extends atkRelation
         $rel = &getNode($classname, $cache_id);
         $ownerfields = $this->getOwnerFields();
 
-        for ($i = 0, $_i = count($this->m_refKey); $i < $_i; $i ++) {
+        for ($i = 0, $_i = atkcount($this->m_refKey); $i < $_i; $i ++) {
             $primkeyattr = &$this->m_ownerInstance->m_attribList[$ownerfields[$i]];
             $whereelems[] = $this->_addTablePrefix($this->m_refKey[$i]) . "='" . $primkeyattr->value2db($record) . "'";
         }
@@ -990,7 +990,7 @@ class atkOneToManyRelation extends atkRelation
             return true;
 
         $ownerfields = $this->getOwnerFields();
-        for ($i = 0; $i < count($onetomanyrecs); $i ++) {
+        for ($i = 0; $i < atkcount($onetomanyrecs); $i ++) {
             // original record
             $original = $onetomanyrecs[$i];
             $onetomanyrecs[$i]['atkorgrec'] = $original;
@@ -999,11 +999,11 @@ class atkOneToManyRelation extends atkRelation
             // are called for example from a copy function. So just in case,
             // we reset the correct key.
             if (!$this->destinationHasRelation()) {
-                for ($j = 0, $_j = count($this->m_refKey); $j < $_j; $j ++) {
+                for ($j = 0, $_j = atkcount($this->m_refKey); $j < $_j; $j ++) {
                     $onetomanyrecs[$i][$this->m_refKey[$j]] = $record[$ownerfields[$j]];
                 }
             } else {
-                for ($j = 0, $_j = count($this->m_refKey); $j < $_j; $j ++) {
+                for ($j = 0, $_j = atkcount($this->m_refKey); $j < $_j; $j ++) {
                     $onetomanyrecs[$i][$this->m_refKey[0]][$ownerfields[$j]] = $record[$ownerfields[$j]];
                 }
             }
@@ -1065,7 +1065,7 @@ class atkOneToManyRelation extends atkRelation
         $conditions = array();
         $ownerfields = $this->getOwnerFields();
 
-        for ($i = 0, $_i = count($this->m_refKey); $i < $_i; $i ++) {
+        for ($i = 0, $_i = atkcount($this->m_refKey); $i < $_i; $i ++) {
             $conditions[] = $this->_addTablePrefix($this->m_refKey[$i], $destAlias) . "=" . $ownerAlias . "." . $ownerfields[$i];
         }
 
@@ -1089,7 +1089,7 @@ class atkOneToManyRelation extends atkRelation
         // one-to-many join means we need to perform a distinct select
         $query->setDistinct(true);
 
-        if (count($path) > 0) {
+        if (atkcount($path) > 0) {
             $this->createDestination();
 
             $destAlias = "ss_{$id}_{$nr}_" . $this->fieldName();
@@ -1178,7 +1178,7 @@ class atkOneToManyRelation extends atkRelation
             }
         }
 
-        if (count($searchconditions) > 0)
+        if (atkcount($searchconditions) > 0)
             return "(" . implode(" OR ", $searchconditions) . ")";
         else
             return false;
@@ -1269,14 +1269,14 @@ class atkOneToManyRelation extends atkRelation
         $this->createDestination();
 
         // Check the filter for every SQL operators
-        for ($counter = 0; $counter < count($sqloperators); $counter ++) {
+        for ($counter = 0; $counter < atkcount($sqloperators); $counter ++) {
             if ($sqloperators[$counter]) {
                 list($key, $value) = explode($sqloperators[$counter], $selector);
 
                 // if the operator is in the filter
                 if ($value) {
                     // check if it's on the destination
-                    for ($refkeycount = 0; $refkeycount < count($this->m_refKey); $refkeycount ++) {
+                    for ($refkeycount = 0; $refkeycount < atkcount($this->m_refKey); $refkeycount ++) {
                         $destinationkey = $this->m_destInstance->m_table . "." . $this->m_refKey[$refkeycount];
 
                         // if the selector is on the destination, we pass it back

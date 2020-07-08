@@ -178,7 +178,7 @@ class atkViewHandler extends atkViewEditBase
         // For all attributes we use the display() function to display the
         // attributes current value. This may be overridden by supplying
         // an <attributename>_display function in the derived classes.
-        for ($i = 0, $_i = count($data["fields"]); $i < $_i; $i++) {
+        for ($i = 0, $_i = atkcount($data["fields"]); $i < $_i; $i++) {
             $field = &$data["fields"][$i];
             $tplfield = array();
 
@@ -274,7 +274,7 @@ class atkViewHandler extends atkViewEditBase
         if ($template) {
             $innerform = $ui->render($template, array("fields" => $fields, 'attributes' => $attributes));
         } else {
-            if (count(array_unique($tabTpl)) > 1) {
+            if (atkcount(array_unique($tabTpl)) > 1) {
                 $tabForm = $this->_renderTabs($fields, $tabTpl);
                 $innerform = implode(null, $tabForm);
             } else {

@@ -129,7 +129,7 @@ class atkTimeAttribute extends atkAttribute
 
         if (!is_array($result)) {
             $exploded = explode(":", $postvars[$this->fieldName()]);
-            if (count($exploded) <= 1)
+            if (atkcount($exploded) <= 1)
                 return "";
             $result = array();
             $result["hours"] = $exploded[0];
@@ -172,7 +172,7 @@ class atkTimeAttribute extends atkAttribute
         $field = $record[$this->fieldName()];
 
         $onChangeCode = '';
-        if (count($this->m_onchangecode)) {
+        if (atkcount($this->m_onchangecode)) {
             $this->_renderChangeHandler($fieldprefix);
             $onChangeCode = ' onChange="' . $this->getHtmlId($fieldprefix) . '_onChange(this);"';
         }
@@ -221,7 +221,7 @@ class atkTimeAttribute extends atkAttribute
             $minute_steps = $this->m_steps;
         }
 
-        for ($i = 0; $i <= count($minute_steps) - 1; $i++) {
+        for ($i = 0; $i <= atkcount($minute_steps) - 1; $i++) {
             if ($i != 0)
                 $prev = $minute_steps[$i - 1];
             else
@@ -234,12 +234,12 @@ class atkTimeAttribute extends atkAttribute
 
             $m_minBox .= sprintf("<option value='%02d'%s>%02d</option>\n", $minute_steps[$i], $sel, $minute_steps[$i]);
         }
-        $size_minbox = count($minute_steps);
+        $size_minbox = atkcount($minute_steps);
 
         // generate second dropdown
         if (!$this->hasFlag(AF_OBLIGATORY) || $this->hasFlag(AF_TIME_DEFAULT_EMPTY))
             $m_secBox .= '<option value""' . ($m_defSec === "" ? ' selected' : '') . '></option>';
-        for ($i = 0; $i <= count($this->m_steps) - 1; $i++) {
+        for ($i = 0; $i <= atkcount($this->m_steps) - 1; $i++) {
             if ($i != 0)
                 $prev = $this->m_steps[$i - 1];
             else
@@ -252,7 +252,7 @@ class atkTimeAttribute extends atkAttribute
 
             $m_secBox .= sprintf("<option value='%02d' %s>%02d</option>\n", $this->m_steps[$i], $sel, $this->m_steps[$i]);
         }
-        $size_secbox = count($this->m_steps);
+        $size_secbox = atkcount($this->m_steps);
 
         // close dropdown structures
         $m_hourBox .= "</select>";

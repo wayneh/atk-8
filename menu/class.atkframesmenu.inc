@@ -40,8 +40,8 @@ class atkFramesMenu extends atkPlainMenu
         if (is_array($g_menu[$atkmenutop])) {
             usort($g_menu[$atkmenutop], array("atkplainmenu", "menu_cmp"));
             $menuitems = array();
-            for ($i = 0; $i < count($g_menu[$atkmenutop]); $i++) {
-                if ($i == count($g_menu[$atkmenutop]) - 1) {
+            for ($i = 0; $i < atkcount($g_menu[$atkmenutop]); $i++) {
+                if ($i == atkcount($g_menu[$atkmenutop]) - 1) {
                     $delimiter = "";
                 } else {
                     $delimiter = atkconfig("menu_delimiter");
@@ -54,7 +54,7 @@ class atkFramesMenu extends atkPlainMenu
 
                 if (is_array($enable)) {
                     $enabled = false;
-                    for ($j = 0; $j < (count($enable) / 2); $j++) {
+                    for ($j = 0; $j < (atkcount($enable) / 2); $j++) {
                         $enabled |= is_allowed($enable[(2 * $j)], $enable[(2 * $j) + 1]);
                     }
                     $enable = $enabled;

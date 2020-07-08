@@ -156,11 +156,11 @@ class atkRecordList
         $list = $this->listArray($recordset, $flags, "", $actions, $suppressList, $embedprefix);
 
         /* Check if some flags are still valid or not... */
-        if (hasFlag($flags, RL_MRA) && (count($list["mra"]) == 0 || count($list["rows"]) == 0))
+        if (hasFlag($flags, RL_MRA) && (atkcount($list["mra"]) == 0 || count($list["rows"]) == 0))
             $flags ^= RL_MRA;
-        if (!hasFlag($flags, RL_NO_SEARCH) && count($list["search"]) == 0)
+        if (!hasFlag($flags, RL_NO_SEARCH) && atkcount($list["search"]) == 0)
             $flags |= RL_NO_SEARCH;
-        if (hasFlag($flags, RL_MRPA) && (count($this->m_node->m_priority_actions) == 0 || count($list["rows"]) == 0))
+        if (hasFlag($flags, RL_MRPA) && (atkcount($this->m_node->m_priority_actions) == 0 || count($list["rows"]) == 0))
             $flags ^= RL_MRPA;
         elseif (hasFlag($flags, RL_MRPA)) {
             $flags = ($flags | RL_MRA | RL_MRPA ) ^ RL_MRA;
@@ -180,7 +180,7 @@ class atkRecordList
             /*             * *********** */
             $headercols = array();
 
-            if ($this->_hasActionColumn($list) && count($list["rows"]) == 0) {
+            if ($this->_hasActionColumn($list) && atkcount($list["rows"]) == 0) {
                 if ($orientation == "left" || $orientation == "both") {
                     // empty cell above search button, if zero rows
                     // if $orientation is empty, no search button is shown, so no empty cell is needed
@@ -193,7 +193,7 @@ class atkRecordList
             if (hasFlag($flags, RL_LOCK)) {
                 $headercols[] = array("content" => '<img src="' . atkconfig("atkroot") . 'atk/images/lock_head.gif">');
             }
-            if (($orientation == "left" || $orientation == "both") && ($this->_hasActionColumn($list) && count($list["rows"]) > 0)) {
+            if (($orientation == "left" || $orientation == "both") && ($this->_hasActionColumn($list) && atkcount($list["rows"]) > 0)) {
                 $headercols[] = array("content" => "");
             }
             //Todo: For speedup we must move hasFlag($this->m_flags, RL_EMBED out of cycle or to listArray()
@@ -215,11 +215,11 @@ class atkRecordList
                 }
             }
 
-            if (($orientation == "right" || $orientation == "both") && ($this->_hasActionColumn($list) && count($list["rows"]) > 0)) {
+            if (($orientation == "right" || $orientation == "both") && ($this->_hasActionColumn($list) && atkcount($list["rows"]) > 0)) {
                 $headercols[] = array("content" => "");
             }
 
-            if ($this->_hasActionColumn($list) && count($list["rows"]) == 0) {
+            if ($this->_hasActionColumn($list) && atkcount($list["rows"]) == 0) {
                 if ($orientation == "right" || $orientation == "both") {
                     // empty cell above search button, if zero rows
                     // if $orientation is empty, no search button is shown, so no empty cell is needed
@@ -339,7 +339,7 @@ class atkRecordList
 
             $records = array();
             $keys = array_keys($actions);
-            $actionurl = (count($actions) > 0) ? $actions[$keys[0]] : '';
+            $actionurl = (atkcount($actions) > 0) ? $actions[$keys[0]] : '';
             $actionloader = "rl_a['" . $listName . "'] = {};";
             $actionloader.= "\nrl_a['" . $listName . "']['base'] = '" . session_vars($this->m_actionSessionStatus, 1, $actionurl) . "';";
             $actionloader.= "\nrl_a['" . $listName . "']['embed'] = " . (hasFlag($flags, RL_EMBED)
@@ -352,7 +352,7 @@ class atkRecordList
                 $actionloader.="\nrl_a['" . $listName . "']['previous'] = '" . $navigation["previous"]["url"] . "';";
             }
 
-            for ($i = 0, $_i = count($list["rows"]); $i < $_i; $i++) {
+            for ($i = 0, $_i = atkcount($list["rows"]); $i < $_i; $i++) {
                 $record = array();
 
                 /* Special rowColor method makes it possible to change the row color based on the record data.
@@ -388,7 +388,7 @@ class atkRecordList
                 }
 
                 /* multi-record-actions -> checkbox */ elseif (hasFlag($flags, RL_MRA)) {
-                    if (count($list["rows"][$i]["mra"]) > 0)
+                    if (atkcount($list["rows"][$i]["mra"]) > 0)
                         $record["cols"][] = array(
                             "content" => '<input type="checkbox" name="' . $listName . '_atkselector[]" value="' . atk_htmlentities($list["rows"][$i]["selector"]) . '" class="atkcheckbox" onclick="if (this.disabled) this.checked = false">' .
                             '<script language="javascript"  type="text/javascript">' . $listName . '["' . atk_htmlentities($list["rows"][$i]["selector"]) . '"] = new Array("' . implode($list["rows"][$i]["mra"], '","') . '");</script>',
@@ -469,12 +469,12 @@ class atkRecordList
             /*             * ********** */
             $totalcols = array();
 
-            if (count($list["total"]) > 0) {
+            if (atkcount($list["total"]) > 0) {
                 if (hasFlag($flags, RL_MRA) || hasFlag($flags, RL_MRPA))
                     $totalcols[] = array("content" => "");
                 if (hasFlag($flags, RL_LOCK))
                     $totalcols[] = array("content" => "");
-                if (($orientation == "left" || $orientation == "both") && ($this->_hasActionColumn($list) && count($list["rows"]) > 0))
+                if (($orientation == "left" || $orientation == "both") && ($this->_hasActionColumn($list) && atkcount($list["rows"]) > 0))
                     $totalcols[] = array("content" => "");
 
                 foreach (array_keys($list["heading"]) as $key) {
@@ -482,7 +482,7 @@ class atkRecordList
                                 ? $list["total"][$key] : ""));
                 }
 
-                if (($orientation == "right" || $orientation == "both") && ($this->_hasActionColumn($list) && count($list["rows"]) > 0))
+                if (($orientation == "right" || $orientation == "both") && ($this->_hasActionColumn($list) && atkcount($list["rows"]) > 0))
                     $totalcols[] = array("content" => "");
             }
 
@@ -494,7 +494,7 @@ class atkRecordList
                 $target = session_url(atkSelf() . '?atknodetype=' . $this->getMasterNodeType(), SESSION_NESTED);
 
                 /* multiple actions -> dropdown */
-                if (count($this->m_node->m_priority_actions) > 1) {
+                if (atkcount($this->m_node->m_priority_actions) > 1) {
                     $mra = '<select name="' . $listName . '_atkaction">' .
                         '<option value="">' . atktext("with_selected") . ':</option>';
 
@@ -517,7 +517,7 @@ class atkRecordList
             /*             * ************************************* */ elseif (hasFlag($flags, RL_MRA)) {
                 $target = session_url(atkSelf() . '?atknodetype=' . $this->m_node->atkNodeType() . '&atktarget=' . $this->m_node->m_postvars['atktarget'] . '&atktargetvar=' . $this->m_node->m_postvars['atktargetvar'] . '&atktargetvartpl=' . $this->m_node->m_postvars['atktargetvartpl'], SESSION_NESTED);
 
-                $mra = (count($list["rows"]) > 1 ?
+                $mra = (atkcount($list["rows"]) > 1 ?
                         '<a href="javascript:updateSelection(\'' . $listName . '\', document.forms[\'' . $formName . '\'], \'all\')">' . atktext("select_all") . '</a> / ' .
                         '<a href="javascript:updateSelection(\'' . $listName . '\', document.forms[\'' . $formName . '\'], \'none\')">' . atktext("deselect_all") . '</a> / ' .
                         '<a href="javascript:updateSelection(\'' . $listName . '\', document.forms[\'' . $formName . '\'], \'invert\')">' . atktext("select_invert") . '</a> '
@@ -525,7 +525,7 @@ class atkRecordList
                         '');
 
                 /* multiple actions -> dropdown */
-                if (count($list["mra"]) > 1) {
+                if (atkcount($list["mra"]) > 1) {
                     $mra .= '<select name="' . $listName . '_atkaction" onchange="javascript:updateSelectable(\'' . $listName . '\', this.form)">' .
                         '<option value="">' . atktext("with_selected") . ':</option>';
 
@@ -550,7 +550,7 @@ class atkRecordList
 
             if (atkconfig("use_keyboard_handler")) {
                 $kb = &atkKeyboard::getInstance();
-                $kb->addRecordListHandler($listName, $selectcolor, count($records));
+                $kb->addRecordListHandler($listName, $selectcolor, atkcount($records));
             }
 
             $recordListData = array("vorientation" => $vorientation,
@@ -664,14 +664,14 @@ class atkRecordList
         }
 
         /* actions array can contain multi-record-actions */
-        if (count($actions) == 2 && count(array_diff(array_keys($actions), array("actions", "mra"))) == 0) {
+        if (atkcount($actions) == 2 && atkcount(array_diff(array_keys($actions), array("actions", "mra"))) == 0) {
             $mra = $actions["mra"];
             $actions = $actions["actions"];
         } else
             $mra = $this->m_node->hasFlag(NF_NO_DELETE) ? array() : array("delete");
 
         /* get the rows */
-        for ($i = 0, $_i = count($recordset); $i < $_i; $i++) {
+        for ($i = 0, $_i = atkcount($recordset); $i < $_i; $i++) {
             $result["rows"][$i] = array("columns" => array(), "actions" => $actions, "mra" => $mra, "record" => &$recordset[$i], "data" => array());
             $result["rows"][$i]["selector"] = $this->m_node->primaryKey($recordset[$i]);
             $result["rows"][$i]["type"] = "data";

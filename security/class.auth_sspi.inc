@@ -95,17 +95,17 @@ class auth_sspi extends auth_db
         $query = $this->buildSelectUserQuery($user, atkconfig("auth_usertable"), atkconfig("auth_userfield"), atkconfig("auth_sspi_accountfield"), atkconfig("auth_accountdisablefield"), atkconfig("auth_accountenableexpression"));
 
         $recs = $db->getrows($query);
-        if (count($recs) > 0 && $this->isLocked($recs[0])) {
+        if (atkcount($recs) > 0 && $this->isLocked($recs[0])) {
             return AUTH_LOCKED;
         }
         // Erreur : on affiche le domaine et l'utilisateur dans la fenetre de login
-        if (count($recs) == 0) {
+        if (atkcount($recs) == 0) {
             $_SERVER["PHP_AUTH_USER"] = $domain . "." . $user;
             $ATK_VARS["auth_user"] = $domain . "." . $user;
             return AUTH_MISMATCH;
         }
 
-        if ((count($recs) == 1)) {
+        if ((atkcount($recs) == 1)) {
             // Mise jour des variables directement : l'utilisateur n'a pas ete renseigne donc on le renseigne
             $_SERVER["PHP_AUTH_USER"] = $user;
             $ATK_VARS["auth_user"] = $user;
@@ -167,11 +167,11 @@ class auth_sspi extends auth_db
         $groups = array();
 
         // We might have more then one level, so we loop the result.
-        if (count($recs) > 0) {
+        if (atkcount($recs) > 0) {
             $level = array();
             $parents = array();
 
-            for ($i = 0; $i < count($recs); $i++) {
+            for ($i = 0; $i < atkcount($recs); $i++) {
                 $level[] = $recs[$i][atkconfig("auth_levelfield")];
                 $groups[] = $recs[$i][$groupfield];
 
@@ -180,7 +180,7 @@ class auth_sspi extends auth_db
             }
 
             $groups = array_merge($groups, $parents);
-            while (count($parents) > 0) {
+            while (atkcount($parents) > 0) {
                 $precs = $this->getParentGroups($parents);
                 $parents = array();
                 foreach ($precs as $prec)
@@ -192,7 +192,7 @@ class auth_sspi extends auth_db
 
             $groups = array_unique($groups);
         }
-        if (count($level) == 1)
+        if (atkcount($level) == 1)
             $level = $level[0];
 
         $userinfo = $recs[0];

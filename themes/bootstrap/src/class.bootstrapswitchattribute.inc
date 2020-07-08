@@ -48,7 +48,7 @@ class bootstrapSwitchAttribute extends atkBoolAttribute
 
         $id = $this->getHtmlId($fieldprefix);
         $onchange = '';
-        if (count($this->m_onchangecode)) {
+        if (atkcount($this->m_onchangecode)) {
             $onchange = 'onClick="' . $id . '_onChange(this);" ';
             $this->_renderChangeHandler($fieldprefix);
         }

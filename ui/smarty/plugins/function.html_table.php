@@ -74,10 +74,10 @@ function smarty_function_html_table($params, &$smarty)
             case 'cols':
                 if (is_array($_value) && !empty($_value)) {
                     $cols = $_value;
-                    $cols_count = count($_value);
+                    $cols_count = atkcount($_value);
                 } elseif (!is_numeric($_value) && is_string($_value) && !empty($_value)) {
                     $cols = explode(',', $_value);
-                    $cols_count = count($cols);
+                    $cols_count = atkcount($cols);
                 } elseif (!empty($_value)) {
                     $cols_count = (int)$_value;
                 } else {
@@ -106,7 +106,7 @@ function smarty_function_html_table($params, &$smarty)
         }
     }
 
-    $loop_count = count($loop);
+    $loop_count = atkcount($loop);
     if (empty($params['rows'])) {
         /* no rows specified */
         $rows = ceil($loop_count/$cols_count);

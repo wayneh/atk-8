@@ -31,7 +31,7 @@ class atkOneToManyRelationSessionGridHandler
 
         $limit = $grid->getLimit();
         $offset = $grid->getOffset();
-        $records_count = count($records);
+        $records_count = atkcount($records);
 
         // If we don't need to limit the result, then we don't
         if ((int) $offset === 0 && $limit >= $records_count) {

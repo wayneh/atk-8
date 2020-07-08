@@ -135,7 +135,7 @@ class atkListAttribute extends atkAttribute
         // If all values are numeric, we can use a numeric field to store the selected
         // value.
         $this->m_dbfieldtype = "number";
-        for ($i = 0, $_i = count($valueArray); $i < $_i && $this->m_dbfieldtype == "number"; $i ++) {
+        for ($i = 0, $_i = atkcount($valueArray); $i < $_i && $this->m_dbfieldtype == "number"; $i ++) {
             if (!is_numeric($valueArray[$i]))
                 $this->m_dbfieldtype = "string";
             // if one of the values is not a number, the fieldtype must be string, and
@@ -144,7 +144,7 @@ class atkListAttribute extends atkAttribute
 
         // If no size is specified, the max size we have is equal to the biggest value.
         if ($size == 0) {
-            for ($i = 0, $_i = count($valueArray); $i < $_i; $i ++) {
+            for ($i = 0, $_i = atkcount($valueArray); $i < $_i; $i ++) {
                 $size = max($size, atk_strlen($valueArray[$i]));
             }
         }
@@ -286,7 +286,7 @@ class atkListAttribute extends atkAttribute
         $this->registerJavaScriptObservers($id);
 
         $onchange = '';
-        if (count($this->m_onchangecode)) {
+        if (atkcount($this->m_onchangecode)) {
             $onchange = 'onChange="' . $id . '_onChange(this);"';
             $this->_renderChangeHandler($fieldprefix);
         }
@@ -299,7 +299,7 @@ class atkListAttribute extends atkAttribute
         $values = $this->getValues($record);
         $recvalue = atkArrayNvl($record, $this->fieldName());
 
-        for ($i = 0; $i < count($values); $i ++) {
+        for ($i = 0; $i < atkcount($values); $i ++) {
             // If the current value is selected or occurs in the record
             if ((!is_null($this->m_selected) && $values[$i] == $this->m_selected) ||
                 ( is_null($this->m_selected) && $values[$i] == $recvalue && $recvalue !== "")) {
@@ -407,7 +407,7 @@ class atkListAttribute extends atkAttribute
         $values = $this->getValues($record);
         $result = '<select class="form-control"';
         if ($extended || $this->getMultipleInSimpleSearch()) {
-            $cnt = count($values) + ((!$this->hasFlag(AF_OBLIGATORY) && !$this->hasFlag(AF_LIST_NO_NULL_ITEM)) ? 1 : 0);
+            $cnt = atkcount($values) + ((!$this->hasFlag(AF_OBLIGATORY) && !$this->hasFlag(AF_LIST_NO_NULL_ITEM)) ? 1 : 0);
             if ($cnt > 2) {
                 $result .= ' multiple size="' . min(5, $cnt + 1) . '"';
             }
@@ -430,7 +430,7 @@ class atkListAttribute extends atkAttribute
             $selValues = [$selValues];
         }
 
-        if ($this->getMultipleInSimpleSearch() && count($selValues) == 1 && strpos($selValues[0], ',') !== false) {
+        if ($this->getMultipleInSimpleSearch() && atkcount($selValues) == 1 && strpos($selValues[0], ',') !== false) {
             // in case of multiple select in simple search, we have the selected values into a single string (csv)
             $selValues = explode(',', $selValues[0]);
         }
@@ -484,9 +484,9 @@ class atkListAttribute extends atkAttribute
         // But you can select more than one value, which we search using the IN() statement,
         // which should work in any ansi compatible database.
         $searchcondition = "";
-        if (is_array($value) && count($value) > 0 && $value[0] != "") { // This last condition is for when the user selected the 'search all' option, in which case, we don't add conditions at all.
+        if (is_array($value) && atkcount($value) > 0 && $value[0] != "") { // This last condition is for when the user selected the 'search all' option, in which case, we don't add conditions at all.
 
-            if ($this->getMultipleInSimpleSearch() && count($value) == 1 && strpos($value[0], ',') !== false) {
+            if ($this->getMultipleInSimpleSearch() && atkcount($value) == 1 && strpos($value[0], ',') !== false) {
                 // in case of multiple select in simple search, we have the selected values into a single string (csv)
                 $value = explode(',', $value[0]);
                 // "search all" option has precedence (when another options are selected together)
@@ -495,13 +495,13 @@ class atkListAttribute extends atkAttribute
                 }
             }
 
-            if (count($value) == 1 && $value[0] != '') { // exactly one value
+            if (atkcount($value) == 1 && $value[0] != '') { // exactly one value
                 if ($value[0] == "__NONE__") {
                     return $query->nullCondition($table . "." . $this->fieldName(), true);
                 } else {
                     return $query->exactCondition($table . "." . $this->fieldName(), $this->escapeSQL($value[0]));
                 }
-            } else if (count($value) > 1) { // search for more values
+            } else if (atkcount($value) > 1) { // search for more values
                 if (in_array('__NONE__', $value)) {
                     unset($value[array_search('__NONE__', $value)]);
                     return sprintf('(%s OR %s)',

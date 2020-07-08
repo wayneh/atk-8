@@ -76,11 +76,11 @@ class auth_db extends auth_interface
         $db = &atkGetDb(atkconfig("auth_database"));
         $query = $this->buildSelectUserQuery($db->escapeSql($user), atkconfig("auth_usertable"), atkconfig("auth_userfield"), atkconfig("auth_passwordfield"), atkconfig("auth_accountdisablefield"), atkconfig("auth_accountenableexpression"));
         $recs = $db->getrows($query);
-        if (count($recs) > 0 && $this->isLocked($recs[0])) {
+        if (atkcount($recs) > 0 && $this->isLocked($recs[0])) {
             return AUTH_LOCKED;
         }
 
-        return ((count($recs) > 0 && $user != "" && $this->matchPasswords($this->getPassword($recs[0]), $passwd))
+        return ((atkcount($recs) > 0 && $user != "" && $this->matchPasswords($this->getPassword($recs[0]), $passwd))
                     ? AUTH_SUCCESS : AUTH_MISMATCH);
     }
 
@@ -239,11 +239,11 @@ class auth_db extends auth_interface
         $groups = array();
 
         // We might have more then one level, so we loop the result.
-        if (count($recs) > 0) {
+        if (atkcount($recs) > 0) {
             $level = array();
             $parents = array();
 
-            for ($i = 0; $i < count($recs); $i++) {
+            for ($i = 0; $i < atkcount($recs); $i++) {
                 $level[] = $recs[$i][atkconfig("auth_levelfield")];
                 $groups[] = $recs[$i][atkconfig("auth_levelfield")];
 
@@ -252,7 +252,7 @@ class auth_db extends auth_interface
             }
 
             $groups = array_merge($groups, $parents);
-            while (count($parents) > 0) {
+            while (atkcount($parents) > 0) {
                 $precs = $this->getParentGroups($parents);
                 $parents = array();
                 foreach ($precs as $prec)
@@ -264,7 +264,7 @@ class auth_db extends auth_interface
 
             $groups = array_unique($groups);
         }
-        if (count($level) == 1)
+        if (atkcount($level) == 1)
             $level = $level[0];
 
         $userinfo = $recs[0];
@@ -285,9 +285,9 @@ class auth_db extends auth_interface
     function getAccessLevel($recs)
     {
         // We might have more then one access level, so we loop the result.
-        if (count($recs) > 1) {
+        if (atkcount($recs) > 1) {
             $access = array();
-            for ($i = 0; $i < count($recs); $i++) {
+            for ($i = 0; $i < atkcount($recs); $i++) {
                 if ($i == 0)
                     $access = $recs[$i][atkconfig("auth_accesslevelfield")];
                 if ($recs[$i][atkconfig("auth_accesslevelfield")] > $access)
@@ -330,7 +330,7 @@ class auth_db extends auth_interface
         if (empty($field))
             $field = atkconfig("auth_levelfield");
 
-        for ($i = 0, $_i = count($rights); $i < $_i; $i++) {
+        for ($i = 0, $_i = atkcount($rights); $i < $_i; $i++) {
             if ($rights[$i]['action'] == $action) {
                 $result[] = $rights[$i][$field];
             }
@@ -359,7 +359,7 @@ class auth_db extends auth_interface
 
         $result = Array();
 
-        for ($i = 0; $i < count($rights); $i++) {
+        for ($i = 0; $i < atkcount($rights); $i++) {
             if ($rights[$i][atkconfig("auth_levelfield")] != "") {
                 $result[] = $rights[$i][atkconfig("auth_levelfield")];
             }
@@ -410,7 +410,7 @@ class auth_db extends auth_interface
         $userlist = array();
         atkimport("atk.utils.atkstringparser");
         $stringparser = new atkStringParser(atkconfig("auth_userdescriptor"));
-        for ($i = 0, $_i = count($recs); $i < $_i; $i++) {
+        for ($i = 0, $_i = atkcount($recs); $i < $_i; $i++) {
             $userlist[] = array("userid" => $recs[$i][atkconfig("auth_userfield")], "username" => $stringparser->parse($recs[$i]));
         }
         usort($userlist, array("auth_db", "userListCompare"));
@@ -452,7 +452,7 @@ class auth_db extends auth_interface
         $usernode = &atkGetNode(atkconfig("auth_usernode"));
         $selector = sprintf("%s.%s = '%s'", atkconfig("auth_usertable"), atkconfig("auth_userfield"), $username);
         $userrecords = $usernode->selectDb($selector, "", "", "", array(atkconfig("auth_userpk"), atkconfig("auth_emailfield"), atkconfig("auth_passwordfield")), "edit");
-        if (count($userrecords) != 1) {
+        if (atkcount($userrecords) != 1) {
             atkdebug("User '$username' not found.");
             return false;
         }
