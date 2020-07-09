@@ -244,7 +244,7 @@ class atkSecurityManager
         $md5 = false; // PHP_AUTH_PW is plain text..
         // first check if we want to logout
         if (isset($ATK_VARS["atklogout"]) && (!isset($session["relogin"]) || $session["relogin"] != 1)) {
-            $currentUser = &atkGetUser();
+            $currentUser = atkGetUser();
 
 			// FIX refresh problem with currentUser not existing
             $this->notifyListeners("preLogout", isset($currentUser['name']) ? $currentUser['name'] : $auth_user);
@@ -539,8 +539,8 @@ class atkSecurityManager
 
         atkdebug('LoginAttempts: ' . $loginattempts);
 
-        $page = &atkinstance("atk.ui.atkpage", true);
-        $ui = &atkinstance("atk.ui.atkui");
+        $page = atkinstance("atk.ui.atkpage", true);
+        $ui = atkinstance("atk.ui.atkui");
 
         $page->register_style($ui->stylePath("style.css"));
         $page->register_style($ui->stylePath("login.css"));

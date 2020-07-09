@@ -257,7 +257,10 @@ class atkController
             return $this->m_node;
         } else {
             //if the object not yet exists, try to create it
-            $fullclassname = $this->m_postvars["atknodetype"];
+			$fullclassname = null;
+			if (isset($this->m_postvars["atknodetype"])){
+				$fullclassname = $this->m_postvars["atknodetype"];
+			}
             if (isset($fullclassname) && $fullclassname != null) {
                 $this->m_node = &getNode($fullclassname);
                 if (is_object($this->m_node)) {
