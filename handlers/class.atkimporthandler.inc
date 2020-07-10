@@ -281,7 +281,7 @@ class atkImportHandler extends atkActionHandler
         </div>';
 
         $page = &$this->m_node->getPage();
-        $theme = &atkinstance("atk.ui.atktheme");
+        $theme = atkinstance("atk.ui.atktheme");
         $page->register_style($theme->stylePath("recordlist.css"));
         $this->invoke('importPage', 'analyze', $content);
     }

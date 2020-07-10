@@ -44,7 +44,7 @@ $data .= implode("<br>", file($file));
 $data .='</div>';
 
 $page = &atknew("atk.ui.atkpage");
-$ui = &atkinstance("atk.ui.atkui");
+$ui = atkinstance("atk.ui.atkui");
 
 $output = &atkOutput::getInstance();
 

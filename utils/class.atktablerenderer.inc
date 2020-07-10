@@ -227,7 +227,7 @@ class atkTableRenderer
      */
     function registerStyle($style, $module = "")
     {
-        $theme = &atkinstance("atk.ui.atktheme");
+        $theme = atkinstance("atk.ui.atktheme");
         $page = &atkPage::getInstance();
         $page->register_style($theme->stylePath($style . ".css", $module));
     }

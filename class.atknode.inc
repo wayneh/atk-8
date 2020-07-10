@@ -2631,7 +2631,7 @@ class atkNode
         $this->addStyle("style.css");
 
         if (is_array($atkselector))
-            $atkselector_str = '((' . implode($atkselector, ') OR (') . '))';
+            $atkselector_str = '((' . implode(') OR (', $atkselector) . '))';
         else
             $atkselector_str = $atkselector;
 
@@ -2772,7 +2772,7 @@ class atkNode
 
         $lockType = atkconfig("lock_type");
         if (!empty($lockType) && $this->hasFlag(NF_LOCK)) {
-            $this->m_lock = &atkinstance("atk.lock.atklock");
+            $this->m_lock = atkinstance("atk.lock.atklock");
         } else
             $this->removeFlag(NF_LOCK);
 
@@ -3365,7 +3365,7 @@ class atkNode
             if ($this->hasFlag(NF_ML) && $record["atkmlsplit"] == "") {
                 $record["atkmlsplit"] = 1;
 
-                $mltool = &atkinstance("atk.utils.atkmlsplitter");
+                $mltool = atkinstance("atk.utils.atkmlsplitter");
                 $mltool->updateMlRecords($this, $record, "update", $excludes, $includes);
             }
 
@@ -3578,7 +3578,7 @@ class atkNode
         }
 
         if ($this->hasFlag(NF_ML)) {
-            $mltool = &atkinstance("atk.utils.atkmlsplitter");
+            $mltool = atkinstance("atk.utils.atkmlsplitter");
             $mltool->addMlCondition($query, $this, $mode, $alias);
         }
     }
@@ -3712,7 +3712,7 @@ class atkNode
 
         if ($this->hasFlag(NF_ML) && $record["atkmlsplit"] == "") {
             $record["atkmlsplit"] = 1;
-            $mltool = &atkinstance("atk.utils.atkmlsplitter");
+            $mltool = atkinstance("atk.utils.atkmlsplitter");
             $mltool->updateMlRecords($this, $record, $mode);
         }
 

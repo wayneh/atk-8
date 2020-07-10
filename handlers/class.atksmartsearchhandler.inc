@@ -608,7 +608,7 @@ class atkSmartSearchHandler extends atkAbstractSearchHandler
         useattrib('atkdateattribute');
         atkDateAttribute::registerScriptsAndStyles();
 
-        $theme = &atkinstance("atk.ui.atktheme");
+        $theme = atkinstance("atk.ui.atktheme");
         $page->register_style($theme->stylePath("atkdateattribute.css"));
 
         $params = array();

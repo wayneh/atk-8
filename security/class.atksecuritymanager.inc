@@ -438,7 +438,7 @@ class atkSecurityManager
                 $location.='login=' . $auth_user . '&error=' . $response;
 
                 if (atkconfig("debug") >= 2) {
-                    $debugger = &atkinstance('atk.utils.atkdebugger');
+                    $debugger = atkinstance('atk.utils.atkdebugger');
                     $debugger->setRedirectUrl($location);
                     atkdebug('Non-debug version would have redirected to <a href="' . $location . '">' . $location . '</a>');
                     $output = &atkOutput::getInstance();

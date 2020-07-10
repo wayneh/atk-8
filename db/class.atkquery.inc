@@ -566,7 +566,7 @@ class atkQuery
     {
         if (($distinct || $this->m_distinct) && atkcount($this->m_fields) > 0) {
             $result = "SELECT COUNT(DISTINCT ";
-            $result.=implode($this->quoteFields($this->m_fields), ", ");
+            $result.=implode(", ", $this->quoteFields($this->m_fields));
             $result.=") as count FROM ";
         } else
             $result = "SELECT COUNT(*) AS count FROM ";

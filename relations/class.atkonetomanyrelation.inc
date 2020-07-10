@@ -421,7 +421,7 @@ class atkOneToManyRelation extends atkRelation
      */
     public function edit($record = "", $fieldprefix = "", $mode = '')
     {
-        $page = &atkinstance('atk.ui.atkpage');
+        $page = atkinstance('atk.ui.atkpage');
         $page->register_script(atkconfig("atkroot") . "atk/javascript/tools.js");
         $page->register_script(atkconfig("atkroot") . "atk/javascript/class.atkonetomanyrelation.js");
 

@@ -217,7 +217,7 @@ class atkTreeNode extends atkNode
      */
     function getIcon($name)
     {
-        $theme = &atkInstance("atk.ui.atktheme");
+        $theme = atkinstance("atk.ui.atktheme");
         return $theme->iconPath("tree_$name", "tree", $this->m_module);
     }
 

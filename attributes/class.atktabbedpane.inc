@@ -264,7 +264,7 @@ class atkTabbedPane extends atkAttribute
 
         // Handle fields
         // load images
-        $theme = &atkinstance("atk.ui.atktheme");
+        $theme = atkinstance("atk.ui.atktheme");
         $tipimg = $theme->imgPath("help.gif");
         $reqimg = '<img align="top" src="' . $theme->imgPath("required_field.gif") . '" border="0"
                   alt="' . atktext("field_obligatory") . '" title="' . atktext("field_obligatory") . '">';
@@ -423,7 +423,7 @@ class atkTabbedPane extends atkAttribute
                     $ttip = atktext($node->m_type . "_" . $name . "_tooltip", $module, "", "", "", true);
 
                     if ($ttip) {
-                        $theme = &atkinstance("atk.ui.atktheme");
+                        $theme = atkinstance("atk.ui.atktheme");
                         $tipimg = $theme->imgPath("help.gif");
 
                         $onelinetip = preg_replace('/([\r\n])/e', "", $ttip);

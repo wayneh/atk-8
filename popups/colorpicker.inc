@@ -60,7 +60,7 @@ $layout .= "</form>";
 
 //  Display's the picker in the current ATK style-template
 $page = &atknew("atk.ui.atkpage");
-$theme = &atkinstance("atk.ui.atktheme");
+$theme = atkinstance("atk.ui.atktheme");
 $output = &atkOutput::getInstance();
 
 $page->register_style($theme->stylePath("style.css"));

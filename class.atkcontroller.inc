@@ -763,7 +763,7 @@ class atkController
      */
     function &getPage()
     {
-        $page = &atkinstance("atk.ui.atkpage");
+        $page = atkinstance("atk.ui.atkpage");
         return $page;
     }
 

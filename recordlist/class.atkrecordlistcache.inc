@@ -109,7 +109,7 @@ class atkRecordlistCache
         $this->_setCacheId();
 
         if (file_exists($this->m_cacheid) && filesize($this->m_cacheid) && !$this->noCaching()) {
-            $theme = &atkinstance("atk.ui.atktheme");
+            $theme = atkinstance("atk.ui.atktheme");
             $page = &atkPage::getInstance();
 
             $page->register_style($theme->stylePath("recordlist.css"));

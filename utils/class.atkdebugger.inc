@@ -204,8 +204,8 @@ class atkDebugger
      */
     public function renderConsole()
     {
-        $page = &atkinstance("atk.ui.atkpage");
-        $theme = &atkinstance("atk.ui.atktheme");
+        $page = atkinstance("atk.ui.atkpage");
+        $theme = atkinstance("atk.ui.atktheme");
         $page->register_style($theme->stylePath("debugger.css"));
         $data = &$this->getDebuggerData(false, $_REQUEST['atkstackid']);
         $res = $this->consoleControls() . '<br/><br/>';
@@ -461,7 +461,7 @@ class atkDebugger
            ' . $label . '
           </div>
           <div class="atkDebugData">
-            ' . (atkcount($g_debug_msg) > 0 ? '<div class="atkDebugLine">' . implode($g_debug_msg, '</div><div class="atkDebugLine">') . '</div>'
+            ' . (atkcount($g_debug_msg) > 0 ? '<div class="atkDebugLine">' . implode('</div><div class="atkDebugLine">', $g_debug_msg) . '</div>'
                     : '') . '
           </div>
         </div>';
@@ -537,7 +537,7 @@ class atkDebugger
             ATK.Debug.addContent(' . atkJSON::encode($block) . ');
            </script>';
         } else {
-            $ui = &atkinstance('atk.ui.atkui');
+            $ui = atkinstance('atk.ui.atkui');
             $stylesheet = $ui->stylePath('atkdebug.css');
             $script = atkconfig('atkroot') . 'atk/javascript/class.atkdebug.js';
 

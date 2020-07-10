@@ -45,8 +45,8 @@ class atkModernMenu extends atkPlainMenu
      */
     function render()
     {
-        $page = &atkinstance('atk.ui.atkpage');
-        $theme = &atkinstance("atk.ui.atktheme");
+        $page = atkinstance('atk.ui.atkpage');
+        $theme = atkinstance("atk.ui.atktheme");
         if ($theme->getAttribute('modern_menu_compat')) {
             $page->addContent($this->getMenu());
             return $page->render("Menu", true);
@@ -63,7 +63,7 @@ class atkModernMenu extends atkPlainMenu
      */
     function getMenu()
     {
-        $theme = &atkinstance("atk.ui.atktheme");
+        $theme = atkinstance("atk.ui.atktheme");
         if ($theme->getAttribute('modern_menu_compat')) {
             global $g_menu;
             $atkmenutop = (isset($_REQUEST['atkmenutop']) ? $_REQUEST['atkmenutop']
@@ -72,12 +72,12 @@ class atkModernMenu extends atkPlainMenu
 
             $menuitems = $this->getMenuItems($g_menu, 'main');
 
-            $page = &atkInstance("atk.ui.atkpage");
+            $page = atkinstance("atk.ui.atkpage");
             $page->register_style($theme->stylePath("style.css"));
             $page->register_style($theme->stylePath("menu.css"));
             $page->register_script(atkconfig("atkroot") . "atk/javascript/menuload.js");
 
-            $ui = &atkinstance("atk.ui.atkui");
+            $ui = atkinstance("atk.ui.atkui");
             $atkmenutop = (isset($_REQUEST['atkmenutop']) ? $_REQUEST['atkmenutop']
                         : $atkmenutop);
 
@@ -134,7 +134,7 @@ class atkModernMenu extends atkPlainMenu
                     $menuitem['name'] = $this->getMenuTranslation($menuitem['name'], $menuitem['module']);
                 }
 
-                $theme = &atkinstance("atk.ui.atktheme");
+                $theme = atkinstance("atk.ui.atktheme");
                 $menu_icon = $theme->iconPath($menutop . '_' . $menuitem['id'], "menu", $menuitem['module']);
                 if ($menu_icon) {
                     $menuitem['image'] = $menu_icon;
@@ -180,7 +180,7 @@ class atkModernMenu extends atkPlainMenu
                     $this->isEnabled($menuitem['submenu'][$submenukey]);
                 $menuitem['submenu'][$submenukey]['url'] = session_url($url, SESSION_NEW);
             }
-            $theme = &atkinstance("atk.ui.atktheme");
+            $theme = atkinstance("atk.ui.atktheme");
             $menu_icon = $theme->iconPath($menuitem['id'] . '_' . $submenuitem['name'], "menu", $submenuitem['module']);
             if ($menu_icon) {
                 $menuitem['submenu'][$submenukey]['image'] = $menu_icon;

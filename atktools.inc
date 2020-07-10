@@ -99,11 +99,11 @@ function atkErrorHandler($errtype, $errstr, $errfile, $errline)
         // Just show notices
         atkdebug("[$errortypestring] $errstr in $errfile (line $errline)", DEBUG_NOTICE);
         return;
-    } else if (defined('E_DEPRECATED') && ($errtype & (E_DEPRECATED | E_USER_DEPRECATED)) > 0) {
+    } else if (($errtype != "EXCEPTION") && ($errtype & (E_DEPRECATED | E_USER_DEPRECATED)) > 0) {
         // Just show deprecation warnings in the debug log, but don't influence the program flow
         atkdebug("[$errortypestring] $errstr in $errfile (line $errline)", DEBUG_NOTICE);
         return;
-    } else if (($errtype & (E_WARNING | E_USER_WARNING)) > 0) {
+    } else if (($errtype != "EXCEPTION") && ($errtype & (E_WARNING | E_USER_WARNING)) > 0) {
         // This is something we should pay attention to, but we don't need to die.
 		// older
 		//atkerror("[$errortypestring] $errstr in $errfile (line $errline)");
@@ -2059,5 +2059,4 @@ function atkcount($item)
 		return (int)0;
 	}
 	return (int)1;
-	return 0;
 }

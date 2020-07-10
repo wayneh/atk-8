@@ -108,7 +108,7 @@ class atkDb2Query extends atkQuery
             $fields = $this->quoteFields($this->m_fields);
             for ($i = 0; $i < atkcount($fields); $i++)
                 $fields[$i] = "COALESCE({$fields[$i]}, '###ATKNULL###')";
-            $result.=implode($this->quoteFields($fields), ", ");
+            $result.=implode(", ", $this->quoteFields($fields));
             $result.=") as count FROM ";
         } else
             $result = "SELECT COUNT(*) as count FROM ";

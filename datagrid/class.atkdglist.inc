@@ -315,7 +315,7 @@ class atkDGList extends atkDGComponent
                             $inputHTML . '
               <script language="javascript"  type="text/javascript">' .
                             $listName . '["' . atk_htmlentities($list["rows"][$i]["selector"]) . '"] =
-                  new Array("' . implode($list["rows"][$i]["mra"], '","') . '");
+                  new Array("' . implode('","', $list["rows"][$i]["mra"]) . '");
               </script>',
                         "type" => "mra"
                     );

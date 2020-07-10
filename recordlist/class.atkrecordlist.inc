@@ -142,7 +142,7 @@ class atkRecordList
         $this->setNode($node);
         $this->m_flags = $flags;
 
-        $theme = &atkinstance("atk.ui.atktheme");
+        $theme = atkinstance("atk.ui.atktheme");
         $page = &atkPage::getInstance();
         $page->register_style($theme->stylePath("recordlist.css", $this->m_node->m_module));
 
@@ -391,7 +391,7 @@ class atkRecordList
                     if (atkcount($list["rows"][$i]["mra"]) > 0)
                         $record["cols"][] = array(
                             "content" => '<input type="checkbox" name="' . $listName . '_atkselector[]" value="' . atk_htmlentities($list["rows"][$i]["selector"]) . '" class="atkcheckbox" onclick="if (this.disabled) this.checked = false">' .
-                            '<script language="javascript"  type="text/javascript">' . $listName . '["' . atk_htmlentities($list["rows"][$i]["selector"]) . '"] = new Array("' . implode($list["rows"][$i]["mra"], '","') . '");</script>',
+                            '<script language="javascript"  type="text/javascript">' . $listName . '["' . atk_htmlentities($list["rows"][$i]["selector"]) . '"] = new Array("' . implode('","', $list["rows"][$i]["mra"]) . '");</script>',
                             "type" => "mra");
                     else
                         $record["cols"][] = array("content" => "");

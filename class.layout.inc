@@ -70,7 +70,7 @@ class layout
     function constructUI()
     {
         if ($this->m_atkui == NULL) {
-            $this->m_atkui = &atkinstance("atk.ui.atkui");
+            $this->m_atkui = atkinstance("atk.ui.atkui");
         }
     }
 
@@ -275,7 +275,7 @@ class layout
     // Dummy, creates an atkPage if one does not exist (for backward compatibility).
     function &getPage()
     {
-        $page = &atkinstance("atk.ui.atkpage");
+        $page = atkinstance("atk.ui.atkpage");
         return $page;
     }
 
@@ -695,7 +695,7 @@ class layout
     {
         atkdebug("Obsolete use of layout::getTemplate()!");
         if (file_exists($this->m_tpldir . $templatefile . ".tmpl")) {
-            return implode(file($this->m_tpldir . $templatefile . ".tmpl"), "");
+            return implode("", file($this->m_tpldir . $templatefile . ".tmpl"));
         } else {
             // Template not found, let's try fallback template
             if ($fallback != "")
@@ -718,7 +718,7 @@ class layout
     function initTheme()
     {
         atkdebug("Obsolete use of layout::initTheme()!");
-        $theme = &atkinstance("atk.ui.atktheme");
+        $theme = atkinstance("atk.ui.atktheme");
         $this->m_tpldir = $theme->themeDir();
     }
 

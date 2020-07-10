@@ -1833,7 +1833,15 @@ class atkMetaPolicy
 
         $method = new ReflectionMethod($this->getNode(), 'meta');
 
-        if ($method->isStatic()) {
+/** old
+       if ($method->isStatic()) {
+            $method->invoke(get_class($this->getNode()), $this);
+        } else {
+            $this->getNode()->meta($this);
+        }
+*/
+//  new
+      if (($method->isStatic()) && (is_object(get_class($this->getNode())))) {
             $method->invoke(get_class($this->getNode()), $this);
         } else {
             $this->getNode()->meta($this);

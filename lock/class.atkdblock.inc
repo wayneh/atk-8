@@ -76,7 +76,7 @@ class atkDbLock extends atkLock
         $this->storeLockList($atklockList);
 
         if (!isset($ATK_VARS['atkpartial']) && $this->m_id > 0) {
-            $page = &atkinstance("atk.ui.atkpage");
+            $page = atkinstance("atk.ui.atkpage");
             $page->register_script(atkconfig("atkroot") . "atk/javascript/xml.js");
             $page->register_script(session_url("include.php?file=atk/lock/lock.js.php&stack=" . atkStackID() . "&id=" . $this->m_id, SESSION_NEW));
         }
