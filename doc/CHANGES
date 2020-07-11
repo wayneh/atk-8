@@ -8,8 +8,17 @@
 
 * LATEST CHANGES GO ON TOP, different types of changes may be mixed.
 
+Changes in ATK 8.5.0 (2020-07-11)
+$atk_version = "8.5.0"; // WayneH https://github.com/wayneh/atk-85 
+Runs under PHP 5.5, 5.6, 7.0,7.4 (and probably 7.1, 7.2, 7.3!)
+From -
+$atk_version = "6.6"; // iBuildings  https://github.com/ibuildingsnl/ATK
+$atk_version = "7.0"; // Community https://github.com/atkphpframework/atk-community
+$atk_version = "8.2.7"; // Sintattica https://github.com/Sintattica/atk
+$atk_version = "8.2.8"; // BadPenguin https://github.com/badpenguin/atk-8
 
-WIP Changes
+=========================================================================================
+Sintattica WIP Changes
 -----------
 + Added timestamp checkbox in export action [luca]
 + Added errLogin event in atkSecurityManager [luca]
