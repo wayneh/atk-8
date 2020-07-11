@@ -15,7 +15,9 @@ V9 has reached V9.1 and was last updated March 2019. V9 is NOT backward compatib
 BadPenguin forked Sintattica V8.2.7 and created [V8.2.8](https://github.com/badpenguin/atk-8)
 updating with his own patches.  Last update July 2019. "It works in production with PHP 5.5, 5.6  and PHP 7.0"
 
-I needed ATK V8.5 is BadPenguins V8.2.8 with updates to enable it to run under PHP 7.4 WITHOUT any PHP Warnings or Notices
+I needed several applications to run under newer versions of PHP without re-writing in a new framework so updated BadPenguin's V8.2.8
+
+ATK V8.5 is BadPenguins V8.2.8 with updates to enable it to run under PHP 7.4 WITHOUT any PHP Warnings or Notices
 
 More use may cause additional Warnings or Notices - my intention is to also fix any found
 
