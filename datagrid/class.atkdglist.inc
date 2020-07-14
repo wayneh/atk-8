@@ -80,6 +80,7 @@ class atkDGList extends atkDGComponent
 
         $page->register_style($theme->stylePath("recordlist.css", $grid->getNode()->m_module));
         $page->register_script(atkconfig("atkroot") . "atk/javascript/recordlist.js");
+        $page->register_script(atkconfig("atkroot") . "atk/javascript/formclear.js");
 
         $listName = $grid->getName();
 
@@ -120,10 +121,8 @@ class atkDGList extends atkDGComponent
 
         if ($hasActionCol && atkcount($list["rows"]) == 0) {
             if ($orientation == "left" || $orientation == "both") {
-                // empty cell above search button, if zero rows
-                // if $orientation is empty, no search button is shown, so no empty cell is needed
-                $headercols[] = array("content" => "&nbsp;");
-            }
+                $headercols[] = array("content" => "<input type='button' onclick='atkformclear(this.form)' value='Clear'>");
+				}
         }
 
         if (!$edit && ($hasMRA || $grid->hasFlag(atkDataGrid::MULTI_RECORD_PRIORITY_ACTIONS))) {
@@ -131,10 +130,11 @@ class atkDGList extends atkDGComponent
         }
         if ($grid->hasFlag(atkDataGrid::LOCKING)) {
             $lockHeadIcon = atkTheme::getInstance()->getIcon('lock_' . $grid->getNode()->getLockMode() . '_head', 'lock', $grid->getNode()->m_module);
-            $headercols[] = array("content" => $lockHeadIcon);
+            $headercols[] = array("content" => $lockHeadIcon . 
+				" <input type='button' onclick='atkformclear(this.form)' value='Clear'>");
         }
         if (($orientation == "left" || $orientation == "both") && ($hasActionCol && atkcount($list["rows"]) > 0)) {
-            $headercols[] = array("content" => "");
+            $headercols[] = array("content" => "<input type='button' onclick='atkformclear(this.form)' value='Clear'>");
         }
 
         foreach (array_values($list["heading"]) as $head) {
@@ -147,14 +147,13 @@ class atkDGList extends atkDGComponent
         }
 
         if (($orientation == "right" || $orientation == "both") && ($hasActionCol && atkcount($list["rows"]) > 0)) {
-            $headercols[] = array("content" => "");
+            $headercols[] = array("content" => "<input type='button' onclick='atkformclear(this.form)' value='Clear'>");
+
         }
 
         if ($hasActionCol && atkcount($list["rows"]) == 0) {
             if ($orientation == "right" || $orientation == "both") {
-                // empty cell above search button, if zero rows
-                // if $orientation is empty, no search button is shown, so no empty cell is needed
-                $headercols[] = array("content" => "&nbsp;");
+                $headercols[] = array("content" => "<input type='button' onclick='atkformclear(this.form)' value='Clear'>");	
             }
         }
 

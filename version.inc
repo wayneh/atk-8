@@ -23,5 +23,6 @@
 //$atk_version = "7.0"; // Community https://github.com/atkphpframework/atk-community
 //$atk_version = "8.2.7"; // Sintattica https://github.com/Sintattica/atk
 //$atk_version = "8.2.8"; // BadPenguin https://github.com/badpenguin/atk-8
-$atk_version = "8.5.0"; // WayneH https://github.com/wayneh/atk-85 
+//$atk_version = "8.5.0"; // WayneH https://github.com/wayneh/atk-85 
+$atk_version = "8.5.1 DEV"; // WayneH https://github.com/wayneh/atk-85 
 return $atk_version; 
