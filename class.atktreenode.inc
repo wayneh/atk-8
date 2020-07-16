@@ -659,7 +659,7 @@ class atkTreeNode extends atkNode
             }
         }
 
-        $db = &$this->getDb();
+        $db = $this->getDb();
         $query = "DELETE FROM " . $this->m_table . " WHERE " . $selector;
         $db->query($query);
 
@@ -699,7 +699,7 @@ class atkTreeNode extends atkNode
             }
         }
 
-        $db = &$this->getDb();
+        $db = $this->getDb();
         $query = "DELETE FROM " . $this->m_table . " WHERE " . $selector;
         $db->query($query);
     }

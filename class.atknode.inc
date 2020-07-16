@@ -3678,8 +3678,8 @@ class atkNode
             if (!$this->executeTrigger("preAdd", $record, $mode))
                 return atkerror("preAdd() failed!");
 
-        $db = &$this->getDb();
-        $query = &$db->createQuery();
+        $db = $this->getDb();
+        $query = $db->createQuery();
 
         $storelist = array("pre" => array(), "post" => array(), "query" => array());
 

@@ -210,7 +210,7 @@ class atkTextAttribute extends atkAttribute
      */
     function value2db($rec)
     {
-        $db = &$this->getDb();
+        $db = $this->getDb();
         if ($db->getType() != "oci9" || $this->dbFieldType() != 'text')
             return $db->escapeSQL($rec[$this->fieldName()]);
         else

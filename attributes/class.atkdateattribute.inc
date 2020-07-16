@@ -857,7 +857,7 @@ class atkDateAttribute extends atkAttribute
      */
     function getSearchCondition(&$query, $table, $value, $searchmode, $fieldname = '')
     {
-        $db = &$this->getDb();
+        $db = $this->getDb();
 
         // If we search through datagrid we got no from/to values
         // Therefore we will simulate them
