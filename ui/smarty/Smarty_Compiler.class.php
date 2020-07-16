@@ -73,9 +73,7 @@ class Smarty_Compiler extends Smarty {
 
     var $_strip_depth           =   0;
     var $_additional_newline    =   "\n";
-	
-	var $_left_delimiter  =  '{';
-	var $_right_delimiter  =  '}';
+
 
     /**#@-*/
     /**
@@ -273,7 +271,9 @@ class Smarty_Compiler extends Smarty {
                                        . "';")
                                        , $source_content);
 		*/
-		
+			
+		$_left_delimiter  =  '{';
+		$_right_delimiter  =  '}';
         $source_content = preg_replace_callback($search, 
 			function($matches) use($_left_delimiter, $_right_delimiter) {
 				return _quote_replace($_left_delimiter) 
