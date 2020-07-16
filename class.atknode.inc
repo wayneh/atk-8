@@ -185,9 +185,9 @@ define("NF_SPECIFIC_3", 134217728);
 define("NF_SPECIFIC_4", 268435456);
 
 /**
- * Specific node flag 5
+ * Node in add mode does not require a table
  */
-define("NF_SPECIFIC_5", 536870912);
+define("NF_NO_TABLE", 536870912);
 
 /**
  * Records may be copied and open for editing
@@ -2785,6 +2785,10 @@ class atkNode
         foreach (array_keys($this->m_attribList) as $attribname) {
             $p_attrib = &$this->m_attribList[$attribname];
             $p_attrib->postInit();
+			if ($this->hasflag(NF_NO_TABLE)) {
+				$p_attrib->setLoadType(NOLOAD);
+				$p_attrib->setStorageType(NOSTORE);
+			}
         }
     }
 
@@ -3679,8 +3683,6 @@ class atkNode
 
         $storelist = array("pre" => array(), "post" => array(), "query" => array());
 
-        $query->addTable($this->m_table);
-
         foreach (array_keys($this->m_attribList) as $attribname) {
             $p_attrib = &$this->m_attribList[$attribname];
             if (!atk_in_array($attribname, $excludelist) && ($mode != "add" || $p_attrib->needsInsert($record))) {
@@ -3696,6 +3698,16 @@ class atkNode
 
         if (!$this->_storeAttributes($storelist["pre"], $record, $mode))
             return false;
+		
+		// If empty then all attributes have flag NOSTORE
+		if (empty(array_filter($storelist))) {
+			if ($exectrigger && !$this->executeTrigger("postAdd", $record, $mode)) {
+				return false;
+			}
+			return true;
+		}
+
+        $query->addTable($this->m_table);
 
         for ($i = 0, $_i = atkcount($storelist["query"]); $i < $_i; $i ++) {
             $p_attrib = &$this->m_attribList[$storelist["query"][$i]];

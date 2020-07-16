@@ -4,9 +4,9 @@ useattrib("atktextattribute");
 class test extends atkNode
 {
 
-    function test()
+    function __construct()
     {
-        atkNode::__construct("test");
+        parent::__construct("test");
 
         $this->add(new atkAttribute("id", AF_AUTOKEY));
         $this->add(new atkAttribute("name", AF_OBLIGATORY | AF_UNIQUE));
