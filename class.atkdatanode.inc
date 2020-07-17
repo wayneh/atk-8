@@ -342,9 +342,13 @@ class atkDataNode extends atkNode
             $attr = $this->getAttribute($column);
 
             if ($attr instanceof atkNumberAttribute) {
-                usort($data, create_function('$a, $b', 'return $a["' . $column . '"] == $b["' . $column . '"] ? 0 : ($a["' . $column . '"] < $b["' . $column . '"] ? -1 : 1);'));
+				/*    usort($data, create_function('$a, $b', 'return $a["' . $column . '"] == $b["' . $column . '"] ? 0 : ($a["' . $column . '"] < $b["' . $column . '"] ? -1 : 1);'));
+				*/
+                usort($data,function() use($a, $b, $column) {return $a[$column] == $b[$column] ? 0 : ($a[$column] < $b[$column] ? -1 : 1);} );
             } else {
-                usort($data, create_function('$a, $b', 'return strcasecmp($a["' . $column . '"], $b["' . $column . '"]);'));
+				/*    usort($data, create_function('$a, $b', 'return strcasecmp($a["' . $column . '"], $b["' . $column . '"]);'));
+				*/
+                usort($data, function() use('$a, $b', $column) {return strcasecmp($a[$column], $b[$column]);} );
             }
 
             if (!$asc) {

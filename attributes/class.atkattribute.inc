@@ -2852,8 +2852,9 @@ class atkAttribute
      */
     public function addDependee($attribute)
     {
-        $callback = create_function('$modifier', '$modifier->refreshAttribute("' . $attribute . '");');
-        $this->addDependency($callback);
+        //$callback = create_function('$modifier', '$modifier->refreshAttribute("' . $attribute . '");');
+		$callback = function($modifier){return $modifier->refreshAttribute($attribute);};
+		$this->addDependency($callback);
         return $this;
     }
 

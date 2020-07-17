@@ -263,8 +263,8 @@ class Smarty_Compiler extends Smarty {
         reset($this->_folded_blocks);
 
         /* replace special blocks by "{php}" */
-		/*
-        $source_content = preg_replace_callback($search, create_function ('$matches', "return '"
+
+        /* $source_content = preg_replace_callback($search, create_function ('$matches', "return '"
                                        . $this->_quote_replace($this->left_delimiter) . 'php'
                                        . "' . str_repeat(\"\n\", substr_count('\$matches[1]', \"\n\")) .'"
                                        . $this->_quote_replace($this->right_delimiter)
@@ -276,9 +276,9 @@ class Smarty_Compiler extends Smarty {
 		$_right_delimiter  =  '}';
         $source_content = preg_replace_callback($search, 
 			function($matches) use($_left_delimiter, $_right_delimiter) {
-				return _quote_replace($_left_delimiter) 
+				return $this->_quote_replace($_left_delimiter) 
 				. 'php' . str_repeat("\n", substr_count($matches[1], "\n"))
-				. _quote_replace($_right_delimiter);} 
+				. $this->_quote_replace($_right_delimiter);} 		
              , $source_content);
 		
 

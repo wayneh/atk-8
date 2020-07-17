@@ -115,7 +115,7 @@ class atkMetaCompiler
      */
     protected function _getNodeFlagsString($flags)
     {
-        return $this->_getFlagsString($flags, 'NF_', array(NF_SPECIFIC_1, NF_SPECIFIC_2, NF_SPECIFIC_3, NF_SPECIFIC_4, NF_SPECIFIC_5));
+        return $this->_getFlagsString($flags, 'NF_', array(NF_SPECIFIC_1, NF_SPECIFIC_2, NF_SPECIFIC_3, NF_SPECIFIC_4));
     }
 
     /**
