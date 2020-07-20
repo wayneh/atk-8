@@ -78,7 +78,7 @@ td.checked {
 td.error {
 	border: solid 2px yellow;
 	padding: 10px;
-	font-size: 20px;
+	font-size: 10px;
 	line-height: 28px;
 }
 
@@ -161,7 +161,7 @@ div.gmapbuttonbar {
 .atkmessages_success,
 .atkmessages_failure,
 .atkmessages_warning {
-	font-size: 200%;
+	font-size: 100%;
 }
 
 .atkmessages_success {
