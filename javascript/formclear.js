@@ -39,4 +39,5 @@ function atkformclear(oForm) {
                 break;
         }
     }
+	window.location.reload(true);
 }
