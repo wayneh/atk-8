@@ -48,7 +48,7 @@ class mod_meta extends atkModule
     function getMenuItems()
     {
         if (atkConfig::get("meta", "automenu", true)) {
-            $db = &atkGetDb();
+            $db = atkGetDb();
             $tables = $db->table_names();
 
             menuitem("meta", "", "main", array("meta.meta", "admin"));
@@ -83,7 +83,7 @@ class mod_meta extends atkModule
      */
     function nodeExists($node)
     {
-        $db = &atkGetDb();
+        $db = atkGetDb();
         $table = getNodeType($node);
         if (!preg_match('/[a-z0-9_]/i', $table))
             return FALSE;

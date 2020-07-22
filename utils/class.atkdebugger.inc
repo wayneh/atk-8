@@ -245,7 +245,7 @@ class atkDebugger
         $output = "<h1>Query</h1>";
         $query = $queries[$id]["query"];
         $output.= $this->highlightQuery($query);
-        $db = &atkGetDb();
+        $db = atkGetDb();
         if (strtolower(substr(trim($query), 0, 6)) == "select") {
             $output.= '<h1>Resultset</h1>';
             $result = $db->getrows($query);

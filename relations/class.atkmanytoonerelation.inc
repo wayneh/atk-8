@@ -1230,8 +1230,10 @@ class atkManyToOneRelation extends atkRelation
         }
         else {
             $id = $this->getSearchFieldName($fieldprefix);
+			if (($this->fieldName() !== null) && ($record !== null)){
             if (is_array($record[$this->fieldName()]) && isset($record[$this->fieldName()][$this->fieldName()]))
                 $record[$this->fieldName()] = $record[$this->fieldName()][$this->fieldName()];
+			}
 
             $this->registerKeyListener($id, KB_CTRLCURSOR | KB_UPDOWN);
             $result = '<input type="text" id="' . $id . '" class="form-control ' . get_class($this) . '" name="' . $id . '" value="' . $record[$this->fieldName()] . '"' .

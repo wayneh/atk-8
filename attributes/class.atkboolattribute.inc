@@ -161,12 +161,16 @@ class atkBoolAttribute extends atkAttribute
         $result = '<select name="' . $this->getSearchFieldName($fieldprefix) . '" class="form-control">';
         $result.= '<option value="">' . atktext("search_all", "atk") . '</option>';
         $result.= '<option value="0" ';
-        if ($record[$this->fieldName()] === '0' && !empty($record))
-            $result.="selected";
+		if (($this->fieldName() !== null) && ($record !== null)){
+			if ($record[$this->fieldName()] === '0' && !empty($record))
+				$result.="selected";
+		}
         $result.= '>' . atktext("no", "atk") . '</option>';
         $result.= '<option value="1" ';
-        if ($record[$this->fieldName()] === '1')
-            $result.="selected";
+		if (($this->fieldName() !== null) && ($record !== null)){
+			if ($record[$this->fieldName()] === '1')
+				$result.="selected";
+		}
         $result.= '>' . atktext("yes", "atk") . '</option>';
         $result.='</select>';
         return $result;

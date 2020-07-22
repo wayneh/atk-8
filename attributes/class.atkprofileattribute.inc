@@ -215,7 +215,7 @@ class atkProfileAttribute extends atkAttribute
         // hierarchic groups, only return actions of parent (if this record has a parent)
         $parentAttr = $this->m_parentAttrName;
         if (!empty($parentAttr) && is_numeric($record[$parentAttr])) {
-            $db = &atkGetDb();
+            $db = atkGetDb();
             $query = "SELECT DISTINCT node, action FROM " . atkconfig("auth_accesstable") . " " .
                 "WHERE " . $this->m_accessField . " = " . $record[$parentAttr];
             $rows = $db->getRows($query);
@@ -281,7 +281,7 @@ class atkProfileAttribute extends atkAttribute
             $levels = "'" . implode("','", $user['level']) . "'";
 
         // retrieve editable actions by user's levels
-        $db = &atkGetDb();
+        $db = atkGetDb();
         $query = "SELECT DISTINCT node, action FROM " . atkconfig("auth_accesstable") . " WHERE " . $this->m_accessField . " IN (" . $levels . ")";
         $rows = $db->getRows($query);
 

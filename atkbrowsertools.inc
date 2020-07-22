@@ -378,7 +378,7 @@ class browserInfo
      * and an array with ["width"] and ["height"] if those variables are known
      * @return mixed wether or not the user is using a PDA and size of the screen if it is passed along
      */
-    function detectPDA()
+    static function detectPDA()
     {
         $browser = substr(trim($_SERVER["HTTP_USER_AGENT"]), 0, 4);
         if ($browser == "Noki" || // Nokia phones and emulators

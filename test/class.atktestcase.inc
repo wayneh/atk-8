@@ -266,7 +266,7 @@ abstract class atkTestCase extends PHPUnit_Framework_TestCase
 
         $config_db["mock"]["driver"] = "atk.test.mocks.atkmockdb";
 
-        $mockdb = &atkGetDb("mock");
+        $mockdb = atkGetDb("mock");
         $this->m_restoreDb[$conn] = &atkDb::setInstance($conn, $mockdb);
     }
 

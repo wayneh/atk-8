@@ -80,7 +80,7 @@ class atkmlsplitter
     function updateLngField(&$node, &$record)
     {
         // blegh
-        $db = &atkGetDb();
+        $db = atkGetDb();
         $sql = "UPDATE " . $node->m_table . " SET " . $node->m_lngfield . "='" . $node->m_defaultlanguage . "'
                WHERE " . $node->m_lngfield . "='' AND " . $record["atkprimkey"];
         return $db->query($sql);

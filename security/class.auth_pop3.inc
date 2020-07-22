@@ -60,7 +60,7 @@ class auth_pop3 extends auth_interface
         if ($server == "[db]") {
             // if server is set to [db], that means we have a different server per
             // user. We lookup in the database what server we need to call.
-            $db = &atkGetDb();
+            $db = atkGetDb();
             $res = $db->getrows("SELECT auth_server
                                FROM " . atkconfig("auth_usertable") . "
                               WHERE " . atkconfig("auth_userfield") . "='" . $user . "'");

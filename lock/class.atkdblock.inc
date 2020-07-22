@@ -128,7 +128,7 @@ class atkDbLock extends atkLock
         }
 
         /* lock the lock table :) */
-        $db = &atkGetDb();
+        $db = atkGetDb();
         $db->lock("db_lock");
 
         /* check if the item can be locked */
@@ -203,7 +203,7 @@ class atkDbLock extends atkLock
      */
     function unlock($selector, $table)
     {
-        $db = &atkGetDb();
+        $db = atkGetDb();
 
         $user = getUser();
         if (is_array($user))
@@ -256,7 +256,7 @@ class atkDbLock extends atkLock
             $user = $user['name'];
 
         /* lock the lock table :) */
-        $db = &atkGetDb();
+        $db = atkGetDb();
         $db->lock("db_lock");
 
         /* extend lock lease */
@@ -316,8 +316,8 @@ class atkDbLock extends atkLock
 
         /* select all locks for the node table -> cache */
         if (!is_array($_cache[$table])) {
-            $db = &atkGetDb();
-            $query = &$db->createQuery();
+            $db = atkGetDb();
+            $query = $db->createQuery();
             $query->addField("lock_id");
             $query->addField("lock_record");
             $query->addField("user_id");
